@@ -51,7 +51,6 @@ import java.util.Locale;
 public class ArticleViewActivity extends AppCompatActivity implements View.OnClickListener, AudioManager.OnAudioFocusChangeListener {
 
     private ArrayList<ArticleData> articleDatas;
-    //private ArrayList<ArticleData> articleDatas2;
     private TextToSpeech tts;
     private WebView mWebView;
     private String url, newsType;
@@ -61,16 +60,12 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
     private AudioManager audioManager;
     private boolean orderLatest;
     private SwipeRefreshLayout pullToRefresh2;
-    //ImageButton sharebutton;
-    //ImageButton reloadbutton;
-    //ImageButton rescrapebutton;
     int timex = 1000;
     int savedIndex;
     int savedReadIndex;
     int starbigoff_ = android.R.drawable.ic_media_play;
     int starbigon_ = android.R.drawable.ic_media_pause;
     boolean startTTS = false;
-    String wasReading = "";
     private NewsStorage newsStorage;
     private newsSectionStorage newsSectionStorage;
     private settings settings;
@@ -106,31 +101,28 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
         rescrapebutton.setOnClickListener(this);
 
         //Get clicked article from NewsListing
-//        loadSettings();
-       // orderLatest = getIntent().getExtras().getBoolean("OrderLatest");
-       // newsType = getIntent().getExtras().getString("NewsType");
-        index = getIntent().getExtras().getInt("index");
-        //startTTS = getIntent().getExtras().getBoolean("startTTS");
 
 
 
-        //System.out.println("index is " + orderLatest + newsType + index);
+        currentArticle = new currentArticle(this);
+        index = currentArticle.loadIndex();
+        startTTS = currentArticle.startTSS();
 
+        //Get the url to display an set up webview
+        url = currentArticle.loadData();
 
         newsSectionStorage = new newsSectionStorage(this);
         newsType = newsSectionStorage.getNewsSectionType();
+
         settings = new settings(this);
-        currentArticle = new currentArticle(this);
-        newsStorage = new NewsStorage(this, newsType);
         orderLatest = settings.loadSettings(newsType);
 
-        startTTS = currentArticle.startTSS();
+        newsStorage = new NewsStorage(this, newsType);
 
         if (startTTS)
             stopBtn.setImageResource(starbigon_);
         else
             stopBtn.setImageResource(starbigoff_);
-
 
         newsStorage.loadData();
 
@@ -140,24 +132,11 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
             articleDatas = new ArrayList<>();
         }
 
-        //System.out.println("wtf" + articleDatas);
-
-
-        //System.out.println("webload10" + articleDatas);
 
         //set to read from first sentence
         readIndex = 0;
         savedIndex = index;
         savedReadIndex = readIndex;
-
-        wasReading = "yes";
-        currentArticle.saveReading(wasReading, index);
-        //saveReading();
-
-        //Get the url to display an set up webview
-
-            //url = articleDatas.get(index).getLink();
-        url = currentArticle.loadData();
 
 
         mWebView = findViewById(R.id.webview);
@@ -165,14 +144,14 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
 
         //Bundle extras = getIntent().getExtras();
         //if (extras != null) {
-            if (startTTS) {
-                initializeTTS();
-            } else {
-                initializeTTS();
-                stopPlay();
-                readFreeOrPaid();
-            }
-            //The key argument here must match that used in the other activity
+        if (startTTS) {
+            initializeTTS();
+        } else {
+            initializeTTS();
+            stopPlay();
+            readFreeOrPaid();
+        }
+        //The key argument here must match that used in the other activity
         //}
 
         pullToRefresh2 = findViewById(R.id.pullToRefresh2);
@@ -180,7 +159,6 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onRefresh() {
                 mWebView.loadUrl(url);
-                System.out.println("webload1");
                 pullToRefresh2.setRefreshing(false);
             }
         });
@@ -319,9 +297,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onBackPressed() {
         finish();
-        wasReading = "no";
-        currentArticle.saveReading(wasReading, index);
-        //saveReading();
+        currentArticle.saveReading(false);
         saveData();
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -372,7 +348,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
 
                 //String cookies = CookieManager.getInstance().getCookie(url);
                 //System.out.println( "All the cookies in a string:" + cookies);
-                }
+            }
         });
 
         //first load
@@ -523,7 +499,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
                     //pauseIconCheck();
                     currentArticle.setTTS(true);
                     stopBtn.setImageResource(starbigon_);
-                   // System.out.println(articleDatas);
+                    // System.out.println(articleDatas);
                     saveData();
                     break;
                 }
@@ -636,7 +612,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
         }
 
      */
-                //Go to next article based on direction(decided by user/system)
+    //Go to next article based on direction(decided by user/system)
     public void moveArticle(boolean dir){
         if(dir) {
             if((index + 1) > articleDatas.size()-1)
@@ -648,8 +624,6 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
                 index++;
                 url = articleDatas.get(index).getLink();
                 articleDatas.get(index).setReadNews(true);
-                //saveReading();
-                currentArticle.saveReading(wasReading, index);
                 saveData();
                 readFreeOrPaid();
             }
@@ -665,11 +639,12 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
                 url = articleDatas.get(index).getLink();
                 articleDatas.get(index).setReadNews(true);
                 //saveReading();
-                currentArticle.saveReading(wasReading, index);
+
                 saveData();
                 readFreeOrPaid();
             }
         }
+        currentArticle.saveData(articleDatas.get(index).getLink());
     }
 
     //int oldsize = 0;
@@ -678,9 +653,9 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
         if(readIndex < articleDatas.get(index).getContent().size() - 1){
             readIndex++;
             //if (oldsize != newsize) {
-                mWebView.addJavascriptInterface(new GetHTML(this), "Scrap");
-                mWebView.loadUrl("javascript:window.Scrap.getHTML" +
-                        "(document.getElementsByTagName('html')[0].outerHTML);");
+            mWebView.addJavascriptInterface(new GetHTML(this), "Scrap");
+            mWebView.loadUrl("javascript:window.Scrap.getHTML" +
+                    "(document.getElementsByTagName('html')[0].outerHTML);");
             System.out.println("webload8");
             //}
             //oldsize = newsize;
@@ -728,7 +703,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
                     tts.stop();
                     //pauseBtn.setImageResource(android.R.drawable.ic_media_play);
                     stopBtn.setImageResource(android.R.drawable.ic_media_play);
-            }
+                }
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 // stop playback
@@ -795,53 +770,5 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
 
         editor.apply();
         //System.out.println(json);
-    }
-
-    /*
-    private void saveReading() {
-        SharedPreferences sp = getSharedPreferences("currentArticle", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-
-        editor.putString("wasReading", wasReading);
-        editor.putInt("lastIndex3", index);
-
-        editor.apply();
-    }
-
-     */
-
-    private void loadData(){
-        SharedPreferences sp = getSharedPreferences("NewsStorage", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sp.getString(newsType, null);
-        Type dataType = new TypeToken<ArrayList<ArticleData>>() {}.getType();
-        articleDatas = gson.fromJson(json, dataType);
-
-        //SharedPreferences sp = getSharedPreferences("startTTS", MODE_PRIVATE);
-        boolean yson = sp.getBoolean("startTTS", false);
-        startTTS = yson;
-
-        int zson = sp.getInt("starimage", starbigoff_);
-        stopBtn.setImageResource(zson);
-
-        if (articleDatas != null) {
-            if (!orderLatest) Collections.reverse(articleDatas);
-        }
-    }
-
-    private void loadReading() {
-        SharedPreferences sp = getSharedPreferences("currentArticle", MODE_PRIVATE);
-        String wasReading = sp.getString("wasReading", "no");
-        int lastIndex2 = sp.getInt("lastIndex2", 0);
-        String lastNewsType2 = sp.getString("lastNewsType2", "");
-        Boolean lastOrder2 = sp.getBoolean("lastOrder2", false);
-
-        if (wasReading.equals("yes")){
-            Intent toView = new Intent(ArticleViewActivity.this, ArticleViewActivity.class);
-            toView.putExtra("index", lastIndex2);
-            toView.putExtra("NewsType", lastNewsType2);
-            toView.putExtra("OrderLatest", lastOrder2);
-            startActivity(toView);
-        }
     }
 }

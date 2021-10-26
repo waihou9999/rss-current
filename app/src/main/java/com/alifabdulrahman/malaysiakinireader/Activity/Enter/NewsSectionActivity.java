@@ -55,6 +55,8 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
             newsSection.addAll(newsSection2);
         }
 
+        loadLastArticle();
+
         setupListView();
     }
 
@@ -98,7 +100,7 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
                 String newsType = adapter.getItem(position).getSectionName();
                 Intent toNewsListing = new Intent(NewsSectionActivity.this, ArticleListingActivity.class);
                 startActivity(toNewsListing);
-                newsSectionStorage.saveReading(url, newsType, "yes");
+                newsSectionStorage.saveReading(url, newsType, true);
                 newsSectionStorage.saveData();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -211,7 +213,7 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
         newsSectionStorage.saveData();
         setupListView();
         //System.out.println(newsSection2.size());
-   }
+    }
 
     public void removeInput(ArrayList<NewsSectionData> newsSection2, ArrayList<Integer> selectedItems) {
         for (int i = selectedItems.size()-1; i >= 0; i--) {
@@ -225,71 +227,21 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
         //System.out.println(newsSection2.size());
     }
 
-    /*
-    //Save data of articles retrieved
-    private void saveData() {
-        SharedPreferences sp = getSharedPreferences("NewsSectionStorage", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        Gson hson = new Gson();
-        String kson = hson.toJson(newsSection2);
-        editor.putString(newsSectionType, kson);
-        editor.apply();
-    }
-*/
+    public void loadLastArticle(){
+        currentArticle currentArticle = new currentArticle(this);
 
-    /*
-    //save last article
-    private void saveReading() {
-        SharedPreferences sp = getSharedPreferences("currentArticle", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("lastURL", lastURL);
-        editor.putString("lastNewsType", lastNewsType);
-        editor.putString("wasReading", wasReading);
-        editor.apply();
-    }
-
-     */
-
-/*
-    //Load data of articles
-    private void loadData() {
-        SharedPreferences sp = getSharedPreferences("NewsSectionStorage", MODE_PRIVATE);
-        Gson hson = new Gson();
-        String kson = sp.getString(newsSectionType, null);
-        Type dataType = new TypeToken<ArrayList<NewsSectionData>>() {
-        }.getType();
-        newsSection2 = hson.fromJson(kson, dataType);
-        if (newsSection2 == null) {
-            newsSection2 = new ArrayList<>();
+        if (currentArticle.loadReading()){
+            Intent intent = new Intent(NewsSectionActivity.this, ArticleListingActivity.class);
+            startActivity(intent);
         }
     }
-*/
 
-    /*
-    //load last article to listing
-    private void loadReading() {
-        SharedPreferences sp = getSharedPreferences("currentArticle", MODE_PRIVATE);
-
-        String wasReading = sp.getString("wasReading", "no");
-        String lastURL = sp.getString("lastURL", "");
-        String lastNewsType = sp.getString("lastNewsType", "");
-
-        if (wasReading.equals("yes")){
-            Intent toNewsListing = new Intent(NewsSectionActivity.this, ArticleListingActivity.class);
-            toNewsListing.putExtra("URL", lastURL);
-            toNewsListing.putExtra("NewsType", lastNewsType);
-            //wasReading = "no";
-            //saveReading();
-            startActivity(toNewsListing);
-        }
-    }
-     */
 
     @Override
     public void onBackPressed(){
         finish();
         super.onBackPressed();
-        newsSectionStorage.setReading("no");
+        newsSectionStorage.setReading(false);
         //Intent toMain = sectionManager.section(4);
         Intent toMain = new Intent(this, MainActivity.class);
         startActivity(toMain);

@@ -89,6 +89,8 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
         newsSectionURL = newsSectionStorage.getSectionURL();
         newsStorage = new NewsStorage(this, newsType);
 
+        loadLastArticle();
+
         updateList();
 
         //Implement pull to refresh
@@ -97,7 +99,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             @Override
             public void onRefresh() {
 
-             updateList();
+                updateList();
 
                 pullToRefresh.setRefreshing(false);
             }
@@ -132,16 +134,18 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 currentArticle = new currentArticle(ArticleListingActivity.this);
                 String link = articleDatas.get(i).getLink();
+                currentArticle.saveReading(true);
                 currentArticle.saveData(link);
 
-                boolean checker = true;
+
                 Intent toView = new Intent(ArticleListingActivity.this, ArticleViewActivity.class);
 
-                toView.putExtra("index", i);
                 articleDatas.get(i).setReadNews(true);
 
                 newsStorage.saveData(articleDatas);
                 startActivity(toView);
+                toView.putExtra("index", i);
+                currentArticle.saveIndex(i);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
@@ -481,11 +485,11 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
     //Check current RSS
     public class compareRSS extends AsyncTask<String, Void, ArrayList<String>> {
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
         protected ArrayList<String> doInBackground(String... params) {
 
-        ArrayList<String>currentLink = new ArrayList<>();
+            ArrayList<String>currentLink = new ArrayList<>();
 
             try {
                 Document doc = Jsoup.connect(newsSectionURL).get();
@@ -588,9 +592,9 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
                         if ( (articleDatas != null) && (!articleDatas.isEmpty()) && (isFound == false) ){
                             articleDatas.remove(i);
                         }
-                    }
+                }
 
-                    newsStorage.saveData(articleDatas);
+                newsStorage.saveData(articleDatas);
 
                 articleDatas = newsStorage.loadArt1();
 
@@ -684,5 +688,14 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             articleDatas = sorting.sortByOldest(articleDatas);
 
         setupListView();
+    }
+
+    public void loadLastArticle(){
+        currentArticle currentArticle = new currentArticle(this);
+
+        if (currentArticle.loadReading()){
+            Intent intent = new Intent(ArticleListingActivity.this, ArticleViewActivity.class);
+            startActivity(intent);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.alifabdulrahman.malaysiakinireader.storage.substorage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.alifabdulrahman.malaysiakinireader.model.NewsSectionData;
 import com.alifabdulrahman.malaysiakinireader.storage.storage;
@@ -12,10 +11,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class newsSectionStorage extends storage {
-     private final String storageName = "newsSectionStorage";
-     private final String storageName2 = "NewYorkTimeStorage";
-     private ArrayList<NewsSectionData> newsSection2;
-     private final String newsSectionType = "newsSectionType";
+    private final String storageName = "newsSectionStorage";
+    private final String storageName2 = "NewYorkTimeStorage";
+    private ArrayList<NewsSectionData> newsSection2;
+    private final String newsSectionType = "newsSectionType";
 
     public newsSectionStorage(Context context) {
         super(context);
@@ -31,7 +30,7 @@ public class newsSectionStorage extends storage {
         newsSection2 = hson.fromJson(kson, dataType);
 
         if (newsSection2 == null) {
-           return newsSection2 = new ArrayList<>();
+            return newsSection2 = new ArrayList<>();
         }
         return newsSection2;
     }
@@ -44,24 +43,18 @@ public class newsSectionStorage extends storage {
         editor.apply();
     }
 
-    public void saveReading(String url, String newsType, String wasReading){
+    public void saveReading(String url, String newsType, boolean wasReading){
         editor.putString("sectionURL", url);
         editor.putString("sectionType", newsType);
-        editor.putString ("wasReading", wasReading);
-
-        //System.out.println("checking65" + sp.getString("sectionURL", ""));
+        editor.putBoolean("wasReading", wasReading);
     }
 
-    public void setReading(String wasReading){
-        editor.putString ("wasReading", wasReading);
+    public void setReading(boolean wasReading){
+        editor.putBoolean ("wasReading", wasReading);
     }
 
-    public void loadReading(){
-        String wasReading = sp.getString("wasReading", "");
-
-        if (wasReading.equals("yes")){
-            sectionManager.section(3);
-        }
+    public boolean loadReading(){
+        return sp.getBoolean("wasReading", false);
     }
 
     public String getSectionURL(){
