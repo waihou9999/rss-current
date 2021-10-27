@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 newsSources = new ArrayList<>();
                 dialog_builder = new AlertDialog.Builder(MainActivity.this);
                 startUp = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Reminder")
+                        .setTitle("Notice")
                         .setMessage("To read the full (paid) article, please log in on the first article you before starting the voice reading. Once it is logged in, you won't have to log in again.")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
