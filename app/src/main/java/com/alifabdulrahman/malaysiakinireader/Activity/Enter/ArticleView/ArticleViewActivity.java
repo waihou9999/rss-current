@@ -644,6 +644,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
                 readFreeOrPaid();
             }
         }
+        currentArticle.saveIndex(index);
         currentArticle.saveData(articleDatas.get(index).getLink());
     }
 
