@@ -575,6 +575,10 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
                     articleDatas.get(i).setReadNews(false);
                 }
 
+                newsStorage.saveData(articleDatas);
+
+                setupListView();
+
                 return true;
 
             case R.id.clearread:
