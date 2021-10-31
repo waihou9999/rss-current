@@ -93,6 +93,8 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
 
         updateList();
 
+        new compareRSS().execute();
+
         //Implement pull to refresh
         pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -109,6 +111,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
     @Override
     public void onResume() {
         super.onResume();
+        new compareRSS().execute();
         updateList();
     }
 
@@ -485,6 +488,8 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
     //Check current RSS
     public class compareRSS extends AsyncTask<String, Void, ArrayList<String>> {
 
+
+
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected ArrayList<String> doInBackground(String... params) {
@@ -510,8 +515,6 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
 
             return null;
         }
-
-
     }
 
     //autoupdate attempt #2, functional
@@ -583,9 +586,8 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
 
             case R.id.clearread:
 
-                currentRSS.clearData();
-
                 new compareRSS().execute();
+
 
                 String currentLink = currentRSS.loadData();
 
