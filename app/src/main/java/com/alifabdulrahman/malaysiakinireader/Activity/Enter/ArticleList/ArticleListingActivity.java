@@ -591,7 +591,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
 
                 String currentLink = currentRSS.loadData();
 
-                for (int i = articleDatas.size() - 1; i >= 0; i--){
+                for (int i = articleDatas.size()-1; i >= 0; i--){
                     boolean isFound = currentLink.contains(articleDatas.get(i).getLink());
 
                     if (articleDatas.get(i).getReadNews())
