@@ -10,7 +10,7 @@ public class sorting {
     private Context context;
     ArrayList<ArticleData>articleData;
 
-    public  sorting(Context context){
+    public sorting(Context context){
         this.context = context;
     }
 

@@ -248,13 +248,13 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
 
                 //Elements contentContainer = localDoc.select("script[id$=__NEXT_DATA__]");
 
-                Elements docContents = contentContainer.select("p, li");
-                System.out.println(docContents);
+                Elements docContents = contentContainer.select("p");
+                //System.out.println(docContents);
 
                 if (contentContainer == null || contentContainer.isEmpty()){
                     contentContainer = localDoc.select("div[id $= __next]");
                     docContents = contentContainer.select("p");
-                    System.out.println(docContents);
+                    //System.out.println(docContents);
                 }
 
                 //Create temporary array to hold the contents
@@ -272,6 +272,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
                 //add the temporary array into the articledata only if they're not empty
                 for(Element e : docContents){
                     if(!(e.text().equals(""))){
+                        if (!tempList.contains(e.text()))
                         tempList.add(e.text());
                     }
                 }
