@@ -399,7 +399,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
                 }
             }
 
-            checkReadStuff();
+            //checkReadStuff();
             newsStorage.saveData(articleDatas);
 
             return null;
@@ -412,7 +412,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             }
 
             //Display
-            checkReadStuff();
+            //checkReadStuff();
             setupListView();
         }
     }
@@ -481,7 +481,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
                 Toast.makeText(ArticleListingActivity.this, "No new contents available", Toast.LENGTH_LONG).show();
             }
 
-            checkReadStuff();
+            //checkReadStuff();
             setupListView();
         }
     }
@@ -588,7 +588,6 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             case R.id.clearread:
 
                 new compareRSS().execute();
-
 
                 String currentLink = currentRSS.loadData();
 

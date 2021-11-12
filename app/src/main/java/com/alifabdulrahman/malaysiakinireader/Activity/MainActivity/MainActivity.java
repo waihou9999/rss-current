@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
     }
 
-    private void checkFirstRun(AlertDialog.Builder startUp) {
+    public void checkFirstRun(AlertDialog.Builder startUp) {
         boolean firstRun = (new settings(this).checkFirstRun(startUp));
         if (firstRun)
             startUp.show();
