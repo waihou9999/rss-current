@@ -218,17 +218,15 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
                                 @Override
                                 public void onSuccess(@Nullable String languageCode) {
                                     //System.out.println("languageCode: " + languageCode);
-                                    switch (languageCode){
-                                        case "ms":
-                                        case "id":
-                                            tts.setLanguage(new Locale("id","ID")); break;
-                                        case "zh": tts.setLanguage(Locale.CHINESE); break;
-                                        case "en":
-                                        default: tts.setLanguage(Locale.ENGLISH); break;
+                                    if (languageCode.equals("en")) {
+                                        tts.setLanguage(Locale.ENGLISH);
+                                    } else if (languageCode.equals("ms") || languageCode.equals("id")) {
+                                        tts.setLanguage(new Locale("id","ID"));
+                                    } else if (languageCode.equals("zh")) {
+                                        tts.setLanguage(Locale.CHINESE);
+                                    } else {
+                                        Log.e("error", "This language is not supported");
                                     }
-
-
-
                                 }
                             })
                             .addOnFailureListener(
