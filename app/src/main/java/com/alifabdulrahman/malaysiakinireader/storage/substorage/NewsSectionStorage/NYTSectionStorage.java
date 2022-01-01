@@ -1,4 +1,4 @@
-package com.alifabdulrahman.malaysiakinireader.storage.substorage;
+package com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage;
 
 import android.content.Context;
 
@@ -10,13 +10,12 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class newsSectionStorage extends storage {
-    private final String storageName = "newsSectionStorage";
-    private final String storageName2 = "NewYorkTimeStorage";
+public class NYTSectionStorage extends storage{
+    private final String storageName = "NYTSectionStorage";
     private ArrayList<NewsSectionData> newsSection2;
     private final String newsSectionType = "newsSectionType";
 
-    public newsSectionStorage(Context context) {
+    public NYTSectionStorage(Context context) {
         super(context);
         this.sp = context.getSharedPreferences(storageName, Context.MODE_PRIVATE);
         this.editor = sp.edit();
@@ -65,7 +64,4 @@ public class newsSectionStorage extends storage {
     public String getNewsSectionType(){
         return sp.getString("sectionType", "");
     }
-
 }
-
-

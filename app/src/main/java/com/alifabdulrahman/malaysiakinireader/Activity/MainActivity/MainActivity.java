@@ -24,17 +24,11 @@ import java.util.ArrayList;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.sectionManager;
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.model.NewsSource;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
-import com.alifabdulrahman.malaysiakinireader.storage.storage;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.newsSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.settings;
-import com.google.android.gms.common.util.ScopeUtil;
 
 
 public class MainActivity extends AppCompatActivity implements Serializable {
@@ -62,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             @Override
             public void run() {
-                newsSources.add(new NewsSource("Enter", ""));
+                newsSources.add(new NewsSource("Malaysia Kini", ""));
+                newsSources.add(new NewsSource("New York Times", ""));
                 newsSources.add(new NewsSource("Help", ""));
                 newsSources.add(new NewsSource("About", ""));
 
@@ -145,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         currentArticle currentArticle = new currentArticle(this);
 
         if (currentArticle.loadReading()){
-            Intent intent = new Intent(MainActivity.this, NewsSectionActivity.class);
+            Intent intent = new Intent(MainActivity.this, MKSection.class);
             startActivity(intent);
         }
     }

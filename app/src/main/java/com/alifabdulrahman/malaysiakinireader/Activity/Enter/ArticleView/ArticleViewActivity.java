@@ -16,7 +16,6 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,7 +25,7 @@ import android.widget.Toast;
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.newsSectionStorage;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.settings;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,15 +33,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentification;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.lang.reflect.Type;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,7 +63,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
     int starbigon_ = android.R.drawable.ic_media_pause;
     boolean startTTS = false;
     private NewsStorage newsStorage;
-    private newsSectionStorage newsSectionStorage;
+    private MKSectionStorage newsSectionStorage;
     private settings settings;
     private currentArticle currentArticle;
 
@@ -111,7 +107,7 @@ public class ArticleViewActivity extends AppCompatActivity implements View.OnCli
         //Get the url to display an set up webview
         url = currentArticle.loadData();
 
-        newsSectionStorage = new newsSectionStorage(this);
+        newsSectionStorage = new MKSectionStorage(this);
         newsType = newsSectionStorage.getNewsSectionType();
 
         settings = new settings(this);

@@ -1,13 +1,11 @@
-package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList;
+package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
@@ -23,42 +21,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView.ArticleViewActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.adapter.ArticleListAdapter;
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.model.sorting;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.newsSectionStorage;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.settings;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentRSS;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
-public class ArticleListingActivity extends AppCompatActivity implements Serializable {
+public class MKListingActivity extends AppCompatActivity implements Serializable {
 
     private ArrayList<ArticleData> articleDatas = new ArrayList<>(); // current
     private ArrayList<ArticleData> articleDatas2 = new ArrayList<>(); // stores all read articles, only clears when reset
@@ -69,7 +56,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
     private ArticleListAdapter articleListAdapter;
     private SwipeRefreshLayout pullToRefresh;
     private boolean newContentAvailable;
-    private newsSectionStorage newsSectionStorage;
+    private MKSectionStorage newsSectionStorage;
     private NewsStorage newsStorage;
     private sorting sorting;
     private settings settings;
@@ -83,7 +70,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
         setContentView(R.layout.activity_news_listing);
 
         //readContentAvailable = false;
-        newsSectionStorage = new newsSectionStorage(this);
+        newsSectionStorage = new MKSectionStorage(this);
 
         newsType = newsSectionStorage.getNewsSectionType();
         newsSectionURL = newsSectionStorage.getSectionURL();
@@ -122,7 +109,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             articleDatas = new ArrayList<>();
 
         if (articleDatas.isEmpty())
-            new GetContents(ArticleListingActivity.this).execute();
+            new GetContents(MKListingActivity.this).execute();
 
         newsStorage.loadData();
         articleDatas = newsStorage.loadArt1();
@@ -135,13 +122,13 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                currentArticle = new currentArticle(ArticleListingActivity.this);
+                currentArticle = new currentArticle(MKListingActivity.this);
                 String link = articleDatas.get(i).getLink();
                 currentArticle.saveReading(true);
                 currentArticle.saveData(link);
 
 
-                Intent toView = new Intent(ArticleListingActivity.this, ArticleViewActivity.class);
+                Intent toView = new Intent(MKListingActivity.this, ArticleViewActivity.class);
 
                 articleDatas.get(i).setReadNews(true);
 
@@ -159,7 +146,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
         finish();
         super.onBackPressed();
 
-        Intent toSection = new Intent(ArticleListingActivity.this, NewsSectionActivity.class);
+        Intent toSection = new Intent(MKListingActivity.this, MKSection.class);
         startActivity(toSection);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
@@ -169,7 +156,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
 
         //Create progress dialog when getting contents and prevent user from doing anything else.
         private ProgressDialog dialog;
-        public GetContents(ArticleListingActivity thisActivity){
+        public GetContents(MKListingActivity thisActivity){
             dialog = new ProgressDialog(thisActivity);
             dialog.setCancelable(true);
         }
@@ -476,9 +463,9 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
         protected void onPostExecute(ArrayList<String> dummy) {
 
             if (newContentAvailable) {
-                new GetContents(ArticleListingActivity.this).execute();
+                new GetContents(MKListingActivity.this).execute();
             } else {
-                Toast.makeText(ArticleListingActivity.this, "No new contents available", Toast.LENGTH_LONG).show();
+                Toast.makeText(MKListingActivity.this, "No new contents available", Toast.LENGTH_LONG).show();
             }
 
             //checkReadStuff();
@@ -608,7 +595,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
                     articleDatas = new ArrayList<>();
 
                 if(articleDatas.isEmpty()) {
-                    new GetContents(ArticleListingActivity.this).execute();
+                    new GetContents(MKListingActivity.this).execute();
                 }
 
                 if (!articleDatas.isEmpty()){
@@ -622,7 +609,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             case R.id.reset:
                 articleDatas.clear();
                 articleListAdapter.clear();
-                Toast.makeText(ArticleListingActivity.this, "Article list cleared. Refreshing...", Toast.LENGTH_LONG).show();
+                Toast.makeText(MKListingActivity.this, "Article list cleared. Refreshing...", Toast.LENGTH_LONG).show();
                 articleDatas2 = new ArrayList<>();
                 new GetContents(this).execute();
                 return true;
@@ -678,7 +665,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
             articleDatas = new ArrayList<>();
 
         if(articleDatas.isEmpty()) {
-            new GetContents(ArticleListingActivity.this).execute();
+            new GetContents(MKListingActivity.this).execute();
         }
 
 
@@ -700,7 +687,7 @@ public class ArticleListingActivity extends AppCompatActivity implements Seriali
         currentArticle currentArticle = new currentArticle(this);
 
         if (currentArticle.loadReading()){
-            Intent intent = new Intent(ArticleListingActivity.this, ArticleViewActivity.class);
+            Intent intent = new Intent(MKListingActivity.this, ArticleViewActivity.class);
             startActivity(intent);
         }
     }

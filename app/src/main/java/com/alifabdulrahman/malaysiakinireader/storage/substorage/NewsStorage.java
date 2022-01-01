@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
-import com.alifabdulrahman.malaysiakinireader.model.NewsSectionData;
 import com.alifabdulrahman.malaysiakinireader.storage.storage;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.alifabdulrahman.malaysiakinireader.model.sorting;
@@ -23,7 +23,7 @@ public class NewsStorage extends storage {
     private String newsType;
     private String newsType2 = "a";
     private settings settings = new settings(context);
-    private newsSectionStorage newsSectionStorage = new newsSectionStorage(context);
+    private MKSectionStorage newsSectionStorage = new MKSectionStorage(context);
     private boolean orderLatest;
     private sorting sorting;
 
@@ -33,7 +33,6 @@ public class NewsStorage extends storage {
         this.editor = sp.edit();
         this.newsType = newsType;
     }
-
 
     public boolean isOrderLatest() {
         return orderLatest;

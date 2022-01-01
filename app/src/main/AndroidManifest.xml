@@ -18,11 +18,13 @@
         android:usesCleartextTraffic="true">
 
 
-        <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection" android:screenOrientation="portrait"/>
+        <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.NYTSection" android:screenOrientation="portrait"/>
         <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Help.NewsSectionActivity1" android:screenOrientation="portrait"/>
         <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.About.NewsSectionActivity2" android:screenOrientation="portrait"/>
         <activity android:name=".Activity.Enter.ArticleView.ArticleViewActivity" android:screenOrientation="portrait" />
-        <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.ArticleListingActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini.MKListingActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.NewYorkTimes.NYTListingActivity" android:screenOrientation="portrait"/>
         <activity android:name="com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.alifabdulrahman.malaysiakinireader.Activity.Enter;
+package com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,24 +18,24 @@ import android.widget.ListView;
 
 import android.widget.TextView;
 
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.ArticleListingActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini.MKListingActivity;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.MainActivity;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.sectionManager;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.model.NewsSectionData;
+import com.alifabdulrahman.malaysiakinireader.model.NewsSource;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.newsSectionStorage;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class NewsSectionActivity extends AppCompatActivity implements Serializable {
+public class MKSection extends AppCompatActivity implements Serializable {
     private ArrayList<NewsSectionData> newsSection = new ArrayList<>();
     private ArrayList<NewsSectionData> newsSection2 = new ArrayList<>();
     //private NewsSectionAdapter newsSectionAdapter;
-    private newsSectionStorage newsSectionStorage;
+    private MKSectionStorage newsSectionStorage;
+    private NewsSource MK;
     private sectionManager sectionManager = new sectionManager(this);
 
     @Override
@@ -43,9 +43,10 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_section);
         //newsSectionAdapter = new NewsSectionAdapter(this, newsSection2);
+        MK = new NewsSource("MalaysiaKini", "https://malaysiakini.com");
         initializeDefaults();
 
-        newsSectionStorage = new newsSectionStorage(this);
+        newsSectionStorage = new MKSectionStorage(this);
 
         newsSection2 = newsSectionStorage.loadData();
         newsSectionStorage.loadReading();
@@ -98,7 +99,7 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String url = adapter.getItem(position).getSectionLink();
                 String newsType = adapter.getItem(position).getSectionName();
-                Intent toNewsListing = new Intent(NewsSectionActivity.this, ArticleListingActivity.class);
+                Intent toNewsListing = new Intent(MKSection.this, MKListingActivity.class);
                 startActivity(toNewsListing);
                 newsSectionStorage.saveReading(url, newsType, true);
                 newsSectionStorage.saveData();
@@ -113,23 +114,22 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
     EditText txt2;
 
     public void initializeDefaults() {
-        newsSection.add(new NewsSectionData("MalaysiaKini News (English)", "https://www.malaysiakini.com/rss/en/news.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini Opinions (English)", "https://www.malaysiakini.com/rss/en/columns.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini Letters (English)", "https://www.malaysiakini.com/rss/en/letters.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini News (Bahasa Malaysia)", "https://www.malaysiakini.com/rss/my/news.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini Opinions (Bahasa Malaysia)", "https://www.malaysiakini.com/rss/my/columns.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini Letters (Bahasa Malaysia)", "https://www.malaysiakini.com/rss/my/letters.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini News (Chinese)", "https://www.malaysiakini.com/rss/zh/news.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini Opinions (Chinese)", "https://www.malaysiakini.com/rss/zh/columns.rss"));
-        newsSection.add(new NewsSectionData("MalaysiaKini Letters (Chinese)", "https://www.malaysiakini.com/rss/zh/letters.rss"));
-        //newsSection2.add(new NewsSectionData("MalaysiaKini News (English)", "https://www.malaysiakini.com/rss/en/news.rss"));
+        newsSection.add(new NewsSectionData(MK,"News (English)", "https://www.malaysiakini.com/rss/en/news.rss"));
+        newsSection.add(new NewsSectionData(MK,"Opinions (English)", "https://www.malaysiakini.com/rss/en/columns.rss"));
+        newsSection.add(new NewsSectionData(MK, "Letters (English)", "https://www.malaysiakini.com/rss/en/letters.rss"));
+        newsSection.add(new NewsSectionData(MK, "News (Bahasa Malaysia)", "https://www.malaysiakini.com/rss/my/news.rss"));
+        newsSection.add(new NewsSectionData(MK,"Opinions (Bahasa Malaysia)", "https://www.malaysiakini.com/rss/my/columns.rss"));
+        newsSection.add(new NewsSectionData(MK,"Letters (Bahasa Malaysia)", "https://www.malaysiakini.com/rss/my/letters.rss"));
+        newsSection.add(new NewsSectionData(MK,"News (Chinese)", "https://www.malaysiakini.com/rss/zh/news.rss"));
+        newsSection.add(new NewsSectionData(MK,"Opinions (Chinese)", "https://www.malaysiakini.com/rss/zh/columns.rss"));
+        newsSection.add(new NewsSectionData(MK,"Letters (Chinese)", "https://www.malaysiakini.com/rss/zh/letters.rss"));
     }
 
     public void toAdd(View view){
         //System.out.println(newsSection.size());
         AlertDialog.Builder addNewsSourceAlert = new AlertDialog.Builder(this);
-        final EditText editLabel = new EditText(NewsSectionActivity.this);
-        final EditText editURL = new EditText(NewsSectionActivity.this);
+        final EditText editLabel = new EditText(MKSection.this);
+        final EditText editURL = new EditText(MKSection.this);
         editLabel.setHint("Label");
         editLabel.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         editLabel.setSingleLine();
@@ -205,8 +205,8 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
         String getInput1 = txt1.getText().toString();
         String getInput2 = txt2.getText().toString();
         if (!(getInput1 == null || getInput1.trim().equals("") || getInput2 == null || getInput2.trim().equals(""))) {
-            newsSection2.add(new NewsSectionData(getInput1, getInput2));
-            newsSection.add(new NewsSectionData(getInput1, getInput2));
+            newsSection2.add(new NewsSectionData(MK, getInput1, getInput2));
+            newsSection.add(new NewsSectionData(MK, getInput1, getInput2));
         }
         //newsSection.add(new NewsSectionData("MalaysiaKini News (English)", "https://www.malaysiakini.com/rss/en/news.rss"));
         //System.out.println(newsSection2 == null);
@@ -231,7 +231,7 @@ public class NewsSectionActivity extends AppCompatActivity implements Serializab
         currentArticle currentArticle = new currentArticle(this);
 
         if (currentArticle.loadReading()){
-            Intent intent = new Intent(NewsSectionActivity.this, ArticleListingActivity.class);
+            Intent intent = new Intent(MKSection.this, MKListingActivity.class);
             startActivity(intent);
         }
     }
