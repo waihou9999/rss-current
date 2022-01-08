@@ -26,9 +26,13 @@ public class MKScraper {
 
     //Get the HTML loaded from webview and scrap it to get the article contents
 
-    public MKScraper(Context ctx, WebView webView) {
+    public MKScraper(Context ctx, ArrayList<ArticleData> articleDatas, WebView webView, NewsStorage newsStorage, MKSectionStorage newsSectionStorage, String newsType) {
         this.ctx = ctx;
+        this.articleDatas = articleDatas;
         this.webView = webView;
+        this.newsStorage = newsStorage;
+        this.newsSectionStorage = newsSectionStorage;
+        this.newsType = newsType;
     }
 
     @JavascriptInterface
@@ -72,10 +76,14 @@ public class MKScraper {
 
     }
 
-    public class GetHTML {
+    public static class GetHTML {
         private Context ctx;
         private int index;
         private com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle currentArticle;
+        private ArrayList<ArticleData> articleDatas;
+        private MKSectionStorage newsSectionStorage;
+        private NewsStorage newsStorage;
+        private String newsType;
 
         public GetHTML(Context ctx) {
             this.ctx = ctx;

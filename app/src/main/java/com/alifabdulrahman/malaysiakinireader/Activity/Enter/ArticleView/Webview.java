@@ -46,8 +46,8 @@ public class Webview {
     }
 
     @SuppressLint("JavascriptInterface")
-    public void loadWebView(){
-        MKScraper = new MKScraper(context, mWebView);
+    void loadWebView(){
+        mWebView.addJavascriptInterface(new MKScraper.GetHTML(context), "Scrap");
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){
@@ -64,11 +64,18 @@ public class Webview {
 
                 mWebView.loadUrl("javascript:window.Scrap.getHTML" +
                         "(document.getElementsByTagName('html')[0].outerHTML);");
+                System.out.println("fk3");
+
+
+                //String cookies = CookieManager.getInstance().getCookie(url);
+                //System.out.println( "All the cookies in a string:" + cookies);
             }
         });
-        MKScraper.scrap();
-        mWebView.loadUrl(url);
 
+        //first load
+        //System.out.println("beforewebload");
+        mWebView.loadUrl(url);
+        //System.out.println("afterwebload");
     }
 
 
