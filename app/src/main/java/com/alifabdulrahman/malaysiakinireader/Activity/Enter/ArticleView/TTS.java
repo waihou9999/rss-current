@@ -53,6 +53,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
 
 
 
+
                                 System.out.println("fk" + sentences.get(readIndex));
                                 speakSentences(sentences.get(readIndex));
                             }

@@ -35,35 +35,7 @@ public class MKScraper {
         this.newsType = newsType;
     }
 
-    @JavascriptInterface
-    public Object getHTML(String html) {
-        Document doc = Jsoup.parse(html);
 
-        ArrayList<String> tempList = new ArrayList<>();
-        tempList.clear();
-
-        Elements classContents = doc.select("div[id $= full-content-container]");
-
-        Elements contents = classContents.select("p, li");
-
-
-        if (classContents == null || classContents.isEmpty()) {
-            classContents = doc.select("div[id $= __next]");
-            contents = classContents.select("p, li");
-        }
-
-
-        for (Element content : contents) {
-
-            if (!(content.text().equals(""))) {
-
-                if (!tempList.contains(content.text()))
-                    tempList.add(content.text());
-            }
-        }
-
-        return null;
-    }
 
 
     public void scrap() {

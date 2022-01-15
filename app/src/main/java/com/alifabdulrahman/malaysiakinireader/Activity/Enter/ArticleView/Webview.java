@@ -3,6 +3,7 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -12,6 +13,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Webview {
@@ -32,6 +39,7 @@ public class Webview {
         currentArticle = new currentArticle(context);
         url = currentArticle.loadData();
 
+
         mWebView.getSettings().setJavaScriptEnabled(true);
         loadWebView();
 
@@ -46,8 +54,8 @@ public class Webview {
     }
 
     @SuppressLint("JavascriptInterface")
-    void loadWebView(){
-        mWebView.addJavascriptInterface(new MKScraper.GetHTML(context), "Scrap");
+    public void loadWebView(){
+        mWebView.addJavascriptInterface(new GetHTML(context), "Scrap");
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){
@@ -64,9 +72,6 @@ public class Webview {
 
                 mWebView.loadUrl("javascript:window.Scrap.getHTML" +
                         "(document.getElementsByTagName('html')[0].outerHTML);");
-
-
-
 
                 //String cookies = CookieManager.getInstance().getCookie(url);
                 //System.out.println( "All the cookies in a string:" + cookies);
@@ -89,5 +94,38 @@ public class Webview {
     }
 
 
+    public class GetHTML {
+        private Context ctx;
 
+        public GetHTML(Context ctx) {
+            this.ctx = ctx;
+        }
+
+        @JavascriptInterface
+        public void getHTML(String html) {
+            Document doc = Jsoup.parse(html);
+
+            ArrayList<String> tempList = new ArrayList<>();
+            tempList.clear();
+
+            Elements classContents = doc.select("div[id $= full-content-container]");
+
+            Elements contents = classContents.select("p, li");
+
+
+            if (classContents == null || classContents.isEmpty()) {
+                classContents = doc.select("div[id $= __next]");
+                contents = classContents.select("p, li");
+            }
+
+            for (Element content : contents) {
+
+                if (!(content.text().equals(""))) {
+
+                    if (!tempList.contains(content.text()))
+                        tempList.add(content.text());
+                }
+            }
+        }
+    }
 }

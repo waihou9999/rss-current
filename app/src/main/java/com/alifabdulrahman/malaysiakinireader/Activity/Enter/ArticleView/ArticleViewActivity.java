@@ -61,7 +61,6 @@ public class ArticleViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        wb.reloadWebView();
 
 
     }

@@ -386,6 +386,8 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
             }
 
 
+
+
             String listString = String.join(", ", currentLink);
             currentRSS.saveData(listString);
 
