@@ -12,12 +12,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
+import com.example.myappname.TinyDB;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -29,8 +29,8 @@ public class Webview {
     private Context context;
     private String url;
     private SwipeRefreshLayout pullToRefresh;
-    private MKScraper MKScraper;
     private ArrayList<String> sentences;
+    private com.example.myappname.TinyDB tinyDB;
 
     public Webview(Activity activity, Context context) {
         mWebView = activity.findViewById(R.id.webview);
@@ -38,6 +38,7 @@ public class Webview {
         this.context = context;
         currentArticle = new currentArticle(context);
         url = currentArticle.loadData();
+        tinyDB = new TinyDB(context);
 
 
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -96,9 +97,12 @@ public class Webview {
 
     public class GetHTML {
         private Context ctx;
+        private com.example.myappname.TinyDB tinyDB;
+
 
         public GetHTML(Context ctx) {
             this.ctx = ctx;
+            tinyDB = new TinyDB(context);
         }
 
         @JavascriptInterface
@@ -125,7 +129,11 @@ public class Webview {
                     if (!tempList.contains(content.text()))
                         tempList.add(content.text());
                 }
+
+                tinyDB = new TinyDB(context);
+                tinyDB.putListString("MyContent", tempList);
             }
+
         }
     }
 }

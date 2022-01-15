@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
+import com.example.myappname.TinyDB;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
@@ -26,16 +27,21 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private int readIndex = 0;
     private Context context;
     private ArticleData articleDatas;
+    private com.example.myappname.TinyDB tinyDB;
 
 
     public TTS(Context context, ArticleData articleDatas){
         this.context = context;
+        tinyDB = new TinyDB(context);
         //Initialize the Text to Speech
         this.articleDatas = articleDatas;
+        System.out.println("fk" + articleDatas);
+        ArrayList<String>text = tinyDB.getListString("MyText");
+        System.out.println("fk1" + text);
             tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
-                    ArrayList<String>sentences = articleDatas.getContent();
+                    ArrayList<String>sentences = text;
                     if(status == TextToSpeech.SUCCESS){
                         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                             @Override

@@ -1,7 +1,10 @@
 package com.alifabdulrahman.malaysiakinireader.model;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,9 +66,10 @@ public class ArticleData implements Parcelable {
 
     public String getAuthor() { return author; }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public String toString(){
-        return this.getTitle() + this.readNews;
+        return String.join(", ", contentSentence);
     }
 
     @Override

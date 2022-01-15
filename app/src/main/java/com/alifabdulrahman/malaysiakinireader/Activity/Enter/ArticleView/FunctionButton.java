@@ -91,6 +91,8 @@ public class FunctionButton implements View.OnClickListener{
                     break;
 
                 case R.id.rescrapebutton:
+                    webview.reloadWebView();
+
 
 
                 case R.id.nxtarcbtn:

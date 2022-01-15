@@ -208,12 +208,124 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
             first.
              */
             ArrayList<String> tempURL = new ArrayList<>();
+            String altPubDateStr = "1970-01-01 00:00:00+00:00";
+
+            Document localDoc = null;
+            for(int i = 0; i < newArticles.size(); i++){
+                try{
+                    localDoc = Jsoup.connect(newArticles.get(i).getLink()).get();
+                } catch (Exception e)
+                {
+                    Log.d("Error", e.getMessage());
+                }
+
+                //System.out.println("Local doc: " + localDoc);
+                //Get authors
+                Elements author = localDoc.select("meta[property='article:author']");
+                String tempAuthor = author.attr("content");
+
+                if(tempAuthor.equals(""))
+                    tempAuthor = "-";
+
+                newArticles.get(i).setAuthor(tempAuthor);
 
 
+                //Get all <p> from HTML
+                Elements contentContainer = localDoc.select("div[id $= full-content-container]");
 
 
+                //Elements contentContainer = localDoc.select("script[id$=__NEXT_DATA__]");
+
+                Elements docContents = contentContainer.select("p");
+                //System.out.println(docContents);
+
+                if (contentContainer == null || contentContainer.isEmpty()){
+                    contentContainer = localDoc.select("div[id $= __next]");
+                    docContents = contentContainer.select("p");
+                    //System.out.println(docContents);
+                }
+
+                //Create temporary array to hold the contents
+                ArrayList<String> tempList = new ArrayList<>();
+                tempList.clear();
+
+                //if author name is unique, add to the contents to be read
+                if(tempAuthor.equals("-") || tempAuthor.equals("Bernama") || tempAuthor.equals("Reuters")){
+                    tempList.add(newArticles.get(i).getTitle());
+                }
+                else{
+                    tempList.add(newArticles.get(i).getTitle() + ". By " + tempAuthor);
+                }
+
+                //add the temporary array into the articledata only if they're not empty
+                for(Element e : docContents){
+                    if(!(e.text().equals(""))){
+                        if (!tempList.contains(e.text()))
+                            tempList.add(e.text());
+                    }
+                }
+
+                //Pass the temporary array into the articleData
+                newArticles.get(i).setContent(tempList);
+
+                //Check if article is paid or free
+                Elements metas = localDoc.select("meta[name='mk:free']");
+                String checkStr = metas.attr("content");
+
+                newArticles.get(i).setPaidNews(!checkStr.equals("true"));
+
+                //Add published date and time
+                Elements metaPubDate = localDoc.select("meta[property='article:published_time']");
+                String pubDateStr = metaPubDate.attr("content");
+                int year = 1970, month = 1, day = 1, hourOfDay = 0, minute = 0, second = 0;
+                if (pubDateStr.length() > 0) {
+                    year = Integer.parseInt(pubDateStr.substring(0, 4));
+                    month = Integer.parseInt(pubDateStr.substring(5, 7)) - 1;
+                    day = Integer.parseInt(pubDateStr.substring(8, 10));
+                    hourOfDay = Integer.parseInt(pubDateStr.substring(11, 13));
+                    minute = Integer.parseInt(pubDateStr.substring(14, 16));
+                    second = Integer.parseInt(pubDateStr.substring(17, 19));
+                    altPubDateStr = pubDateStr;
+                } else {
+                    pubDateStr = altPubDateStr;
+                }
+
+                //System.out.println((i+1) + ": " + pubDateStr);
+
+                Calendar c = Calendar.getInstance();
+                c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+                c.set(year, month, day, hourOfDay, minute, second);
+                Date pubDate = c.getTime();
+
+                newArticles.get(i).setPublishDate(pubDate);
 
 
+                //Add modifed date and time
+                Elements metaModDate = localDoc.select("meta[property='article:published_time']");
+                String modDateStr = metaModDate.attr("content");
+
+                int modYear = Integer.parseInt(pubDateStr.substring(0, 4));
+                int modMonth = Integer.parseInt(pubDateStr.substring(5, 7))-1;
+                int modDay = Integer.parseInt(pubDateStr.substring(8, 10));
+                int modHourOfDay = Integer.parseInt(pubDateStr.substring(11, 13));
+                int modMinute = Integer.parseInt(pubDateStr.substring(14, 16));
+                int modSecond = Integer.parseInt(pubDateStr.substring(17, 19));
+
+                c.set(modYear, modMonth, modDay, modHourOfDay, modMinute, modSecond);
+                Date modDate = c.getTime();
+
+                SimpleDateFormat sf =
+                        new SimpleDateFormat("E dd.MM.yyyy '|' hh:mm");
+
+                String pDate = sf.format(pubDate);
+                String mDate = sf.format(modDate);
+
+
+                //Get which links in the newly fetched contents was updated
+                if(!(pDate.equals(mDate))){
+                    tempURL.add(newArticles.get(i).getLink());
+                }
+            }
 
 
             //First launch or clear data
@@ -384,6 +496,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
             } catch (Exception e) {
                 Log.d("JSOUPERROR: ", e.getMessage());
             }
+
 
 
 
