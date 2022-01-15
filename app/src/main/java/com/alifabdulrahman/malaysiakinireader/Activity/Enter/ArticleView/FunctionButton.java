@@ -86,6 +86,7 @@ public class FunctionButton implements View.OnClickListener{
                         tts.play();
                     stopBtn.setImageResource(starbigoff_);
                     currentArticle.setTTS(false);
+
                     //saveData();
                     break;
 
@@ -94,7 +95,7 @@ public class FunctionButton implements View.OnClickListener{
 
                 case R.id.nxtarcbtn:
                     url = articleDatas.get(index+1).getLink();
-                    webview.reloadWebView(url);
+                    webview.reloadWebView();
                     break;
 
                 case R.id.prevarcbtn:
@@ -119,8 +120,7 @@ public class FunctionButton implements View.OnClickListener{
                     break;
         }
     }
-
-    }
+}
 
 
 

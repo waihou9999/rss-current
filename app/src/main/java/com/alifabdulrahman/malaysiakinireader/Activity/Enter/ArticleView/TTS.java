@@ -48,6 +48,11 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                             @Override
                             public void onDone(String utteranceId) {
                                 readIndex++;
+
+                                if (sentences.get(readIndex).contains("..."))
+
+
+
                                 System.out.println("fk" + sentences.get(readIndex));
                                 speakSentences(sentences.get(readIndex));
                             }

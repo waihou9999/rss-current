@@ -47,7 +47,6 @@ import java.util.Locale;
 public class ArticleViewActivity extends AppCompatActivity {
     private Webview wb;
     private FunctionButton fb;
-    private ArrayList<String>sentences;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +60,8 @@ public class ArticleViewActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        wb.reloadWebView();
 
 
     }

@@ -64,7 +64,8 @@ public class Webview {
 
                 mWebView.loadUrl("javascript:window.Scrap.getHTML" +
                         "(document.getElementsByTagName('html')[0].outerHTML);");
-                System.out.println("fk3");
+
+
 
 
                 //String cookies = CookieManager.getInstance().getCookie(url);
@@ -72,14 +73,11 @@ public class Webview {
             }
         });
 
-        //first load
-        //System.out.println("beforewebload");
         mWebView.loadUrl(url);
-        //System.out.println("afterwebload");
     }
 
 
-    public void reloadWebView(String url) {
+    public void reloadWebView() {
 
         try {
             Thread.sleep(timex);
