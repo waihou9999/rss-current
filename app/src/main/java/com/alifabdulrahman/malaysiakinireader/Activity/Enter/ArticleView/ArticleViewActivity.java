@@ -53,7 +53,6 @@ public class ArticleViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_view);
 
         wb = new Webview(ArticleViewActivity.this, this);
-        wb.loadWebView();
 
         try {
             fb = new FunctionButton(ArticleViewActivity.this, this, wb);

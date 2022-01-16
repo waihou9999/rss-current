@@ -14,6 +14,7 @@ import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
+import com.example.myappname.TinyDB;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,8 @@ public class FunctionButton implements View.OnClickListener{
     private ArrayList<ArticleData> articleDatas;
     private String url;
     private int index;
+    private ArrayList<String>text;
+    private com.example.myappname.TinyDB tinyDB;
 
     public FunctionButton(Activity activity, Context context, Webview webview) throws InterruptedException {
         this.activity = activity;
@@ -55,8 +58,13 @@ public class FunctionButton implements View.OnClickListener{
         articleDatas = newsStorage.loadArt1();
         startTTS = currentArticle.startTSS();
         index = currentArticle.loadIndex();
-        ArticleData a = articleDatas.get(index);
-        tts = new TTS(context, a);
+
+
+        tinyDB = new TinyDB(context);
+        text = tinyDB.getListString("MyContent");
+
+
+        tts = new TTS(context, articleDatas.get(index), text);
 
         if (startTTS)
             stopBtn.setImageResource(starbigon_);
@@ -91,13 +99,20 @@ public class FunctionButton implements View.OnClickListener{
                     break;
 
                 case R.id.rescrapebutton:
-                    webview.reloadWebView();
-
+                    try {
+                        webview.reloadWebView();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
 
                 case R.id.nxtarcbtn:
                     url = articleDatas.get(index+1).getLink();
-                    webview.reloadWebView();
+                    try {
+                        webview.reloadWebView();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case R.id.prevarcbtn:

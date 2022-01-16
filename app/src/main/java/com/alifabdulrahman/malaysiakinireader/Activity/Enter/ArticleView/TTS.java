@@ -27,17 +27,14 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private int readIndex = 0;
     private Context context;
     private ArticleData articleDatas;
-    private com.example.myappname.TinyDB tinyDB;
+    private ArrayList<String>text;
 
 
-    public TTS(Context context, ArticleData articleDatas){
+    public TTS(Context context, ArticleData articleDatas, ArrayList<String>text){
         this.context = context;
-        tinyDB = new TinyDB(context);
         //Initialize the Text to Speech
         this.articleDatas = articleDatas;
-        System.out.println("fk" + articleDatas);
-        ArrayList<String>text = tinyDB.getListString("MyText");
-        System.out.println("fk1" + text);
+        this.text = text;
             tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
@@ -54,11 +51,6 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                             @Override
                             public void onDone(String utteranceId) {
                                 readIndex++;
-
-                                if (sentences.get(readIndex).contains("..."))
-
-
-
 
                                 System.out.println("fk" + sentences.get(readIndex));
                                 speakSentences(sentences.get(readIndex));

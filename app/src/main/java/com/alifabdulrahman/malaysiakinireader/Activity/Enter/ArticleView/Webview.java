@@ -3,11 +3,15 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
+import androidx.annotation.RequiresApi;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.R;
@@ -31,6 +35,8 @@ public class Webview {
     private SwipeRefreshLayout pullToRefresh;
     private ArrayList<String> sentences;
     private com.example.myappname.TinyDB tinyDB;
+    private ArrayList<String>tempList;
+    private boolean finished;
 
     public Webview(Activity activity, Context context) {
         mWebView = activity.findViewById(R.id.webview);
@@ -39,7 +45,7 @@ public class Webview {
         currentArticle = new currentArticle(context);
         url = currentArticle.loadData();
         tinyDB = new TinyDB(context);
-
+        finished = false;
 
         mWebView.getSettings().setJavaScriptEnabled(true);
         loadWebView();
@@ -48,7 +54,11 @@ public class Webview {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mWebView.loadUrl(url);
+                try {
+                    reloadWebView();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -71,8 +81,11 @@ public class Webview {
                     Thread.currentThread().interrupt();
                 }
 
-                mWebView.loadUrl("javascript:window.Scrap.getHTML" +
-                        "(document.getElementsByTagName('html')[0].outerHTML);");
+                try {
+                    scrap();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 //String cookies = CookieManager.getInstance().getCookie(url);
                 //System.out.println( "All the cookies in a string:" + cookies);
@@ -83,13 +96,18 @@ public class Webview {
     }
 
 
-    public void reloadWebView() {
+    public void reloadWebView() throws InterruptedException {
+        mWebView.loadUrl(url);
 
         try {
             Thread.sleep(timex);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }
+        scrap();
+    }
+
+    public void scrap() throws InterruptedException {
         mWebView.loadUrl("javascript:window.Scrap.getHTML" +
                 "(document.getElementsByTagName('html')[0].outerHTML);");
     }
@@ -109,13 +127,11 @@ public class Webview {
         public void getHTML(String html) {
             Document doc = Jsoup.parse(html);
 
-            ArrayList<String> tempList = new ArrayList<>();
             tempList.clear();
 
             Elements classContents = doc.select("div[id $= full-content-container]");
 
             Elements contents = classContents.select("p, li");
-
 
             if (classContents == null || classContents.isEmpty()) {
                 classContents = doc.select("div[id $= __next]");
@@ -129,11 +145,26 @@ public class Webview {
                     if (!tempList.contains(content.text()))
                         tempList.add(content.text());
                 }
-
-                tinyDB = new TinyDB(context);
-                tinyDB.putListString("MyContent", tempList);
             }
 
+            new saveText().execute();
+        }
+    }
+
+    public boolean getFinished(){
+        return finished;
+    }
+
+    public class saveText extends AsyncTask<String, Void, ArrayList<String>> {
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected ArrayList<String> doInBackground(String... params) {
+
+            tinyDB.putListString("MyContent", tempList);
+            System.out.println("fk10" + tempList);
+            return null;
         }
     }
 }
+
