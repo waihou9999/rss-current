@@ -151,10 +151,6 @@ public class Webview {
         }
     }
 
-    public boolean getFinished(){
-        return finished;
-    }
-
     public class saveText extends AsyncTask<String, Void, ArrayList<String>> {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -162,7 +158,6 @@ public class Webview {
         protected ArrayList<String> doInBackground(String... params) {
 
             tinyDB.putListString("MyContent", tempList);
-            System.out.println("fk10" + tempList);
             return null;
         }
     }

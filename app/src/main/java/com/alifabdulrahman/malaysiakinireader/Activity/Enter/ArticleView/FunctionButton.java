@@ -66,10 +66,6 @@ public class FunctionButton implements View.OnClickListener{
 
         tts = new TTS(context, articleDatas.get(index), text);
 
-        if (startTTS)
-            stopBtn.setImageResource(starbigon_);
-        else
-            stopBtn.setImageResource(starbigoff_);
 
         nextArc.setOnClickListener((View.OnClickListener) this);
         stopBtn.setOnClickListener((View.OnClickListener) this);
@@ -84,16 +80,17 @@ public class FunctionButton implements View.OnClickListener{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.stopbtn:
-                    if (currentArticle.startTSS()) {
-                        tts.stopPlay();
-                        stopBtn.setImageResource(starbigoff_);
-                        currentArticle.setTTS(false);
-                        //saveData();
-                        break;
-                    } else
-                        tts.play();
-                    stopBtn.setImageResource(starbigoff_);
-                    currentArticle.setTTS(false);
+                        if (tts.isSpeaking()) {
+                            tts.stopPlay();
+                            stopBtn.setImageResource(starbigoff_);
+                            currentArticle.setTTS(false);
+                            //saveData();
+                            break;
+                        }
+                     else
+                         tts.play();
+                         stopBtn.setImageResource(starbigon_);
+                         currentArticle.setTTS(false);
 
                     //saveData();
                     break;
@@ -136,6 +133,14 @@ public class FunctionButton implements View.OnClickListener{
                     activity.startActivity(Intent.createChooser(myIntent, "Share using"));
                     break;
         }
+    }
+
+    public void init(){
+
+    }
+
+    public void destroy() {
+            tts.destroy();
     }
 }
 

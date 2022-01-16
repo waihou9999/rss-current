@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
-import com.example.myappname.TinyDB;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
@@ -63,47 +61,9 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                         });
 
 
+                        identityLanguage();
                         //String langIDText = articleDatas.get(index).getContent().toString();
 
-                        String langIDText = articleDatas.getTitle();
-
-                        //Set the language of TTS
-                        FirebaseLanguageIdentification languageIdentifier = FirebaseNaturalLanguage.getInstance().getLanguageIdentification();
-                        languageIdentifier.identifyLanguage(langIDText).addOnSuccessListener(
-                                new OnSuccessListener<String>() {
-                                    @Override
-                                    public void onSuccess(@Nullable String languageCode) {
-                                        //System.out.println("languageCode: " + languageCode);
-                                        switch (languageCode) {
-                                            case "en": tts.setLanguage(Locale.ENGLISH);break;
-
-                                            case "ms":
-                                            case "id":
-                                                tts.setLanguage(new Locale("id", "ID")); break;
-
-                                            case "zh": tts.setLanguage(Locale.CHINESE); break;
-
-                                            default: tts.setLanguage(Locale.ENGLISH);break;
-                                        }
-                                    }
-                                })
-                                .addOnFailureListener(
-                                        new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // Model couldn’t be loaded or other internal error.
-                                                // ...
-                                            }
-                                        });
-                    /*
-                    //int result=tts.setLanguage(Locale.ENGLISH);
-                    //int result=tts.setLanguage(new Locale("id","ID"));
-                    //int result=tts.setLanguage(Locale.CHINESE);
-                    if(result==TextToSpeech.LANG_MISSING_DATA ||
-                            result==TextToSpeech.LANG_NOT_SUPPORTED){
-                        Log.e("error", "This language is not supported");
-                    }
-*/
                     }
                     else
                         Log.e("error", "TTS initialization failed!");
@@ -182,5 +142,46 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     public void previousSentence(){
         readIndex--;
         onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN);
+    }
+
+    public void identityLanguage(){
+        String langIDText = articleDatas.getTitle();
+
+        //Set the language of TTS
+        FirebaseLanguageIdentification languageIdentifier = FirebaseNaturalLanguage.getInstance().getLanguageIdentification();
+        languageIdentifier.identifyLanguage(langIDText).addOnSuccessListener(
+                new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(@Nullable String languageCode) {
+                        //System.out.println("languageCode: " + languageCode);
+                        switch (languageCode) {
+                            case "en": tts.setLanguage(Locale.ENGLISH);break;
+                            case "ms":
+                            case "id":
+                                tts.setLanguage(new Locale("id", "ID")); break;
+
+                            case "zh": tts.setLanguage(Locale.CHINESE); break;
+
+                            default: tts.setLanguage(Locale.ENGLISH);break;
+                        }
+                    }
+                })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Model couldn’t be loaded or other internal error.
+                                // ...
+                            }
+                        });
+    }
+
+
+    public void destroy() {
+        if(tts != null){
+            tts.stop();
+            tts.shutdown();
+        }
+        removeAudioFocus();
     }
 }

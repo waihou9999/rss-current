@@ -59,7 +59,22 @@ public class ArticleViewActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fb.destroy();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
 
     }
