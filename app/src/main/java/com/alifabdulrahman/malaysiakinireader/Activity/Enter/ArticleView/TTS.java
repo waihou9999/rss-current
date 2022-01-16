@@ -26,32 +26,51 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private Context context;
     private ArticleData articleDatas;
     private ArrayList<String>text;
+    private boolean done;
+    private boolean startTTS;
 
 
-    public TTS(Context context, ArticleData articleDatas, ArrayList<String>text){
+    public TTS(Context context, ArticleData articleDatas, ArrayList<String>text, boolean startTTS){
         this.context = context;
         //Initialize the Text to Speech
+        this.startTTS = startTTS;
+
         this.articleDatas = articleDatas;
         this.text = text;
+        System.out.println("hehe" + articleDatas);
+        System.out.println("hehe" + text);
+
+
+
             tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
+                    done = false;
+                    if (startTTS == false){
+                        tts.stop();
+                    }
                     ArrayList<String>sentences = text;
                     if(status == TextToSpeech.SUCCESS){
                         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                             @Override
                             public void onStart(String utteranceId) {
                                 Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
-                                speakSentences(sentences.get(readIndex));
+                                speakSentences(articleDatas.getTitle() + "by" + articleDatas.getAuthor());
                             }
 
                             //What to do after tts has done speaking the current text
                             @Override
                             public void onDone(String utteranceId) {
                                 readIndex++;
+                                if(readIndex < sentences.size() && !tts.isSpeaking()) {
+                                    speakSentences(sentences.get(readIndex));
+                                }
 
-                                System.out.println("fk" + sentences.get(readIndex));
-                                speakSentences(sentences.get(readIndex));
+                                else{
+                                    done = true;
+                                    return;
+                                }
+
                             }
 
                             @Override
@@ -60,9 +79,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                             }
                         });
 
-
                         identityLanguage();
-                        //String langIDText = articleDatas.get(index).getContent().toString();
 
                     }
                     else
@@ -127,6 +144,10 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public void stopPlay(){
+        if (tts != null && tts.isSpeaking()) {
+            tts.stop();
+        }
+        if (tts != null) tts.shutdown();
         removeAudioFocus();
     }
 
@@ -135,6 +156,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public void nextSentence(){
+        removeAudioFocus();
         readIndex++;
         onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN);
     }
@@ -183,5 +205,9 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
             tts.shutdown();
         }
         removeAudioFocus();
+    }
+
+    public boolean getDone(){
+        return done;
     }
 }

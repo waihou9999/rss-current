@@ -47,10 +47,13 @@ import java.util.Locale;
 public class ArticleViewActivity extends AppCompatActivity {
     private Webview wb;
     private FunctionButton fb;
+    private currentArticle currentArticle;
+    private TTS tts;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_view);
+        currentArticle = new currentArticle(this);
 
         wb = new Webview(ArticleViewActivity.this, this);
 
@@ -59,6 +62,8 @@ public class ArticleViewActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -69,13 +74,11 @@ public class ArticleViewActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onBackPressed() {
         finish();
+        currentArticle.saveReading(false);
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-
-
     }
 }

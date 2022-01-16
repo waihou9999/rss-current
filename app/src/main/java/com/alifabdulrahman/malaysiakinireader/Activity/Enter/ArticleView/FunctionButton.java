@@ -51,6 +51,7 @@ public class FunctionButton implements View.OnClickListener{
 
         this.context = context;
         currentArticle = new currentArticle(context);
+        startTTS = currentArticle.startTSS();
         newsSectionStorage = new MKSectionStorage(context);
         newsType = newsSectionStorage.getNewsSectionType();
         newsStorage = new NewsStorage(context, newsType);
@@ -63,8 +64,7 @@ public class FunctionButton implements View.OnClickListener{
         tinyDB = new TinyDB(context);
         text = tinyDB.getListString("MyContent");
 
-
-        tts = new TTS(context, articleDatas.get(index), text);
+        tts = new TTS(context, articleDatas.get(index), text, startTTS);
 
 
         nextArc.setOnClickListener((View.OnClickListener) this);
@@ -84,15 +84,26 @@ public class FunctionButton implements View.OnClickListener{
                             tts.stopPlay();
                             stopBtn.setImageResource(starbigoff_);
                             currentArticle.setTTS(false);
-                            //saveData();
                             break;
                         }
-                     else
-                         tts.play();
-                         stopBtn.setImageResource(starbigon_);
-                         currentArticle.setTTS(false);
+                        if(!tts.isSpeaking() ) {
+                            tts.play();
+                            stopBtn.setImageResource(starbigon_);
+                            currentArticle.setTTS(true);
+                        }
 
-                    //saveData();
+                        if (!tts.isSpeaking() && tts.getDone()){
+                            url = articleDatas.get(index+1).getLink();
+                            try {
+                                webview.reloadWebView();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+
+
+
                     break;
 
                 case R.id.rescrapebutton:
@@ -133,10 +144,6 @@ public class FunctionButton implements View.OnClickListener{
                     activity.startActivity(Intent.createChooser(myIntent, "Share using"));
                     break;
         }
-    }
-
-    public void init(){
-
     }
 
     public void destroy() {

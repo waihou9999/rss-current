@@ -33,22 +33,22 @@ public class Webview {
     private Context context;
     private String url;
     private SwipeRefreshLayout pullToRefresh;
-    private ArrayList<String> sentences;
     private com.example.myappname.TinyDB tinyDB;
     private ArrayList<String>tempList;
     private boolean finished;
 
     public Webview(Activity activity, Context context) {
+        tempList = new ArrayList<>();
         mWebView = activity.findViewById(R.id.webview);
         this.activity = activity;
         this.context = context;
         currentArticle = new currentArticle(context);
         url = currentArticle.loadData();
         tinyDB = new TinyDB(context);
-        finished = false;
 
         mWebView.getSettings().setJavaScriptEnabled(true);
-        loadWebView();
+        finished = false;
+        loadWebView(url);
 
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -65,7 +65,7 @@ public class Webview {
     }
 
     @SuppressLint("JavascriptInterface")
-    public void loadWebView(){
+    public void loadWebView(String url){
         mWebView.addJavascriptInterface(new GetHTML(context), "Scrap");
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
@@ -75,11 +75,6 @@ public class Webview {
 
             public void onPageFinished(WebView view, String url){
                 super.onPageFinished(view, url);
-                try {
-                    Thread.sleep(timex);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                }
 
                 try {
                     scrap();
@@ -110,6 +105,10 @@ public class Webview {
     public void scrap() throws InterruptedException {
         mWebView.loadUrl("javascript:window.Scrap.getHTML" +
                 "(document.getElementsByTagName('html')[0].outerHTML);");
+    }
+
+    public boolean getFinished() {
+        return finished;
     }
 
 
@@ -147,7 +146,7 @@ public class Webview {
                 }
             }
 
-            new saveText().execute();
+                new saveText().execute();
         }
     }
 
@@ -156,9 +155,19 @@ public class Webview {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected ArrayList<String> doInBackground(String... params) {
+            tinyDB.remove("MyContent");
+            tinyDB.putBoolean("finished", false);
+            System.out.println("plz saving");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            super.onPostExecute(strings);
 
             tinyDB.putListString("MyContent", tempList);
-            return null;
+            tinyDB.putBoolean("finished", true);
+            System.out.println("plz done saving");
         }
     }
 }
