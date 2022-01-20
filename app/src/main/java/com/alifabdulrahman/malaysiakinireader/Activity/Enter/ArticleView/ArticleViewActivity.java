@@ -45,40 +45,54 @@ import java.util.Comparator;
 import java.util.Locale;
 
 public class ArticleViewActivity extends AppCompatActivity {
+    private loader loader;
+    private saver saver;
     private Webview wb;
     private FunctionButton fb;
-    private currentArticle currentArticle;
     private TTS tts;
+    private int index;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_view);
-        currentArticle = new currentArticle(this);
 
-        wb = new Webview(ArticleViewActivity.this, this);
+        if (getIntent().getExtras() != null) {
+            index = getIntent().getExtras().getInt("index");
+        }
+
+        saver = new saver(ArticleViewActivity.this, this);
+        saver.saveIndex(index);
+
+        loader = new loader(ArticleViewActivity.this, this);
+
+
+        tts = new TTS(ArticleViewActivity.this, this);
+
+        wb = new Webview(ArticleViewActivity.this, this, tts);
 
         try {
-            fb = new FunctionButton(ArticleViewActivity.this, this, wb);
+            fb = new FunctionButton(ArticleViewActivity.this, this, wb, tts);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         fb.destroy();
-
     }
 
     @Override
     public void onBackPressed() {
         finish();
-        currentArticle.saveReading(false);
+        saver.noLastArt();
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

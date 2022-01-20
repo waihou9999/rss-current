@@ -19,27 +19,15 @@ import com.example.myappname.TinyDB;
 import java.util.ArrayList;
 
 public class FunctionButton implements View.OnClickListener{
-    private ImageButton pauseBtn, nextArc, prevArc, nextSent, prevSent, stopBtn, sharebutton, rescrapebutton;
-    private TTS tts;
+    private ImageButton nextArc, prevArc, nextSent, prevSent, stopBtn, sharebutton, rescrapebutton;
     private Activity activity;
-    private Context context;
-    private currentArticle currentArticle;
-    private boolean startTTS;
-    private Webview webview;
-    int starbigoff_ = android.R.drawable.ic_media_play;
-    int starbigon_ = android.R.drawable.ic_media_pause;
-    private NewsStorage newsStorage;
-    private MKSectionStorage newsSectionStorage;
-    private String newsType;
-    private ArrayList<ArticleData> articleDatas;
-    private String url;
-    private int index;
-    private ArrayList<String>text;
-    private com.example.myappname.TinyDB tinyDB;
+    int playImg = android.R.drawable.ic_media_play;
+    int pauseImg = android.R.drawable.ic_media_pause;
+    private controller controller;
+    private loader loader;
 
-    public FunctionButton(Activity activity, Context context, Webview webview) throws InterruptedException {
+    public FunctionButton(Activity activity, Context context, Webview wb, TTS tts) throws InterruptedException {
         this.activity = activity;
-        this.webview = webview;
 
         stopBtn = this.activity.findViewById(R.id.stopbtn);
         nextArc = this.activity.findViewById(R.id.nxtarcbtn);
@@ -49,24 +37,6 @@ public class FunctionButton implements View.OnClickListener{
         sharebutton = this.activity.findViewById(R.id.sharebutton);
         rescrapebutton = this.activity.findViewById(R.id.rescrapebutton);
 
-        this.context = context;
-        currentArticle = new currentArticle(context);
-        startTTS = currentArticle.startTSS();
-        newsSectionStorage = new MKSectionStorage(context);
-        newsType = newsSectionStorage.getNewsSectionType();
-        newsStorage = new NewsStorage(context, newsType);
-        newsStorage.loadData();
-        articleDatas = newsStorage.loadArt1();
-        startTTS = currentArticle.startTSS();
-        index = currentArticle.loadIndex();
-
-
-        tinyDB = new TinyDB(context);
-        text = tinyDB.getListString("MyContent");
-
-        tts = new TTS(context, articleDatas.get(index), text, startTTS);
-
-
         nextArc.setOnClickListener((View.OnClickListener) this);
         stopBtn.setOnClickListener((View.OnClickListener) this);
         prevArc.setOnClickListener((View.OnClickListener) this);
@@ -74,80 +44,50 @@ public class FunctionButton implements View.OnClickListener{
         prevSent.setOnClickListener((View.OnClickListener) this);
         sharebutton.setOnClickListener((View.OnClickListener) this);
         rescrapebutton.setOnClickListener((View.OnClickListener) this);
+
+        this.loader = new loader(activity, context);
+        controller = new controller(activity, context, wb, tts);
     }
 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.stopbtn:
-                        if (tts.isSpeaking()) {
-                            tts.stopPlay();
-                            stopBtn.setImageResource(starbigoff_);
-                            currentArticle.setTTS(false);
-                            break;
-                        }
-                        if(!tts.isSpeaking() ) {
-                            tts.play();
-                            stopBtn.setImageResource(starbigon_);
-                            currentArticle.setTTS(true);
-                        }
 
-                        if (!tts.isSpeaking() && tts.getDone()){
-                            url = articleDatas.get(index+1).getLink();
-                            try {
-                                webview.reloadWebView();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                    if (loader.getTSS())
+                        stopBtn.setImageResource(pauseImg);
+                    else
+                        stopBtn.setImageResource(playImg);
 
-
+                    controller.stopBtn();
 
 
                     break;
 
-                case R.id.rescrapebutton:
-                    try {
-                        webview.reloadWebView();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-
                 case R.id.nxtarcbtn:
-                    url = articleDatas.get(index+1).getLink();
-                    try {
-                        webview.reloadWebView();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    controller.nextArc();
                     break;
 
                 case R.id.prevarcbtn:
-
+                    controller.prevArc();
                     break;
 
                 case R.id.forwbtn:
-                    tts.nextSentence();
+                    controller.nextSentence();
                     break;
 
                 case R.id.prevbtn:
-                    tts.previousSentence();
+                    controller.previousSentence();
                     break;
 
                 case R.id.sharebutton:
-                    Intent myIntent = new Intent(Intent.ACTION_SEND);
-                    myIntent.setType("text/plain");
-                    String shareBody = articleDatas.get(index).getTitle() + ": " + url;
-                    myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
-                    myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                    activity.startActivity(Intent.createChooser(myIntent, "Share using"));
+                    controller.share();
                     break;
         }
     }
 
     public void destroy() {
-            tts.destroy();
+            controller.destroy();
     }
 }
 

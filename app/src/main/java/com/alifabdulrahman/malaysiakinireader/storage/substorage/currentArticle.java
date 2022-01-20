@@ -22,10 +22,12 @@ public class currentArticle extends storage {
 
     public void saveIndex(int index){
         editor.putInt("index", index);
+        System.out.println("puki" + index);
         editor.apply();
     }
 
     public int loadIndex(){
+        System.out.println("pukisec" + sp.getInt("index", 3) );
         return sp.getInt("index", 0);
     }
 
@@ -34,6 +36,11 @@ public class currentArticle extends storage {
     }
 
     public void saveData(String link) {
+        editor.putString("lastURL", link);
+        editor.apply();
+    }
+
+    public void saveURL(String link) {
         editor.putString("lastURL", link);
         editor.apply();
     }

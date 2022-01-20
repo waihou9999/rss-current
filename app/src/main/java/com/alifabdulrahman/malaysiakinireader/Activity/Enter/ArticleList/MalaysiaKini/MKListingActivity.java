@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView.ArticleViewActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView.saver;
 import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.adapter.ArticleListAdapter;
@@ -62,6 +63,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
     private settings settings;
     private currentArticle currentArticle;
     private currentRSS currentRSS;
+    private saver saver;
 
     @SuppressLint({"WrongViewCast", "WrongThread"})
     @Override
@@ -75,8 +77,9 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
         newsType = newsSectionStorage.getNewsSectionType();
         newsSectionURL = newsSectionStorage.getSectionURL();
         newsStorage = new NewsStorage(this, newsType);
+        saver = new saver (MKListingActivity.this, this);
 
-        loadLastArticle();
+        //loadLastArticle();
 
         updateList();
 
@@ -132,9 +135,8 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
 
                 articleDatas.get(i).setReadNews(true);
 
-                newsStorage.saveData(articleDatas);
+                System.out.println("pukiclicking" + i);
                 startActivity(toView);
-                toView.putExtra("index", i);
                 currentArticle.saveIndex(i);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -255,14 +257,6 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
                 }
                 else{
                     tempList.add(newArticles.get(i).getTitle() + ". By " + tempAuthor);
-                }
-
-                //add the temporary array into the articledata only if they're not empty
-                for(Element e : docContents){
-                    if(!(e.text().equals(""))){
-                        if (!tempList.contains(e.text()))
-                            tempList.add(e.text());
-                    }
                 }
 
                 //Pass the temporary array into the articleData
@@ -390,6 +384,8 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
 
             //checkReadStuff();
             newsStorage.saveData(articleDatas);
+            //saver.saveNewsType(articleDatas);
+
 
             return null;
         }

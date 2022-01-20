@@ -69,7 +69,7 @@ public class ArticleData implements Parcelable {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public String toString(){
-        return String.join(", ", contentSentence);
+        return title;
     }
 
     @Override

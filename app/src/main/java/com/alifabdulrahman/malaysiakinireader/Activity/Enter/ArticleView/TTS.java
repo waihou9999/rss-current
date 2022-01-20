@@ -1,5 +1,6 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
@@ -23,33 +24,34 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private TextToSpeech tts;
     private AudioManager audioManager;
     private int readIndex = 0;
+    private Activity activity;
     private Context context;
     private ArticleData articleDatas;
     private ArrayList<String>text;
-    private boolean done;
-    private boolean startTTS;
+    private Boolean startTTS;
+    private loader loader;
 
 
-    public TTS(Context context, ArticleData articleDatas, ArrayList<String>text, boolean startTTS){
+
+    public TTS(Activity activity, Context context) {
         this.context = context;
-        //Initialize the Text to Speech
-        this.startTTS = startTTS;
+        this.loader = new loader(activity, context);
+        this.startTTS = loader.getTSS();
+        //this.articleDatas = loader.getArticleData();
 
-        this.articleDatas = articleDatas;
-        this.text = text;
-        System.out.println("hehe" + articleDatas);
-        System.out.println("hehe" + text);
+        init();
+        if (!startTTS)
+            stopPlay();
+    }
 
-
+    public void init(){
+            this.articleDatas = loader.getArticleData();
+            text = loader.getText();
 
             tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
-                    done = false;
-                    if (startTTS == false){
-                        tts.stop();
-                    }
-                    ArrayList<String>sentences = text;
+
                     if(status == TextToSpeech.SUCCESS){
                         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                             @Override
@@ -61,16 +63,10 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                             //What to do after tts has done speaking the current text
                             @Override
                             public void onDone(String utteranceId) {
-                                readIndex++;
-                                if(readIndex < sentences.size() && !tts.isSpeaking()) {
-                                    speakSentences(sentences.get(readIndex));
+                                while(isSpeaking() && readIndex < text.size()){
+                                    speakSentences(text.get(readIndex));
+                                    readIndex++;
                                 }
-
-                                else{
-                                    done = true;
-                                    return;
-                                }
-
                             }
 
                             @Override
@@ -162,6 +158,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public void previousSentence(){
+        removeAudioFocus();
         readIndex--;
         onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN);
     }
@@ -207,7 +204,8 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         removeAudioFocus();
     }
 
-    public boolean getDone(){
-        return done;
+    public void setText(ArrayList<String>text){
+        this.text = text;
     }
+
 }

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -28,26 +29,25 @@ import java.util.ArrayList;
 public class Webview {
     private WebView mWebView;
     private int timex = 1000;
-    private currentArticle currentArticle;
     private Activity activity;
     private Context context;
-    private String url;
     private SwipeRefreshLayout pullToRefresh;
-    private com.example.myappname.TinyDB tinyDB;
+    private String url;
     private ArrayList<String>tempList;
-    private boolean finished;
+    private TTS tts;
+    private loader loader;
 
-    public Webview(Activity activity, Context context) {
+
+    public Webview(Activity activity, Context context, TTS tts) {
         tempList = new ArrayList<>();
         mWebView = activity.findViewById(R.id.webview);
         this.activity = activity;
         this.context = context;
-        currentArticle = new currentArticle(context);
-        url = currentArticle.loadData();
-        tinyDB = new TinyDB(context);
+        this.tts = tts;
+        this.loader = new loader(activity, context);
+        this.url = loader.getUrl();
 
         mWebView.getSettings().setJavaScriptEnabled(true);
-        finished = false;
         loadWebView(url);
 
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);
@@ -81,13 +81,10 @@ public class Webview {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                //String cookies = CookieManager.getInstance().getCookie(url);
-                //System.out.println( "All the cookies in a string:" + cookies);
             }
         });
-
         mWebView.loadUrl(url);
+        tts.init();
     }
 
 
@@ -106,11 +103,6 @@ public class Webview {
         mWebView.loadUrl("javascript:window.Scrap.getHTML" +
                 "(document.getElementsByTagName('html')[0].outerHTML);");
     }
-
-    public boolean getFinished() {
-        return finished;
-    }
-
 
     public class GetHTML {
         private Context ctx;
@@ -146,10 +138,11 @@ public class Webview {
                 }
             }
 
-                new saveText().execute();
+            tts.setText(tempList);
         }
     }
 
+    /*
     public class saveText extends AsyncTask<String, Void, ArrayList<String>> {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -170,5 +163,7 @@ public class Webview {
             System.out.println("plz done saving");
         }
     }
+
+     */
 }
 

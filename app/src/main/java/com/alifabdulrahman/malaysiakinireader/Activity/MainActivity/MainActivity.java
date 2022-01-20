@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 //Display disclaimer on first run.
                 checkFirstRun(startUp);
 
-                loadLastArticle();
+                //loadLastArticle();
 
                 lv.setAdapter(adapter);
 

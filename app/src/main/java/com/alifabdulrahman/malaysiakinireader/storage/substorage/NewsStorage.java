@@ -76,6 +76,7 @@ public class NewsStorage extends storage {
         //SharedPreferences xp = getSharedPreferences("ReadNews", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         //SharedPreferences.Editor editor2 = xp.edit();
+        //System.out.println("puki" + articleDatas);
         Gson gson = new Gson();
         Gson xson = new Gson();
         String json;
