@@ -28,7 +28,9 @@ public class MKScraper{
         this.ctx = ctx;
         this.webView = webView;
         this.tts = tts;
+
         this.webView.addJavascriptInterface(new GetHTML(activity, ctx, tts), "Scrap");
+
     }
 
     public void scrap() {
@@ -60,7 +62,6 @@ public class MKScraper{
 
             Elements contents = classContents.select("p, li");
 
-
             if (classContents == null || classContents.isEmpty()) {
                 classContents = doc.select("div[id $= __next]");
                 contents = classContents.select("p, li");
@@ -76,7 +77,6 @@ public class MKScraper{
             }
 
             saver.saveText(tempList);
-
             tts.setText(tempList);
         }
     }

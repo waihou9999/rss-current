@@ -65,7 +65,6 @@ public class currentArticle extends storage {
     public void saveLastArc(ArticleData articleData){
         Gson gson = new Gson();
         String json = gson.toJson(articleData);
-        System.out.println("niama0" + articleData);
         tinyDB.putString("lastArc", json);
     }
 
@@ -73,7 +72,6 @@ public class currentArticle extends storage {
         Gson gson = new Gson();
         String json = tinyDB.getString("lastArc");
         ArticleData articleData = gson.fromJson(json, ArticleData.class);
-        System.out.println("niama1" + articleData);
         return articleData;
     }
 

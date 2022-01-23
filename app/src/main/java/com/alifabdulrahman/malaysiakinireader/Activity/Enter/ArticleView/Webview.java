@@ -48,9 +48,9 @@ public class Webview {
         this.tts = tts;
         this.loader = new loader(activity, context);
         this.url = loader.getUrl();
+        mWebView.getSettings().setJavaScriptEnabled(true);
         mkScraper = new MKScraper(activity, context, mWebView, tts);
 
-        mWebView.getSettings().setJavaScriptEnabled(true);
         loadWebView(url);
 
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);

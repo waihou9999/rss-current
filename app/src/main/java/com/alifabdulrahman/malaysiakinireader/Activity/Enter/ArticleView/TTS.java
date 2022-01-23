@@ -31,22 +31,23 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private loader loader;
     private ArticleData articleData;
 
-
-
     public TTS(Activity activity, Context context, ArticleData articleData) {
         this.context = context;
         this.loader = new loader(activity, context);
         this.startTTS = loader.getTSS();
         this.articleData = articleData;
 
-
         init();
-        if (!startTTS)
+
+        if (!startTTS || text == null)
             stopPlay();
     }
 
+
+
     public void init(){
 
+        identityLanguage();
 
             tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
@@ -75,7 +76,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                             }
                         });
 
-                        identityLanguage();
+
 
                     }
                     else

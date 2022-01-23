@@ -384,7 +384,6 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
 
             //checkReadStuff();
             newsStorage.saveData(articleDatas);
-            System.out.println("niama"+articleDatas);
             //saver.saveNewsType(articleDatas);
 
 
