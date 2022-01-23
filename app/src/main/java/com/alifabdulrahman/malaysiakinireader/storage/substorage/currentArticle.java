@@ -1,16 +1,22 @@
 package com.alifabdulrahman.malaysiakinireader.storage.substorage;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
 
+import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.storage;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 public class currentArticle extends storage {
 
 
     public currentArticle(Context context) {
         super(context);
+    }
+
+    public void saveText(ArrayList<String> text){
+        tinyDB.putListString("MyContent", text);
     }
 
     public void saveReading(boolean wasReading){
@@ -27,6 +33,9 @@ public class currentArticle extends storage {
 
     public boolean loadReading(){
         return tinyDB.getBoolean("wasReading");
+    }
+    public ArrayList<String> loadText(){
+        return tinyDB.getListString("MyCotent");
     }
 
     public void saveData(String link) {
@@ -51,6 +60,21 @@ public class currentArticle extends storage {
 
     public void saveNewsSectionURL(String newsSection){
         tinyDB.putString("lastURL", newsSection);
+    }
+
+    public void saveLastArc(ArticleData articleData){
+        Gson gson = new Gson();
+        String json = gson.toJson(articleData);
+        System.out.println("niama0" + articleData);
+        tinyDB.putString("lastArc", json);
+    }
+
+    public ArticleData loadLastArc(){
+        Gson gson = new Gson();
+        String json = tinyDB.getString("lastArc");
+        ArticleData articleData = gson.fromJson(json, ArticleData.class);
+        System.out.println("niama1" + articleData);
+        return articleData;
     }
 
     public String loadLastArticle(){

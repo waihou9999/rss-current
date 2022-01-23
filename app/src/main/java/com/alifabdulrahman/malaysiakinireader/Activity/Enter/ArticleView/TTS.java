@@ -26,20 +26,19 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private int readIndex = 0;
     private Activity activity;
     private Context context;
-    private ArticleData articleDatas;
     private ArrayList<String>text;
     private Boolean startTTS;
     private loader loader;
-    private ArticleData a;
+    private ArticleData articleData;
 
 
 
-    public TTS(Activity activity, Context context, ArticleData a) {
+    public TTS(Activity activity, Context context, ArticleData articleData) {
         this.context = context;
         this.loader = new loader(activity, context);
         this.startTTS = loader.getTSS();
-        this.a = a;
-        //this.articleDatas = loader.getArticleData();
+        this.articleData = articleData;
+
 
         init();
         if (!startTTS)
@@ -58,7 +57,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                             @Override
                             public void onStart(String utteranceId) {
                                 Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
-                                speakSentences(articleDatas.getTitle() + "by" + articleDatas.getAuthor());
+                                speakSentences(articleData.getTitle() + "by" + articleData.getAuthor());
                             }
 
                             //What to do after tts has done speaking the current text
@@ -103,7 +102,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         switch (focusState) {
             case AudioManager.AUDIOFOCUS_GAIN:
                 // resume playback
-                ArrayList<String>sentences = articleDatas.getContent();
+                ArrayList<String>sentences = articleData.getContent();
                 if (!tts.isSpeaking()) speakSentences(sentences.get(readIndex));
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
@@ -165,7 +164,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public void identityLanguage(){
-        String langIDText = articleDatas.getTitle();
+        String langIDText = articleData.getTitle();
 
         //Set the language of TTS
         FirebaseLanguageIdentification languageIdentifier = FirebaseNaturalLanguage.getInstance().getLanguageIdentification();

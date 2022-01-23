@@ -7,6 +7,7 @@ import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
+import com.google.android.gms.common.util.ArrayUtils;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,11 @@ public class saver {
         newsStorage = new NewsStorage(context, newsType);
     }
 
+    public void saveList(boolean wasReading, int index, String link){
+        currentArticle.saveReading(wasReading);
+        currentArticle.saveIndex(index);
+        currentArticle.saveURL(link);
+    }
 
     public void noLastArt(){
         currentArticle.saveReading(false);
@@ -39,11 +45,14 @@ public class saver {
     }
 
     public void saveText(ArrayList<String>text){
-        tinyDB.putListString("MyContent", text);
+        currentArticle.saveText(text);
     }
-
 
     public void saveIndex(int index) {
         currentArticle.saveIndex(index);
+    }
+
+    public void saveArc(ArticleData articleData) {
+        currentArticle.saveLastArc(articleData);
     }
 }

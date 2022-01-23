@@ -15,32 +15,20 @@ public class loader {
     private Context context;
     private currentArticle currentArticle;
     private NewsStorage newsStorage;
-    private MKSectionStorage newsSectionStorage;
     private ArrayList<ArticleData> articleDatas;
-    private boolean startTTS;
-    private String url;
-    private int index;
-    private ArrayList<String>text;
-    private com.example.myappname.TinyDB tinyDB;
+
+
 
     public loader(Activity activity, Context context){
         this.activity = activity;
         this.context = context;
         currentArticle = new currentArticle(context);
-        newsSectionStorage = new MKSectionStorage(context);
-
-        startTTS = currentArticle.startTSS();
-        index = currentArticle.loadIndex();
-        url = currentArticle.loadLastArticle();
 
         String newsType = currentArticle.loadNewsType();
 
         newsStorage = new NewsStorage(context, newsType);
         newsStorage.loadData();
         articleDatas = newsStorage.loadArt1();
-
-        tinyDB = new com.example.myappname.TinyDB(context);
-        text = tinyDB.getListString("MyContent");
     }
 
     public ArrayList<ArticleData> getArticleDatas() {
@@ -48,22 +36,22 @@ public class loader {
     }
 
     public int getIndex(){
-        return index;
+        return currentArticle.loadIndex();
     }
 
     public boolean getTSS() {
-        return startTTS;
+        return currentArticle.startTSS();
     }
 
     public String getUrl(){
-        return url;
+        return currentArticle.loadLastArticle();
     }
 
     public ArrayList<String>getText(){
-        return text;
+        return currentArticle.loadText();
     }
 
-    public ArticleData getArticleData(){
-        return articleDatas.get(index);
+    public ArticleData getLastArc() {
+        return currentArticle.loadLastArc();
     }
 }

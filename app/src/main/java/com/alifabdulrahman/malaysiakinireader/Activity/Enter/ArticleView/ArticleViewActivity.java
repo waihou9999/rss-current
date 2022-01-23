@@ -50,8 +50,7 @@ public class ArticleViewActivity extends AppCompatActivity {
     private Webview wb;
     private FunctionButton fb;
     private TTS tts;
-    private int index;
-    private ArticleData a;
+    private ArticleData article;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +59,9 @@ public class ArticleViewActivity extends AppCompatActivity {
         saver = new saver(ArticleViewActivity.this, this);
 
         loader = new loader(ArticleViewActivity.this, this);
-        a = loader.getArticleData();
+        article = loader.getLastArc();
 
-
-        tts = new TTS(ArticleViewActivity.this, this, a);
+        tts = new TTS(ArticleViewActivity.this, this, article);
 
         wb = new Webview(ArticleViewActivity.this, this, tts);
 

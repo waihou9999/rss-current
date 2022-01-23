@@ -57,6 +57,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
     private ArticleListAdapter articleListAdapter;
     private SwipeRefreshLayout pullToRefresh;
     private boolean newContentAvailable;
+    private ArticleData articleData;
     private MKSectionStorage newsSectionStorage;
     private NewsStorage newsStorage;
     private sorting sorting;
@@ -128,13 +129,13 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String link = articleDatas.get(i).getLink();
-                currentArticle.saveReading(true);
-                currentArticle.saveData(link);
-                currentArticle.saveIndex(i);
-
-                Intent toView = new Intent(MKListingActivity.this, ArticleViewActivity.class);
+                articleData = articleDatas.get(i);
+                saver.saveList(true, i, link);
+                saver.saveArc(articleData);
 
                 articleDatas.get(i).setReadNews(true);
+
+                Intent toView = new Intent(MKListingActivity.this, ArticleViewActivity.class);
                 startActivity(toView);
 
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
