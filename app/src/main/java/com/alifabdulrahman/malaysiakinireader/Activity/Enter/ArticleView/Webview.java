@@ -78,7 +78,11 @@ public class Webview {
 
             public void onPageFinished(WebView view, String url){
                 super.onPageFinished(view, url);
-
+                try {
+                    Thread.sleep(timex);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
                 mkScraper.scrap();
             }
         });
@@ -95,7 +99,7 @@ public class Webview {
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }
-        mkScraper.rescrap();
+        mkScraper.scrap();
     }
 }
 

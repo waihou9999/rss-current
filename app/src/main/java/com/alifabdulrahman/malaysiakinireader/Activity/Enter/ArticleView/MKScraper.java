@@ -28,13 +28,10 @@ public class MKScraper{
         this.ctx = ctx;
         this.webView = webView;
         this.tts = tts;
+        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, tts), "Scrap");
     }
 
     public void scrap() {
-        webView.addJavascriptInterface(new GetHTML(activity, ctx, tts), "Scrap");
-    }
-
-    public void rescrap() {
         webView.loadUrl("javascript:window.Scrap.getHTML" +
                 "(document.getElementsByTagName('html')[0].outerHTML);");
     }
@@ -79,6 +76,7 @@ public class MKScraper{
             }
 
             saver.saveText(tempList);
+
             tts.setText(tempList);
         }
     }
