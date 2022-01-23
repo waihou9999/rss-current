@@ -11,20 +11,17 @@ public class currentRSS extends storage {
 
     public currentRSS(Context context) {
         super(context);
-        this.sp = context.getSharedPreferences(storageName, MODE_PRIVATE);
-        this.editor = sp.edit();
     }
 
     public void saveData(String link) {
-        editor.putString("allLink", link);
-        editor.apply();
+        tinyDB.putString("allLink", link);
     }
 
     public String loadData(){
-        return sp.getString("allLink", "");
+        return tinyDB.getString("allLink");
     }
 
     public void clearData(){
-        editor.clear();
+        tinyDB.clear();
     }
 }

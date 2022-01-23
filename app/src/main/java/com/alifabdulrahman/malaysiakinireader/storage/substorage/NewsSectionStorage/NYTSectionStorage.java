@@ -17,14 +17,11 @@ public class NYTSectionStorage extends storage{
 
     public NYTSectionStorage(Context context) {
         super(context);
-        this.sp = context.getSharedPreferences(storageName, Context.MODE_PRIVATE);
-        this.editor = sp.edit();
     }
-
 
     public ArrayList<NewsSectionData> loadData() {
         Gson hson = new Gson();
-        String kson = sp.getString(newsSectionType, null);
+        String kson = tinyDB.getString(newsSectionType);
         Type dataType = new TypeToken<ArrayList<NewsSectionData>>() {}.getType();
         newsSection2 = hson.fromJson(kson, dataType);
 
@@ -38,30 +35,29 @@ public class NYTSectionStorage extends storage{
     public void saveData() {
         Gson hson = new Gson();
         String kson = hson.toJson(newsSection2);
-        editor.putString(newsSectionType, kson);
-        editor.apply();
+        tinyDB.putString(newsSectionType, kson);
     }
 
     public void saveReading(String url, String newsType, boolean wasReading){
-        editor.putString("sectionURL", url);
-        editor.putString("sectionType", newsType);
-        editor.putBoolean("wasReading", wasReading);
+        tinyDB.putString("sectionURL", url);
+        tinyDB.putString("sectionType", newsType);
+        tinyDB.putBoolean("wasReading", wasReading);
     }
 
     public void setReading(boolean wasReading){
-        editor.putBoolean ("wasReading", wasReading);
+        tinyDB.putBoolean ("wasReading", wasReading);
     }
 
     public boolean loadReading(){
-        return sp.getBoolean("wasReading", false);
+        return tinyDB.getBoolean("wasReading");
     }
 
     public String getSectionURL(){
-        return sp.getString("sectionURL", "");
+        return tinyDB.getString("sectionURL");
 
     }
 
     public String getNewsSectionType(){
-        return sp.getString("sectionType", "");
+        return tinyDB.getString("sectionType");
     }
 }

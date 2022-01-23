@@ -5,24 +5,22 @@ import android.content.SharedPreferences;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.sectionManager;
 import com.alifabdulrahman.malaysiakinireader.model.NewsSectionData;
+import com.example.myappname.TinyDB;
 
 import java.util.ArrayList;
 
 public abstract class storage {
     protected String storageName;
-    protected SharedPreferences sp;
-    protected SharedPreferences.Editor editor;
+    protected com.example.myappname.TinyDB tinyDB;
     protected Context context;
     protected sectionManager sectionManager;
 
     public storage(Context context){
         this.context = context;
+        tinyDB = new TinyDB(context);
         sectionManager = new sectionManager(context);
     }
 
-    public void setStorageName(String storageName) {
-        this.storageName = storageName;
-    }
 
     public void saveData() {
 

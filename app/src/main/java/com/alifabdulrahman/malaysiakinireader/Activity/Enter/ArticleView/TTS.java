@@ -30,13 +30,15 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private ArrayList<String>text;
     private Boolean startTTS;
     private loader loader;
+    private ArticleData a;
 
 
 
-    public TTS(Activity activity, Context context) {
+    public TTS(Activity activity, Context context, ArticleData a) {
         this.context = context;
         this.loader = new loader(activity, context);
         this.startTTS = loader.getTSS();
+        this.a = a;
         //this.articleDatas = loader.getArticleData();
 
         init();
@@ -45,8 +47,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public void init(){
-            this.articleDatas = loader.getArticleData();
-            text = loader.getText();
+
 
             tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override

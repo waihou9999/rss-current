@@ -7,67 +7,58 @@ import android.content.Context;
 import com.alifabdulrahman.malaysiakinireader.storage.storage;
 
 public class currentArticle extends storage {
-    private final String storageName = "currentArticle";
+
 
     public currentArticle(Context context) {
         super(context);
-        this.sp = context.getSharedPreferences("currentArticle", MODE_PRIVATE);
-        this.editor = sp.edit();
     }
 
     public void saveReading(boolean wasReading){
-        editor.putBoolean("wasReading", wasReading);
-        editor.apply();
+        tinyDB.putBoolean("wasReading", wasReading);
     }
 
     public void saveIndex(int index){
-        editor.putInt("index", index);
-        System.out.println("puki" + index);
-        editor.apply();
+        tinyDB.putInt("lastIndex", index);
     }
 
     public int loadIndex(){
-        System.out.println("pukisec" + sp.getInt("index", 3) );
-        return sp.getInt("index", 0);
+        return tinyDB.getInt("index");
     }
 
     public boolean loadReading(){
-        return sp.getBoolean("wasReading", false);
+        return tinyDB.getBoolean("wasReading");
     }
 
     public void saveData(String link) {
-        editor.putString("lastURL", link);
-        editor.apply();
+        tinyDB.putString("lastURL", link);
     }
 
     public void saveURL(String link) {
-        editor.putString("lastURL", link);
-        editor.apply();
+        tinyDB.putString("lastURL", link);
     }
 
     public String loadData(){
-        return sp.getString("lastURL", "");
+        return tinyDB.getString("lastURL");
     }
 
     public String loadNewsType(){
-        return sp.getString("lastNewsType", "");
+        return tinyDB.getString("lastNewsType");
     }
 
     public String loadNewsSectionURL(){
-        return sp.getString("lastURL", "");
+        return tinyDB.getString("lastURL");
     }
 
     public void saveNewsSectionURL(String newsSection){
-        editor.putString("lastURL", newsSection);
-        editor.apply();
+        tinyDB.putString("lastURL", newsSection);
     }
 
     public String loadLastArticle(){
-        return sp.getString("lastURL", "");
+        return tinyDB.getString("lastURL");
     }
 
 
-    public boolean startTSS(){return sp.getBoolean("startTSS", false);}
+    public boolean startTSS(){return tinyDB.getBoolean("startTSS");}
 
-    public void setTTS(boolean tss){editor.putBoolean("startTSS", tss);}
+    public void setTTS(boolean tss){tinyDB.putBoolean("startTSS", tss);}
 }

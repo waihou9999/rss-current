@@ -33,14 +33,11 @@ public class loader {
         index = currentArticle.loadIndex();
         url = currentArticle.loadLastArticle();
 
-        //System.out.println("puki" + startTTS + index + url);
-
         String newsType = currentArticle.loadNewsType();
 
         newsStorage = new NewsStorage(context, newsType);
         newsStorage.loadData();
         articleDatas = newsStorage.loadArt1();
-
 
         tinyDB = new com.example.myappname.TinyDB(context);
         text = tinyDB.getListString("MyContent");
@@ -67,7 +64,6 @@ public class loader {
     }
 
     public ArticleData getArticleData(){
-        //System.out.println("pukimak" + articleDatas + index);
         return articleDatas.get(index);
     }
 }

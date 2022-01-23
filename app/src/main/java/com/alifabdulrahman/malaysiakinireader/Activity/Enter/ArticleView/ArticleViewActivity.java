@@ -51,22 +51,19 @@ public class ArticleViewActivity extends AppCompatActivity {
     private FunctionButton fb;
     private TTS tts;
     private int index;
+    private ArticleData a;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_view);
 
-        if (getIntent().getExtras() != null) {
-            index = getIntent().getExtras().getInt("index");
-        }
-
         saver = new saver(ArticleViewActivity.this, this);
-        saver.saveIndex(index);
 
         loader = new loader(ArticleViewActivity.this, this);
+        a = loader.getArticleData();
 
 
-        tts = new TTS(ArticleViewActivity.this, this);
+        tts = new TTS(ArticleViewActivity.this, this, a);
 
         wb = new Webview(ArticleViewActivity.this, this, tts);
 

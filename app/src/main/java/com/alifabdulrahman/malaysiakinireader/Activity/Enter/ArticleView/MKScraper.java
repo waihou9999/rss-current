@@ -1,13 +1,14 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,73 +17,48 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class MKScraper {
+public class MKScraper{
+    private Activity activity;
     private Context ctx;
-    private ArrayList<ArticleData> articleDatas;
     private WebView webView;
-    private NewsStorage newsStorage;
-    private MKSectionStorage newsSectionStorage;
-    private String newsType;
+    private TTS tts;
 
-    //Get the HTML loaded from webview and scrap it to get the article contents
-
-    public MKScraper(Context ctx, ArrayList<ArticleData> articleDatas, WebView webView, NewsStorage newsStorage, MKSectionStorage newsSectionStorage, String newsType) {
+    public MKScraper(Activity activity, Context ctx, WebView webView, TTS tts) {
+        this.activity = activity;
         this.ctx = ctx;
-        this.articleDatas = articleDatas;
         this.webView = webView;
-        this.newsStorage = newsStorage;
-        this.newsSectionStorage = newsSectionStorage;
-        this.newsType = newsType;
+        this.tts = tts;
     }
 
-
-
-
     public void scrap() {
-        webView.addJavascriptInterface(new GetHTML(ctx), "Scrap");
+        webView.addJavascriptInterface(new GetHTML(activity, ctx, tts), "Scrap");
     }
 
     public void rescrap() {
         webView.loadUrl("javascript:window.Scrap.getHTML" +
                 "(document.getElementsByTagName('html')[0].outerHTML);");
-
     }
 
-    public static class GetHTML {
+    public class GetHTML {
         private Context ctx;
-        private int index;
-        private com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle currentArticle;
-        private ArrayList<ArticleData> articleDatas;
-        private MKSectionStorage newsSectionStorage;
-        private NewsStorage newsStorage;
-        private String newsType;
+        private Activity activity;
+        private TTS tts;
+        private saver saver;
 
-        public GetHTML(Context ctx) {
+        public GetHTML(Activity activity, Context ctx, TTS tts) {
+            this.activity = activity;
             this.ctx = ctx;
-            currentArticle = new currentArticle(ctx);
-            index = currentArticle.loadIndex();
+            this.tts = tts;
+            saver = new saver(this.activity, this.ctx);
         }
 
         @JavascriptInterface
-        public ArrayList<String> getHTML(String html) {
-            //System.out.println("GETHTMLWORKSSS");
-            //third load
-            //System.out.println("at gethtml");
-            //Basically the same thing as in ArticleListingActivity GetContents
+        public void getHTML(String html) {
+
             Document doc = Jsoup.parse(html);
 
-            ArrayList<String> tempList = new ArrayList<>();
-            tempList.clear();
+            ArrayList<String>tempList = new ArrayList<>();
 
-            if (articleDatas.get(index).getAuthor().equals("-") || articleDatas.get(index).getAuthor().equals("Bernama") || articleDatas.get(index).getAuthor().equals("Reuters")) {
-                tempList.add(articleDatas.get(index).getTitle());
-            } else {
-                tempList.add(articleDatas.get(index).getTitle() + ". By " + articleDatas.get(index).getAuthor());
-            }
-
-            //Elements contentContainer = doc.select("div[class$=content-container]");
-            //Elements contentContainer = doc.select("script[id$=__NEXT_DATA__]");
-            //Elements classContents =  contentContainer.select("div[class$=content]");
             Elements classContents = doc.select("div[id $= full-content-container]");
 
             Elements contents = classContents.select("p, li");
@@ -93,7 +69,6 @@ public class MKScraper {
                 contents = classContents.select("p, li");
             }
 
-
             for (Element content : contents) {
 
                 if (!(content.text().equals(""))) {
@@ -103,16 +78,8 @@ public class MKScraper {
                 }
             }
 
-            articleDatas.get(index).getContent().clear();
-            articleDatas.get(index).setContent(tempList);
-
-            newsSectionStorage = new MKSectionStorage(ctx);
-            newsType = newsSectionStorage.getNewsSectionType();
-            newsStorage = new NewsStorage(ctx, newsType);
-
-            newsStorage.saveData(articleDatas);
-
-            return tempList;
+            saver.saveText(tempList);
+            tts.setText(tempList);
         }
     }
 }

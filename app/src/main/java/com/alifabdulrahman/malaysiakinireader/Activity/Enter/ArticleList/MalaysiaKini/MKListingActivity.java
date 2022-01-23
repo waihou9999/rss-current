@@ -78,6 +78,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
         newsSectionURL = newsSectionStorage.getSectionURL();
         newsStorage = new NewsStorage(this, newsType);
         saver = new saver (MKListingActivity.this, this);
+        currentArticle = new currentArticle(MKListingActivity.this);
 
         //loadLastArticle();
 
@@ -125,19 +126,17 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                currentArticle = new currentArticle(MKListingActivity.this);
+
                 String link = articleDatas.get(i).getLink();
                 currentArticle.saveReading(true);
                 currentArticle.saveData(link);
-
+                currentArticle.saveIndex(i);
 
                 Intent toView = new Intent(MKListingActivity.this, ArticleViewActivity.class);
 
                 articleDatas.get(i).setReadNews(true);
-
-                System.out.println("pukiclicking" + i);
                 startActivity(toView);
-                currentArticle.saveIndex(i);
+
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
@@ -384,6 +383,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
 
             //checkReadStuff();
             newsStorage.saveData(articleDatas);
+            System.out.println("niama"+articleDatas);
             //saver.saveNewsType(articleDatas);
 
 

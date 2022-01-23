@@ -56,7 +56,7 @@ public class MKSection extends AppCompatActivity implements Serializable {
             newsSection.addAll(newsSection2);
         }
 
-        loadLastArticle();
+        //loadLastArticle();
 
         setupListView();
     }

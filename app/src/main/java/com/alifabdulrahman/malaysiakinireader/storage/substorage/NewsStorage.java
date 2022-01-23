@@ -29,8 +29,6 @@ public class NewsStorage extends storage {
 
     public NewsStorage(Context context, String newsType) {
         super(context);
-        this.sp = context.getSharedPreferences(storageName, Context.MODE_PRIVATE);
-        this.editor = sp.edit();
         this.newsType = newsType;
     }
 
@@ -42,18 +40,16 @@ public class NewsStorage extends storage {
     public void loadData() {
         Gson gson = new Gson();
         Gson xson = new Gson();
-        String json = sp.getString(newsType, null);
-        String yson = sp.getString(newsType2, null);
+        String json = tinyDB.getString(newsType);
+        String yson = tinyDB.getString(newsType2);
         Type dataType = new TypeToken<ArrayList<ArticleData>>() {
         }.getType();
         articleDatas = gson.fromJson(json, dataType);
         articleDatas2 = xson.fromJson(yson, dataType);
-        //articleDatas = articleDatas2;
-        //System.out.println("dataloaded");
 
         orderLatest = settings.loadSettings(newsType);
 
-        if (!orderLatest && (articleDatas != null || (!Objects.requireNonNull(articleDatas).isEmpty()))) {
+        if (!orderLatest && (articleDatas != null)) {
             Collections.sort(articleDatas, new Comparator<ArticleData>() {
                 @Override
                 public int compare(ArticleData o1, ArticleData o2) {
@@ -73,10 +69,6 @@ public class NewsStorage extends storage {
 
     //Save data of articles retrieved
     public void saveData(ArrayList<ArticleData>articleDatas) {
-        //SharedPreferences xp = getSharedPreferences("ReadNews", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        //SharedPreferences.Editor editor2 = xp.edit();
-        //System.out.println("puki" + articleDatas);
         Gson gson = new Gson();
         Gson xson = new Gson();
         String json;
@@ -88,16 +80,13 @@ public class NewsStorage extends storage {
         if (articleDatas2 != null) {
             toSaveInOrder2 = new ArrayList<>(articleDatas2);
             yson = xson.toJson(toSaveInOrder2);
-            editor.putString(newsType2, yson);
-            editor.apply();
+            tinyDB.putString(newsType2, yson);
         }
 
         sorting = new sorting(context);
         toSaveInOrder = sorting.sortByLatest(toSaveInOrder);
         json = gson.toJson(toSaveInOrder);
-        editor.putString(newsType, json);
-
-        editor.apply();
+        tinyDB.putString(newsType, json);
     }
 
     public ArrayList<ArticleData>loadArt1(){

@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import androidx.annotation.RequiresApi;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini.MKListingActivity;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
 import com.example.myappname.TinyDB;
@@ -36,6 +37,7 @@ public class Webview {
     private ArrayList<String>tempList;
     private TTS tts;
     private loader loader;
+    private MKScraper mkScraper;
 
 
     public Webview(Activity activity, Context context, TTS tts) {
@@ -46,6 +48,7 @@ public class Webview {
         this.tts = tts;
         this.loader = new loader(activity, context);
         this.url = loader.getUrl();
+        mkScraper = new MKScraper(activity, context, mWebView, tts);
 
         mWebView.getSettings().setJavaScriptEnabled(true);
         loadWebView(url);
@@ -66,7 +69,7 @@ public class Webview {
 
     @SuppressLint("JavascriptInterface")
     public void loadWebView(String url){
-        mWebView.addJavascriptInterface(new GetHTML(context), "Scrap");
+        mkScraper.scrap();
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){
@@ -76,11 +79,7 @@ public class Webview {
             public void onPageFinished(WebView view, String url){
                 super.onPageFinished(view, url);
 
-                try {
-                    scrap();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                mkScraper.scrap();
             }
         });
         mWebView.loadUrl(url);
@@ -96,74 +95,7 @@ public class Webview {
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }
-        scrap();
+        mkScraper.rescrap();
     }
-
-    public void scrap() throws InterruptedException {
-        mWebView.loadUrl("javascript:window.Scrap.getHTML" +
-                "(document.getElementsByTagName('html')[0].outerHTML);");
-    }
-
-    public class GetHTML {
-        private Context ctx;
-        private com.example.myappname.TinyDB tinyDB;
-
-
-        public GetHTML(Context ctx) {
-            this.ctx = ctx;
-            tinyDB = new TinyDB(context);
-        }
-
-        @JavascriptInterface
-        public void getHTML(String html) {
-            Document doc = Jsoup.parse(html);
-
-            tempList.clear();
-
-            Elements classContents = doc.select("div[id $= full-content-container]");
-
-            Elements contents = classContents.select("p, li");
-
-            if (classContents == null || classContents.isEmpty()) {
-                classContents = doc.select("div[id $= __next]");
-                contents = classContents.select("p, li");
-            }
-
-            for (Element content : contents) {
-
-                if (!(content.text().equals(""))) {
-
-                    if (!tempList.contains(content.text()))
-                        tempList.add(content.text());
-                }
-            }
-
-            tts.setText(tempList);
-        }
-    }
-
-    /*
-    public class saveText extends AsyncTask<String, Void, ArrayList<String>> {
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        protected ArrayList<String> doInBackground(String... params) {
-            tinyDB.remove("MyContent");
-            tinyDB.putBoolean("finished", false);
-            System.out.println("plz saving");
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> strings) {
-            super.onPostExecute(strings);
-
-            tinyDB.putListString("MyContent", tempList);
-            tinyDB.putBoolean("finished", true);
-            System.out.println("plz done saving");
-        }
-    }
-
-     */
 }
 

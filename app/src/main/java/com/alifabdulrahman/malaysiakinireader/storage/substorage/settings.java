@@ -14,19 +14,16 @@ public class settings extends storage {
 
     public settings(Context context) {
         super(context);
-        this.sp = context.getSharedPreferences(storageName, Context.MODE_PRIVATE);
-        this.editor = sp.edit();
     }
 
     //Save the user's order settings
     public void saveSettings(String newsType, boolean orderLatest){
-        editor.putBoolean("order" + newsType, orderLatest);
-        editor.apply();
+        tinyDB.putBoolean("order" + newsType, orderLatest);
     }
 
     //Load the user's order settings
     public boolean loadSettings(String newsType){
-        return sp.getBoolean("order" + newsType, true);
+        return tinyDB.getBoolean("order" + newsType);
     }
 
     public boolean checkFirstRun(AlertDialog.Builder startUp) {
