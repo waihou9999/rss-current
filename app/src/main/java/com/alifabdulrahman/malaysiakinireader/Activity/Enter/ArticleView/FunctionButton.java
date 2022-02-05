@@ -3,6 +3,7 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.webkit.WebView;
@@ -25,11 +26,13 @@ public class FunctionButton implements View.OnClickListener{
     int pauseImg = android.R.drawable.ic_media_pause;
     private controller controller;
     private loader loader;
+    private saver saver;
 
     public FunctionButton(Activity activity, Context context, Webview wb, TTS tts) throws InterruptedException {
         this.activity = activity;
 
         stopBtn = this.activity.findViewById(R.id.stopbtn);
+        stopBtn.setClickable(false);
         nextArc = this.activity.findViewById(R.id.nxtarcbtn);
         prevArc = this.activity.findViewById(R.id.prevarcbtn);
         nextSent = this.activity.findViewById(R.id.forwbtn);
@@ -46,6 +49,7 @@ public class FunctionButton implements View.OnClickListener{
         rescrapebutton.setOnClickListener((View.OnClickListener) this);
 
         this.loader = new loader(activity, context);
+        this.saver = new saver(activity, context);
         controller = new controller(activity, context, wb, tts);
     }
 
@@ -54,13 +58,16 @@ public class FunctionButton implements View.OnClickListener{
             switch (v.getId()) {
                 case R.id.stopbtn:
 
-                    if (loader.getTSS())
+                    if (loader.getTSS()) {
                         stopBtn.setImageResource(pauseImg);
-                    else
+                        saver.setTSS(false);
+                    }
+                    else {
                         stopBtn.setImageResource(playImg);
+                        saver.setTSS(true);
+                    }
 
                     controller.stopBtn();
-
 
                     break;
 
@@ -85,6 +92,12 @@ public class FunctionButton implements View.OnClickListener{
                     break;
         }
     }
+
+    public void setClickable(boolean clickable){
+        stopBtn.setClickable(clickable);
+    }
+
+
 
     public void destroy() {
             controller.destroy();

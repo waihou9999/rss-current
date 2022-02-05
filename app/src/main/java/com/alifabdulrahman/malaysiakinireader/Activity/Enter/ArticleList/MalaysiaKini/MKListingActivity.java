@@ -510,7 +510,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
         public void run() {
             settings.saveSettings(newsType, orderLatest);
             articleListAdapter.notifyDataSetChanged();
-            new CheckNewContents().execute();
+            //new CheckNewContents().execute();
         }
     };
     @Override
@@ -598,7 +598,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
                 }
 
                 if (!articleDatas.isEmpty()){
-                    new CheckNewContents().execute();
+                    //new CheckNewContents().execute();
                 }
 
                 setupListView();
@@ -669,7 +669,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
 
 
         if (!articleDatas.isEmpty()){
-            new CheckNewContents().execute();
+            //new CheckNewContents().execute();
         }
 
         if (orderLatest) {

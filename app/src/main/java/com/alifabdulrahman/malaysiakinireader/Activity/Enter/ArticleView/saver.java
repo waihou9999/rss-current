@@ -55,4 +55,8 @@ public class saver {
     public void saveArc(ArticleData articleData) {
         currentArticle.saveLastArc(articleData);
     }
+
+    public void setTSS(boolean tts) {
+        currentArticle.setTTS(tts);
+    }
 }

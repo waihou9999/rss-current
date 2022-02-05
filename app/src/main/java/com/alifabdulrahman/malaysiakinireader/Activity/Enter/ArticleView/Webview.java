@@ -11,12 +11,14 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini.MKListingActivity;
 import com.alifabdulrahman.malaysiakinireader.R;
+import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
 import com.example.myappname.TinyDB;
 
@@ -29,27 +31,29 @@ import java.util.ArrayList;
 
 public class Webview {
     private WebView mWebView;
+    private FunctionButton fb;
     private int timex = 1000;
     private Activity activity;
     private Context context;
     private SwipeRefreshLayout pullToRefresh;
     private String url;
-    private ArrayList<String>tempList;
     private TTS tts;
     private loader loader;
     private MKScraper mkScraper;
+    private ArticleData article;
 
 
-    public Webview(Activity activity, Context context, TTS tts) {
-        tempList = new ArrayList<>();
+    public Webview(Activity activity, Context context) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
         this.activity = activity;
         this.context = context;
-        this.tts = tts;
         this.loader = new loader(activity, context);
+        this.article = loader.getLastArc();
+        this.tts = new TTS(activity, context, article);
+        this.fb = new FunctionButton(activity, context, this, tts);
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mkScraper = new MKScraper(activity, context, mWebView, tts);
+        mkScraper = new MKScraper(activity, context, mWebView, fb, tts);
 
         loadWebView(url);
 
@@ -87,7 +91,6 @@ public class Webview {
             }
         });
         mWebView.loadUrl(url);
-        tts.init();
     }
 
 

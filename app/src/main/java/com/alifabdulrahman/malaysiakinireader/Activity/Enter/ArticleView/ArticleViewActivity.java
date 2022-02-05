@@ -48,25 +48,14 @@ public class ArticleViewActivity extends AppCompatActivity {
     private loader loader;
     private saver saver;
     private Webview wb;
-    private FunctionButton fb;
-    private TTS tts;
-    private ArticleData article;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_view);
-
         saver = new saver(ArticleViewActivity.this, this);
-
         loader = new loader(ArticleViewActivity.this, this);
-        article = loader.getLastArc();
-
-        tts = new TTS(ArticleViewActivity.this, this, article);
-
-        wb = new Webview(ArticleViewActivity.this, this, tts);
-
         try {
-            fb = new FunctionButton(ArticleViewActivity.this, this, wb, tts);
+            wb = new Webview(ArticleViewActivity.this, this);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,7 +64,6 @@ public class ArticleViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        fb.destroy();
     }
 
     @Override

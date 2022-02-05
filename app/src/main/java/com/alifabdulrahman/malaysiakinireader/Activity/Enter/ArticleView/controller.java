@@ -37,7 +37,6 @@ public class controller {
         if (tts.isSpeaking()){
             tts.stopPlay();
         }
-
         else
             tts.play();
     }
