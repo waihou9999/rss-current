@@ -21,7 +21,7 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TTS implements AudioManager.OnAudioFocusChangeListener {
+public class TTS implements  AudioManager.OnAudioFocusChangeListener {
     private TextToSpeech tts;
     private AudioManager audioManager;
     private int readIndex = 0;
@@ -37,6 +37,9 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         this.loader = new loader(activity, context);
         this.startTTS = loader.getTSS();
         this.articleData = articleData;
+        this.text = loader.getText();
+
+        startTTS = true;
 
         if (startTTS) {
             initialize();
@@ -48,33 +51,39 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public void initialize(){
-        tts = new TextToSpeech(context, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                    @Override
-                    public void onStart(String utteranceId) {
-                        Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
-                    }
 
-                    //What to do after tts has done speaking the current text
-                    @Override
-                    public void onDone(String utteranceId) {
-                        readIndex++;
+        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
 
-                        //if there are still more sentences in article, continue reading
-                        if (readIndex < text.size() - 1 && !tts.isSpeaking()) {
-                            speakSentences(text.get(readIndex));
+                    tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onError(String utteranceId) {
-                        Log.e("UtteranceError", " " + utteranceId);
-                    }
-                });
-                identityLanguage();
+                        //What to do after tts has done speaking the current text
+                        @Override
+                        public void onDone(String utteranceId) {
+                            readIndex++;
+
+                            //if there are still more sentences in article, continue reading
+                            if (readIndex < text.size() - 1 && !tts.isSpeaking()) {
+                                speakSentences(text.get(readIndex));
+                            }
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+                            Log.e("UtteranceError", "fail to initialize" + utteranceId);
+                        }
+                    });
+
+                    identityLanguage();
+
+                }
             }
-
         });
     }
 
@@ -126,10 +135,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public boolean isSpeaking() {
-        if (tts != null) {
             return tts.isSpeaking();
-        }
-        else return false;
     }
 
     //Speak the array of sentences.
@@ -186,12 +192,9 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                     }
                 })
                 .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Model couldn’t be loaded or other internal error.
-                                // ...
-                            }
+                        e -> {
+                            // Model couldn’t be loaded or other internal error.
+                            // ...
                         });
     }
 
@@ -206,5 +209,4 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     public void setText(ArrayList<String>text){
         this.text = text;
     }
-
 }

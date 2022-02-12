@@ -49,11 +49,13 @@ public class Webview {
         this.context = context;
         this.loader = new loader(activity, context);
         this.article = loader.getLastArc();
+        mkScraper = new MKScraper(activity, context, mWebView, fb);
         this.tts = new TTS(activity, context, article);
         this.fb = new FunctionButton(activity, context, this, tts);
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mkScraper = new MKScraper(activity, context, mWebView, fb, tts);
+
+
 
         loadWebView(url);
 
