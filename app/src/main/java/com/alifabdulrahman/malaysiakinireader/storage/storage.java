@@ -5,13 +5,12 @@ import android.content.SharedPreferences;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.sectionManager;
 import com.alifabdulrahman.malaysiakinireader.model.NewsSectionData;
-import com.example.myappname.TinyDB;
+import  com.alifabdulrahman.malaysiakinireader.Helper.TinyDB;
 
 import java.util.ArrayList;
 
 public abstract class storage {
-    protected String storageName;
-    protected com.example.myappname.TinyDB tinyDB;
+    protected TinyDB tinyDB;
     protected Context context;
     protected sectionManager sectionManager;
 

@@ -3,6 +3,7 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.app.Activity;
 import android.content.Context;
 
+import com.alifabdulrahman.malaysiakinireader.Helper.TinyDB;
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsSectionStorage.MKSectionStorage;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
@@ -17,7 +18,7 @@ public class saver {
     private com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle currentArticle;
     private NewsStorage newsStorage;
     private MKSectionStorage newsSectionStorage;
-    private com.example.myappname.TinyDB tinyDB;
+    private TinyDB tinyDB;
 
     public saver(Activity activity, Context context) {
         this.activity = activity;

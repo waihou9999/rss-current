@@ -3,6 +3,7 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -14,22 +15,22 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class MKScraper{
+public class MKScraper {
     private Activity activity;
     private Context ctx;
     private WebView webView;
     private FunctionButton fb;
-    private TTS tts;
+    private ttsController ttsController;
     private boolean loading;
 
-    public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton fb, TTS tts) {
+
+    public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton fb) {
         this.activity = activity;
         this.ctx = ctx;
         this.webView = webView;
         this.fb = fb;
-        this.tts = tts;
 
-        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, fb, tts), "Scrap");
+        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, fb), "Scrap");
     }
 
     public void scrap() {
@@ -41,14 +42,12 @@ public class MKScraper{
         private Context ctx;
         private Activity activity;
         private FunctionButton fb;
-        private TTS tts;
         private saver saver;
 
-        public GetHTML(Activity activity, Context ctx, FunctionButton fb, TTS tts) {
+        public GetHTML(Activity activity, Context ctx, FunctionButton fb) {
             this.activity = activity;
             this.ctx = ctx;
             this.fb = fb;
-            this.tts = tts;
             saver = new saver(this.activity, this.ctx);
         }
 
@@ -86,9 +85,9 @@ public class MKScraper{
 
             if (!loading) {
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
-                fb.setClickable(true);
-                tts.setText(tempList);
                 saver.saveText(tempList);
+                fb.setClickable(true);
+                ttsController.initializeTTS();
             }
         }
     }

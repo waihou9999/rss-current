@@ -34,8 +34,9 @@ public class currentArticle extends storage {
     public boolean loadReading(){
         return tinyDB.getBoolean("wasReading");
     }
+
     public ArrayList<String> loadText(){
-        return tinyDB.getListString("MyCotent");
+        return tinyDB.getListString("MyContent");
     }
 
     public void saveData(String link) {

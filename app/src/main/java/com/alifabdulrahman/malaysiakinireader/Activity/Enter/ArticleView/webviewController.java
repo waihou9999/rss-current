@@ -9,23 +9,20 @@ import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 
 import java.util.ArrayList;
 
-public class controller {
-
+public class webviewController {
     private Activity activity;
     private Context context;
-    private Webview wb;
-    private TTS tts;
+    private webview wb;
     private loader loader;
     private saver saver;
     private ArrayList<ArticleData> articleDatas;
     private int index;
     private String url;
 
-    public controller(Activity activity, Context context, Webview wb, TTS tts){
+    public webviewController(Activity activity, Context context, webview wb){
         this.activity = activity;
         this.context = context;
         this.wb = wb;
-        this.tts = tts;
         this.loader = new loader(activity, context);
         this.saver = new saver(activity, context);
         this.articleDatas = loader.getArticleDatas();
@@ -33,13 +30,6 @@ public class controller {
         this.url = loader.getUrl();
     }
 
-    public void stopBtn() {
-        if (tts.isSpeaking()){
-            tts.stopPlay();
-        }
-        else
-            tts.play();
-    }
 
     public void prevArc() {
         loader.getIndex();
@@ -65,14 +55,6 @@ public class controller {
         }
     }
 
-    public void previousSentence() {
-        tts.previousSentence();
-    }
-
-    public void nextSentence() {
-        tts.nextSentence();
-    }
-
     public void share(){
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
@@ -80,9 +62,5 @@ public class controller {
         myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
         myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         activity.startActivity(Intent.createChooser(myIntent, "Share using"));
-    }
-
-    public void destroy() {
-        tts.destroy();
     }
 }

@@ -17,15 +17,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentification;
 
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TTS implements AudioManager.OnAudioFocusChangeListener {
+public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFocusChangeListener {
     private TextToSpeech tts;
     private AudioManager audioManager;
     private int readIndex = 0;
-    private Activity activity;
     private Context context;
     private ArrayList<String>text;
     private Boolean startTTS;
@@ -37,44 +35,41 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         this.loader = new loader(activity, context);
         this.startTTS = loader.getTSS();
         this.articleData = articleData;
-
-        if (startTTS) {
-            initialize();
-        }
-        else{
-            initialize();
-            stopPlay();
-        }
+        initializeTTS();
     }
 
-    public void initialize(){
-        tts = new TextToSpeech(context, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                    @Override
-                    public void onStart(String utteranceId) {
-                        Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
-                    }
-
-                    //What to do after tts has done speaking the current text
-                    @Override
-                    public void onDone(String utteranceId) {
-                        readIndex++;
-
-                        //if there are still more sentences in article, continue reading
-                        if (readIndex < text.size() - 1 && !tts.isSpeaking()) {
-                            speakSentences(text.get(readIndex));
+    @Override
+    public void onInit(int status) {
+        text = loader.getText();
+        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onError(String utteranceId) {
-                        Log.e("UtteranceError", " " + utteranceId);
-                    }
-                });
-                identityLanguage();
+                        //What to do after tts has done speaking the current text
+                        @Override
+                        public void onDone(String utteranceId) {
+                            readIndex++;
+
+                            //if there are still more sentences in article, continue reading
+                            if (readIndex < text.size() && !tts.isSpeaking()) {
+                                speakSentences(text);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+                            Log.e("UtteranceError", " " + utteranceId);
+                        }
+                    });
+                    identityLanguage();
+                }
             }
-
         });
     }
 
@@ -87,7 +82,6 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         } catch (Exception e){
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -96,11 +90,10 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         switch (focusState) {
             case AudioManager.AUDIOFOCUS_GAIN:
                 // resume playback
-                while (!tts.isSpeaking() && readIndex < text.size()-1 ){
-                    speakSentences(text.get(readIndex));
-                    readIndex++;
+                if (!tts.isSpeaking()) {
+                    speakSentences(text);
+                    System.out.println("sohai2");
                 }
-
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
@@ -108,7 +101,6 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
                 // stop playback
                 if(tts.isSpeaking()) {
                     tts.stop();
-                    //pauseBtn.setImageResource(android.R.drawable.ic_media_play);
                 }
                 break;
         }
@@ -133,13 +125,15 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     //Speak the array of sentences.
-    private void speakSentences(String textToRead){
-        if(requestAudioFocus()){
-            tts.speak(textToRead, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+    private void speakSentences(ArrayList<String>text) {
+        if (requestAudioFocus()) {
+            System.out.println("sohai" + readIndex);
+            System.out.println("sohai" + text);
+            tts.speak(text.get(readIndex), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
     }
 
-    public void stopPlay(){
+    public void stopPlay() {
         if (tts != null && tts.isSpeaking()) {
             tts.stop();
         }
@@ -147,19 +141,25 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         removeAudioFocus();
     }
 
-    public void play(){
-        onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN);
+    public void stop(){
+        tts.stop();
+        tts.shutdown();
     }
+
 
     public void nextSentence(){
         removeAudioFocus();
-        readIndex++;
+        if (readIndex != text.size()) {
+            readIndex++;
+        }
         onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN);
     }
 
     public void previousSentence(){
         removeAudioFocus();
-        readIndex--;
+        if (readIndex != 0) {
+            readIndex--;
+        }
         onAudioFocusChange(AudioManager.AUDIOFOCUS_GAIN);
     }
 
@@ -206,5 +206,18 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     public void setText(ArrayList<String>text){
         this.text = text;
     }
+
+
+
+    public void onStop() {
+        if (tts != null){
+            tts.stop();
+        }
+    }
+
+    public void initializeTTS(){
+        this.tts = new TextToSpeech(context, this::onInit);
+    }
+
 
 }
