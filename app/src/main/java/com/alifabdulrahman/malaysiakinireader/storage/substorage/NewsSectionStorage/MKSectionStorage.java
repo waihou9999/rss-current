@@ -55,7 +55,6 @@ public class MKSectionStorage extends storage {
 
     public String getSectionURL(){
         return tinyDB.getString("sectionURL");
-
     }
 
     public String getNewsSectionType(){

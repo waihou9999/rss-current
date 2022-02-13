@@ -13,13 +13,8 @@ public class ArticleViewActivity extends AppCompatActivity {
     private saver saver;
     private webview wb;
     private ArticleData articleData;
-    private TTS tts;
     private webviewController webviewController;
-    private ttsController ttsController;
     private FunctionButton fb;
-    private ArticleData article;
-    private ImageButton stopBtn;
-    private test test;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +31,7 @@ public class ArticleViewActivity extends AppCompatActivity {
 
         if (loader.getLastArc() != null){
             try {
-                articleData = loader.getLastArc();
-                wb = new webview(ArticleViewActivity.this, this);
+                wb = new webview(ArticleViewActivity.this, this, fb);
                 webviewController = new webviewController(ArticleViewActivity.this, this, wb);
                 fb.setWebController(webviewController);
             } catch (InterruptedException e) {
@@ -45,35 +39,15 @@ public class ArticleViewActivity extends AppCompatActivity {
             }
         }
 
-        while()
-
-        if (loader.getTSS()){
-            tts = new TTS(getApplicationContext(), articleData);
-            ttsController = new ttsController(tts);
-            fb.setTTSController(ttsController);
-        }
-
-        else{
-            tts = new TTS(getApplicationContext(), articleData);
-            ttsController = new ttsController(tts);
-            ttsController.stopPlay();
-            fb.setTTSController(ttsController);
-        }
-
-
 
     }
-
     @Override
     protected void onDestroy() {
-        ttsController.destroy();
-        test.destroy();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
-        ttsController.onStop();
         super.onStop();
     }
 

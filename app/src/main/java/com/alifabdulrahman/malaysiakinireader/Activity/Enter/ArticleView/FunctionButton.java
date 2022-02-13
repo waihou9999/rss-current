@@ -18,6 +18,7 @@ public class FunctionButton implements View.OnClickListener{
     private ttsController ttsController;
     private loader loader;
     private saver saver;
+    private boolean startTSS;
 
     public FunctionButton(Activity activity, Context context) throws InterruptedException {
         this.activity = activity;
@@ -45,19 +46,21 @@ public class FunctionButton implements View.OnClickListener{
             switch (v.getId()) {
                 case R.id.stopbtn:
 
-                    if (loader.getTSS() || ttsController.isSpeaking()) {
+                    startTSS = loader.getTSS();
+
+                    System.out.println("ISCLCIKED" + startTSS);
+
+                    if (startTSS) {
                         stopBtn.setImageResource(pauseImg);
                         saver.setTSS(false);
-                        ttsController.stopPlay();
-                        break;
+                        ttsController.stop();
                     }
-                    if (!loader.getTSS()) {
-                        ttsController.initializeTTS();
+                    else{
                         stopBtn.setImageResource(playImg);
                         saver.setTSS(true);
-                        ttsController.stop();
-                        break;
+                        ttsController.play();
                     }
+                    break;
 
                 case R.id.nxtarcbtn:
                     webviewController.nextArc();
@@ -104,6 +107,18 @@ public class FunctionButton implements View.OnClickListener{
         prevSent.setOnClickListener((View.OnClickListener) this);
         nextSent.setOnClickListener((View.OnClickListener) this);
 
+        stopBtn.setEnabled(true);
+        prevSent.setEnabled(true);
+        nextSent.setEnabled(true);
+    }
+
+    public void ttsUnclickable() {
+        stopBtn.setEnabled(false);
+        prevSent.setEnabled(false);
+        nextSent.setEnabled(false);
+    }
+
+    public void ttsclickable() {
         stopBtn.setEnabled(true);
         prevSent.setEnabled(true);
         nextSent.setEnabled(true);

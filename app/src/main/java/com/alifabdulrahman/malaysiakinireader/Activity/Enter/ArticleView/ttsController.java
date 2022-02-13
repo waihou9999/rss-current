@@ -30,7 +30,6 @@ public class ttsController {
     }
 
 
-
     public void destroy(){
         tts.destroy();
     }
@@ -43,9 +42,7 @@ public class ttsController {
         tts.onStop();
     }
 
-    public void initializeTTS() {
-        tts.initializeTTS();
+    public void play() {
+        tts.speakSentences();
     }
-
-
 }

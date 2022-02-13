@@ -10,7 +10,6 @@ import com.alifabdulrahman.malaysiakinireader.R;
 
 public class webview {
     private WebView mWebView;
-    private FunctionButton fb;
     private int timex = 1000;
     private Activity activity;
     private Context context;
@@ -23,7 +22,7 @@ public class webview {
         mWebView = activity.findViewById(R.id.webview);
         this.activity = activity;
         this.context = context;
-        this.fb = fb;
+        fb.ttsUnclickable();
         this.loader = new loader(activity, context);
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);

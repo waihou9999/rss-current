@@ -8,6 +8,8 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,16 +21,12 @@ public class MKScraper {
     private Activity activity;
     private Context ctx;
     private WebView webView;
-    private FunctionButton fb;
-    private ttsController ttsController;
     private boolean loading;
-
 
     public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton fb) {
         this.activity = activity;
         this.ctx = ctx;
         this.webView = webView;
-        this.fb = fb;
 
         this.webView.addJavascriptInterface(new GetHTML(activity, ctx, fb), "Scrap");
     }
@@ -42,12 +40,16 @@ public class MKScraper {
         private Context ctx;
         private Activity activity;
         private FunctionButton fb;
+        private loader loader;
         private saver saver;
+        private TTS tts;
+        private ttsController ttsController;
 
         public GetHTML(Activity activity, Context ctx, FunctionButton fb) {
             this.activity = activity;
             this.ctx = ctx;
             this.fb = fb;
+            loader = new loader(activity, ctx);
             saver = new saver(this.activity, this.ctx);
         }
 
@@ -78,22 +80,34 @@ public class MKScraper {
 
             checkCompleted(tempList);
 
+            ArticleData articleData = loader.getLastArc();
+            tts = new TTS(activity, ctx, articleData);
+            ttsController = new ttsController(tts);
+
+            fb.setTTSController(ttsController);
+
             if (loading) {
+                fb.ttsUnclickable();
+                System.out.println("scraping");
                 Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
-                fb.setClickable(false);
+                saver.clearText();
             }
 
             if (!loading) {
+                System.out.println("done scraping");
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
                 saver.saveText(tempList);
-                fb.setClickable(true);
 
+                        ttsController = new ttsController(tts);
+                        fb.ttsclickable();
+                    }
             }
-        }
+
     }
 
     public void checkCompleted(ArrayList<String> tempList){
       String lastString = (tempList.get(tempList.size()-1));
+      System.out.println("scraping" + lastString);
       loading = (lastString.contains("..."));
     }
 }

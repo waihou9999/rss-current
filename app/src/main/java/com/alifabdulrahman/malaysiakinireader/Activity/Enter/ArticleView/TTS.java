@@ -1,5 +1,6 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFocusChangeListener {
+    private Activity activity;
     private TextToSpeech tts;
     private AudioManager audioManager;
     private int readIndex = 0;
@@ -28,46 +30,44 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     private Boolean startTTS;
     private loader loader;
     private ArticleData articleData;
+    private boolean readable;
 
-    public TTS(Context context, ArticleData articleData) {
+    public TTS(Activity activity, Context context, ArticleData articleData) {
         this.context = context;
-        initializeTTS();
+        this.articleData = articleData;
+        this.loader = new loader(activity, context);
+        tts = new TextToSpeech(context, this::onInit);
     }
 
     @Override
     public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            System.out.println("fkla");
 
-        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-
-                    tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                        @Override
-                        public void onStart(String utteranceId) {
-                            Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
-                        }
-
-                        //What to do after tts has done speaking the current text
-                        @Override
-                        public void onDone(String utteranceId) {
-                            readIndex++;
-
-                            //if there are still more sentences in article, continue reading
-                            if (readIndex < text.size() && !tts.isSpeaking()) {
-                                speakSentences(text);
-                            }
-                        }
-
-                        @Override
-                        public void onError(String utteranceId) {
-                            Log.e("UtteranceError", " " + utteranceId);
-                        }
-                    });
-
+            tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {
+                    Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+
+                //What to do after tts has done speaking the current text
+                @Override
+                public void onDone(String utteranceId) {
+                    readIndex++;
+
+                    //if there are still more sentences in article, continue reading
+                    if (readIndex < text.size() && !tts.isSpeaking()) {
+                        speakSentences();
+                    }
+                }
+
+                @Override
+                public void onError(String utteranceId) {
+                    Log.e("UtteranceError", " " + utteranceId);
+                }
+            });
+            identityLanguage();
+        }
     }
 
     public boolean removeAudioFocus() {
@@ -88,8 +88,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
             case AudioManager.AUDIOFOCUS_GAIN:
                 // resume playback
                 if (!tts.isSpeaking()) {
-                    speakSentences(text);
-                    System.out.println("sohai2");
+                    speakSentences();
                 }
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
@@ -122,10 +121,10 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     }
 
     //Speak the array of sentences.
-    private void speakSentences(ArrayList<String>text) {
+    public void speakSentences() {
+        text = loader.getText();
+        System.out.println("fkla" + text);
         if (requestAudioFocus()) {
-            System.out.println("sohai" + readIndex);
-            System.out.println("sohai" + text);
             tts.speak(text.get(readIndex), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
     }
@@ -204,17 +203,9 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         this.text = text;
     }
 
-
-
     public void onStop() {
         if (tts != null){
             tts.stop();
         }
     }
-
-    public void initializeTTS(){
-        this.tts = new TextToSpeech(context, this::onInit);
-    }
-
-
 }

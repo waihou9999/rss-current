@@ -19,6 +19,10 @@ public class currentArticle extends storage {
         tinyDB.putListString("MyContent", text);
     }
 
+    public void clearText(){
+        tinyDB.putListString("MyContent", null);
+    }
+
     public void saveReading(boolean wasReading){
         tinyDB.putBoolean("wasReading", wasReading);
     }
@@ -28,7 +32,7 @@ public class currentArticle extends storage {
     }
 
     public int loadIndex(){
-        return tinyDB.getInt("index");
+        return tinyDB.getInt("lastIndex");
     }
 
     public boolean loadReading(){
@@ -49,6 +53,10 @@ public class currentArticle extends storage {
 
     public String loadData(){
         return tinyDB.getString("lastURL");
+    }
+
+    public void saveNewsType(String newsType){
+        tinyDB.putString("lastNewsType", newsType);
     }
 
     public String loadNewsType(){
@@ -79,6 +87,7 @@ public class currentArticle extends storage {
     public String loadLastArticle(){
         return tinyDB.getString("lastURL");
     }
+
 
 
     public boolean startTSS(){return tinyDB.getBoolean("startTSS");}

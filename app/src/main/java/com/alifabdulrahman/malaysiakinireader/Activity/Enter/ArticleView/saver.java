@@ -37,6 +37,10 @@ public class saver {
         currentArticle.saveURL(link);
     }
 
+    public void clearText(){
+        currentArticle.clearText();
+    }
+
     public void noLastArt(){
         currentArticle.saveReading(false);
     }

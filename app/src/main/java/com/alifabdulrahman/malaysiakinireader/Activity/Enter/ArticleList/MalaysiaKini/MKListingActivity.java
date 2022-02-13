@@ -384,6 +384,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
 
             //checkReadStuff();
             newsStorage.saveData(articleDatas);
+            System.out.println("whatdata" + articleDatas);
             //saver.saveNewsType(articleDatas);
 
 

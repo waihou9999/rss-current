@@ -15,24 +15,28 @@ public class loader {
     private Context context;
     private currentArticle currentArticle;
     private NewsStorage newsStorage;
+    private MKSectionStorage MKSectionStorage;
     private ArrayList<ArticleData> articleDatas;
-
-
 
     public loader(Activity activity, Context context){
         this.activity = activity;
         this.context = context;
         currentArticle = new currentArticle(context);
+        MKSectionStorage = new MKSectionStorage(context);
+        String newsType = MKSectionStorage.getNewsSectionType();
 
-        String newsType = currentArticle.loadNewsType();
+        System.out.println("whatdatanewtype" + newsType);
 
         newsStorage = new NewsStorage(context, newsType);
         newsStorage.loadData();
         articleDatas = newsStorage.loadArt1();
+
     }
 
     public ArrayList<ArticleData> getArticleDatas() {
+        System.out.println("whatdataload" + articleDatas);
         return articleDatas;
+
     }
 
     public int getIndex(){
