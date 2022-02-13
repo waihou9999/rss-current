@@ -19,7 +19,7 @@ public class webview {
     private loader loader;
     private MKScraper mkScraper;
 
-    public webview(Activity activity, Context context) throws InterruptedException {
+    public webview(Activity activity, Context context, FunctionButton fb) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
         this.activity = activity;
         this.context = context;
