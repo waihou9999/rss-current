@@ -19,10 +19,9 @@ public class FunctionButton implements View.OnClickListener{
     private loader loader;
     private saver saver;
 
-    public FunctionButton(Activity activity, Context context, webviewController webviewController, ttsController ttsController) throws InterruptedException {
+    public FunctionButton(Activity activity, Context context) throws InterruptedException {
         this.activity = activity;
         stopBtn = this.activity.findViewById(R.id.stopbtn);
-        stopBtn.setClickable(false);
         nextArc = this.activity.findViewById(R.id.nxtarcbtn);
         prevArc = this.activity.findViewById(R.id.prevarcbtn);
         nextSent = this.activity.findViewById(R.id.forwbtn);
@@ -30,19 +29,15 @@ public class FunctionButton implements View.OnClickListener{
         sharebutton = this.activity.findViewById(R.id.sharebutton);
         rescrapebutton = this.activity.findViewById(R.id.rescrapebutton);
 
-        nextArc.setOnClickListener((View.OnClickListener) this);
-        stopBtn.setOnClickListener((View.OnClickListener) this);
-        prevArc.setOnClickListener((View.OnClickListener) this);
-        nextSent.setOnClickListener((View.OnClickListener) this);
-        prevSent.setOnClickListener((View.OnClickListener) this);
-        sharebutton.setOnClickListener((View.OnClickListener) this);
-        //rescrapebutton.setOnClickListener((View.OnClickListener) this);
+        prevArc.setEnabled(false);
+        nextArc.setEnabled(false);
+        sharebutton.setEnabled(false);
+        stopBtn.setEnabled(false);
+        prevSent.setEnabled(false);
+        nextSent.setEnabled(false);
 
         this.loader = new loader(activity, context);
         this.saver = new saver(activity, context);
-        this.webviewController = webviewController;
-        this.ttsController = ttsController;
-
     }
 
         @Override
@@ -88,6 +83,30 @@ public class FunctionButton implements View.OnClickListener{
 
     public void setClickable(boolean clickable){
         stopBtn.setClickable(clickable);
+    }
+
+    public void setWebController(webviewController webviewController) {
+        this.webviewController = webviewController;
+
+        prevArc.setOnClickListener((View.OnClickListener) this);
+        nextArc.setOnClickListener((View.OnClickListener) this);
+        sharebutton.setOnClickListener((View.OnClickListener) this);
+
+        prevArc.setEnabled(true);
+        nextArc.setEnabled(true);
+        sharebutton.setEnabled(true);
+    }
+
+    public void setTTSController(ttsController ttsController){
+        this.ttsController = ttsController;
+
+        stopBtn.setOnClickListener((View.OnClickListener) this);
+        prevSent.setOnClickListener((View.OnClickListener) this);
+        nextSent.setOnClickListener((View.OnClickListener) this);
+
+        stopBtn.setEnabled(true);
+        prevSent.setEnabled(true);
+        nextSent.setEnabled(true);
     }
 }
 

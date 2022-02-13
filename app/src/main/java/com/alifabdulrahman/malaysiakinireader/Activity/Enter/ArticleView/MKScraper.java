@@ -87,7 +87,7 @@ public class MKScraper {
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
                 saver.saveText(tempList);
                 fb.setClickable(true);
-                ttsController.initializeTTS();
+
             }
         }
     }

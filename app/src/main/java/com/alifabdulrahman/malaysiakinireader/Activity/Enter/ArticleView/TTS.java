@@ -1,6 +1,5 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
@@ -30,21 +29,19 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     private loader loader;
     private ArticleData articleData;
 
-    public TTS(Activity activity, Context context, ArticleData articleData) {
+    public TTS(Context context, ArticleData articleData) {
         this.context = context;
-        this.loader = new loader(activity, context);
-        this.startTTS = loader.getTSS();
-        this.articleData = articleData;
         initializeTTS();
     }
 
     @Override
     public void onInit(int status) {
-        text = loader.getText();
+
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
+
                     tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
                         public void onStart(String utteranceId) {
@@ -67,7 +64,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
                             Log.e("UtteranceError", " " + utteranceId);
                         }
                     });
-                    identityLanguage();
+
                 }
             }
         });
