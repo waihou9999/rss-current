@@ -29,6 +29,7 @@ public class ttsController {
         return tts.isSpeaking();
     }
 
+    public void checkPlay(){tts.checkPlay();}
 
     public void destroy(){
         tts.destroy();

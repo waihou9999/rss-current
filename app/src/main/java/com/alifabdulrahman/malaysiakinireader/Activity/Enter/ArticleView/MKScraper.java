@@ -1,9 +1,7 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -42,8 +40,8 @@ public class MKScraper {
         private FunctionButton fb;
         private loader loader;
         private saver saver;
-        private TTS tts;
         private ttsController ttsController;
+        boolean firstLoad = true;
 
         public GetHTML(Activity activity, Context ctx, FunctionButton fb) {
             this.activity = activity;
@@ -80,29 +78,30 @@ public class MKScraper {
 
             checkCompleted(tempList);
 
-            ArticleData articleData = loader.getLastArc();
-            tts = new TTS(activity, ctx, articleData);
-            ttsController = new ttsController(tts);
-
-            fb.setTTSController(ttsController);
+            ttsController = fb.getTTSController();
 
             if (loading) {
-                fb.ttsUnclickable();
-                System.out.println("scraping");
-                Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
-                saver.clearText();
+                    fb.ttsUnclickable();
+                    System.out.println("scraping");
+                    if (firstLoad) {
+                        Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
+                        firstLoad = false;
+                    }
+                    else {
+                        Toast.makeText(ctx, "Please sign in to get full content", Toast.LENGTH_SHORT).show();
+                    }
+                    saver.clearText();
             }
 
             if (!loading) {
                 System.out.println("done scraping");
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
                 saver.saveText(tempList);
-
-                        ttsController = new ttsController(tts);
-                        fb.ttsclickable();
-                    }
+                ttsController.setText(tempList);
+                ttsController.checkPlay();
+                fb.ttsclickable();
             }
-
+        }
     }
 
     public void checkCompleted(ArrayList<String> tempList){

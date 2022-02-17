@@ -31,23 +31,24 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     private loader loader;
     private ArticleData articleData;
     private boolean readable;
+    private String newsType;
 
-    public TTS(Activity activity, Context context, ArticleData articleData) {
+    public TTS(Activity activity, Context context, ArticleData articleData, String newsType) {
         this.context = context;
         this.articleData = articleData;
         this.loader = new loader(activity, context);
+        this.newsType = newsType;
         tts = new TextToSpeech(context, this::onInit);
     }
 
     @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
-            System.out.println("fkla");
-
             tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                 @Override
                 public void onStart(String utteranceId) {
                     Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
+                    speakTitle();
                 }
 
                 //What to do after tts has done speaking the current text
@@ -69,6 +70,8 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
             identityLanguage();
         }
     }
+
+
 
     public boolean removeAudioFocus() {
         try{
@@ -129,6 +132,12 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         }
     }
 
+    private void speakTitle() {
+        if (requestAudioFocus()) {
+            tts.speak(articleData.getTitle() + "by" + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+        }
+    }
+
     public void stopPlay() {
         if (tts != null && tts.isSpeaking()) {
             tts.stop();
@@ -160,35 +169,19 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     }
 
     public void identityLanguage(){
-        String langIDText = articleData.getTitle();
+        if (newsType.contains("English")){
+            tts.setLanguage(Locale.ENGLISH);
+        }
 
-        //Set the language of TTS
-        FirebaseLanguageIdentification languageIdentifier = FirebaseNaturalLanguage.getInstance().getLanguageIdentification();
-        languageIdentifier.identifyLanguage(langIDText).addOnSuccessListener(
-                new OnSuccessListener<String>() {
-                    @Override
-                    public void onSuccess(@Nullable String languageCode) {
-                        //System.out.println("languageCode: " + languageCode);
-                        switch (languageCode) {
-                            case "en": tts.setLanguage(Locale.ENGLISH);break;
-                            case "ms":
-                            case "id":
-                                tts.setLanguage(new Locale("id", "ID")); break;
+        if (newsType.contains("Bahasa Malaysia")){
+            Locale localBM = new Locale("id", "MY");
+            tts.setLanguage(localBM);
+        }
 
-                            case "zh": tts.setLanguage(Locale.CHINESE); break;
 
-                            default: tts.setLanguage(Locale.ENGLISH);break;
-                        }
-                    }
-                })
-                .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Model couldn’t be loaded or other internal error.
-                                // ...
-                            }
-                        });
+        if (newsType.contains("Chinese")) {
+            tts.setLanguage(Locale.CHINA);
+        }
     }
 
     public void destroy() {
@@ -207,5 +200,12 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         if (tts != null){
             tts.stop();
         }
+    }
+
+    public void checkPlay() {
+        if (startTTS)
+            speakSentences();
+        else
+            stopPlay();
     }
 }

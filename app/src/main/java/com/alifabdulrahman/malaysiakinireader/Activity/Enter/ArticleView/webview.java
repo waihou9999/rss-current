@@ -30,6 +30,7 @@ public class webview {
         mkScraper = new MKScraper(activity, context, mWebView, fb);
 
         loadWebView(url);
+        fb.ttsUnclickable();
 
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

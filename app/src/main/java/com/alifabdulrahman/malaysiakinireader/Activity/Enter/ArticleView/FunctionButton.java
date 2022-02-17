@@ -7,8 +7,6 @@ import android.widget.ImageButton;
 
 import com.alifabdulrahman.malaysiakinireader.R;
 
-import java.util.ArrayList;
-
 public class FunctionButton implements View.OnClickListener{
     private ImageButton nextArc, prevArc, nextSent, prevSent, stopBtn, sharebutton, rescrapebutton;
     private Activity activity;
@@ -48,12 +46,10 @@ public class FunctionButton implements View.OnClickListener{
 
                     startTSS = loader.getTSS();
 
-                    System.out.println("ISCLCIKED" + startTSS);
-
                     if (startTSS) {
                         stopBtn.setImageResource(pauseImg);
                         saver.setTSS(false);
-                        ttsController.stop();
+                        ttsController.stopPlay();
                     }
                     else{
                         stopBtn.setImageResource(playImg);
@@ -113,15 +109,21 @@ public class FunctionButton implements View.OnClickListener{
     }
 
     public void ttsUnclickable() {
+        stopBtn.setClickable(false);
         stopBtn.setEnabled(false);
         prevSent.setEnabled(false);
         nextSent.setEnabled(false);
     }
 
     public void ttsclickable() {
+        stopBtn.setClickable(true);
         stopBtn.setEnabled(true);
         prevSent.setEnabled(true);
         nextSent.setEnabled(true);
+    }
+
+    public ttsController getTTSController(){
+        return ttsController;
     }
 }
 

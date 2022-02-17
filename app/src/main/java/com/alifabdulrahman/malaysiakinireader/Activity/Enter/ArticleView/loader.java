@@ -25,8 +25,6 @@ public class loader {
         MKSectionStorage = new MKSectionStorage(context);
         String newsType = MKSectionStorage.getNewsSectionType();
 
-        System.out.println("whatdatanewtype" + newsType);
-
         newsStorage = new NewsStorage(context, newsType);
         newsStorage.loadData();
         articleDatas = newsStorage.loadArt1();
@@ -36,8 +34,9 @@ public class loader {
     public ArrayList<ArticleData> getArticleDatas() {
         System.out.println("whatdataload" + articleDatas);
         return articleDatas;
-
     }
+
+    public String getNewsType(){ return MKSectionStorage.getNewsSectionType();}
 
     public int getIndex(){
         return currentArticle.loadIndex();

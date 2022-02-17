@@ -15,6 +15,8 @@ public class ArticleViewActivity extends AppCompatActivity {
     private ArticleData articleData;
     private webviewController webviewController;
     private FunctionButton fb;
+    private TTS tts;
+    private ttsController ttsController;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +24,20 @@ public class ArticleViewActivity extends AppCompatActivity {
 
         saver = new saver(ArticleViewActivity.this, this);
         loader = new loader(ArticleViewActivity.this, this);
+        articleData = loader.getLastArc();
+        String newsType = loader.getNewsType();
+
+        tts = new TTS(ArticleViewActivity.this, this, articleData, newsType);
+        ttsController = new ttsController(tts);
 
         try {
             fb = new FunctionButton(ArticleViewActivity.this, this);
+            fb.setTTSController(ttsController);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
 
         if (loader.getLastArc() != null){
             try {
@@ -43,11 +53,13 @@ public class ArticleViewActivity extends AppCompatActivity {
     }
     @Override
     protected void onDestroy() {
+        ttsController.destroy();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
+        //ttsController.onStop();
         super.onStop();
     }
 
