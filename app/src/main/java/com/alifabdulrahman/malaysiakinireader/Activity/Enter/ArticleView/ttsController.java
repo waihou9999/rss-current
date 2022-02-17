@@ -1,12 +1,25 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
+import android.app.Activity;
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class ttsController {
     private TTS tts;
+    private saver saver;
 
-    public ttsController(TTS tts){
+    public ttsController(saver saver, TTS tts){
         this.tts = tts;
+        this.saver = saver;
+    }
+
+    public void initializeTTS(){
+        tts.initializeTTS();
+    }
+
+    public ttsController() {
+        tts = null;
     }
 
     public void stopPlay() {
@@ -29,8 +42,6 @@ public class ttsController {
         return tts.isSpeaking();
     }
 
-    public void checkPlay(){tts.checkPlay();}
-
     public void destroy(){
         tts.destroy();
     }
@@ -43,7 +54,27 @@ public class ttsController {
         tts.onStop();
     }
 
-    public void play() {
-        tts.speakSentences();
+    public void setTTS(TTS tts){
+        this.tts = tts;
     }
+
+    public void play() {
+       // tts.speakSentences(text);
+    }
+
+    public ArrayList<String> getText() {
+        return tts.getText();
+    }
+
+    public void playing() {
+        saver.setTSS(true);
+        tts.initializeTTS();
+        tts.stop();
+    }
+
+    public void pausing(){
+        saver.setTSS(false);
+        tts.stopPlay();
+    }
+
 }

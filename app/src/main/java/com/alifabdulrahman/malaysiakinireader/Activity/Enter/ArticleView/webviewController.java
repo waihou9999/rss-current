@@ -9,27 +9,21 @@ import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 
 import java.util.ArrayList;
 
-public class webviewController {
+public class webviewController extends Controller{
     private Activity activity;
-    private Context context;
-    private webview wb;
-    private loader loader;
-    private saver saver;
     private ArrayList<ArticleData> articleDatas;
     private int index;
     private String url;
+    private webview wb;
 
     public webviewController(Activity activity, Context context, webview wb){
+        super(activity, context);
         this.activity = activity;
-        this.context = context;
-        this.wb = wb;
-        this.loader = new loader(activity, context);
-        this.saver = new saver(activity, context);
         this.articleDatas = loader.getArticleDatas();
         this.index = loader.getIndex();
         this.url = loader.getUrl();
+        this.wb = wb;
     }
-
 
     public void prevArc() {
         index = loader.getIndex();
@@ -41,6 +35,7 @@ public class webviewController {
             saver.saveArc(loader.getArticleDatas().get(index - 1));
             saver.saveIndex(loader.getIndex() - 1);
             wb.loadWebView(url);
+            wb.setFirstLoad();
             saver.setURL(url);
         }
     }
@@ -58,6 +53,7 @@ public class webviewController {
 
             wb.loadWebView(url);
             saver.setURL(url);
+            wb.setFirstLoad();
         }
     }
 
@@ -68,5 +64,9 @@ public class webviewController {
         myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
         myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         activity.startActivity(Intent.createChooser(myIntent, "Share using"));
+    }
+
+    public void setFirstLoad() {
+        wb.setFirstLoad();
     }
 }

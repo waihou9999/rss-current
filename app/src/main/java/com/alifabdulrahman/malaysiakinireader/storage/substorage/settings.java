@@ -23,7 +23,7 @@ public class settings extends storage {
 
     //Load the user's order settings
     public boolean loadSettings(String newsType){
-        return tinyDB.getBoolean("order" + newsType);
+        return tinyDB.getBoolean("order" + newsType, false);
     }
 
     public boolean checkFirstRun(AlertDialog.Builder startUp) {

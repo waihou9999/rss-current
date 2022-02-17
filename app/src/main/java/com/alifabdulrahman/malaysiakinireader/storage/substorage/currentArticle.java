@@ -19,8 +19,12 @@ public class currentArticle extends storage {
         tinyDB.putListString("MyContent", text);
     }
 
+    public ArrayList<String> loadText(){
+        return tinyDB.getListString("MyContent");
+    }
+
     public void clearText(){
-        tinyDB.putListString("MyContent", null);
+        tinyDB.remove("MyContent");
     }
 
     public void saveReading(boolean wasReading){
@@ -36,11 +40,7 @@ public class currentArticle extends storage {
     }
 
     public boolean loadReading(){
-        return tinyDB.getBoolean("wasReading");
-    }
-
-    public ArrayList<String> loadText(){
-        return tinyDB.getListString("MyContent");
+        return tinyDB.getBoolean("wasReading", false);
     }
 
     public void saveData(String link) {
@@ -90,7 +90,7 @@ public class currentArticle extends storage {
 
 
 
-    public boolean startTSS(){return tinyDB.getBoolean("startTSS");}
+    public boolean startTSS(){return tinyDB.getBoolean("startTSS", false);}
 
     public void setTTS(boolean tss){tinyDB.putBoolean("startTSS", tss);}
 }

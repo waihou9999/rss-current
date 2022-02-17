@@ -20,13 +20,14 @@ public class MKScraper {
     private Context ctx;
     private WebView webView;
     private boolean loading;
+    boolean firstLoad = true;
 
-    public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton fb) {
+    public MKScraper(Activity activity, Context ctx, WebView webView, ttsFunctionButton ttsFunctionButton) {
         this.activity = activity;
         this.ctx = ctx;
         this.webView = webView;
 
-        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, fb), "Scrap");
+        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, ttsFunctionButton), "Scrap");
     }
 
     public void scrap() {
@@ -37,18 +38,15 @@ public class MKScraper {
     public class GetHTML{
         private Context ctx;
         private Activity activity;
-        private FunctionButton fb;
-        private loader loader;
         private saver saver;
+        private ttsFunctionButton ttsFunctionButton;
         private ttsController ttsController;
-        boolean firstLoad = true;
 
-        public GetHTML(Activity activity, Context ctx, FunctionButton fb) {
+        public GetHTML(Activity activity, Context ctx, ttsFunctionButton ttsFunctionButton) {
             this.activity = activity;
             this.ctx = ctx;
-            this.fb = fb;
-            loader = new loader(activity, ctx);
             saver = new saver(this.activity, this.ctx);
+            this.ttsFunctionButton = ttsFunctionButton;
         }
 
         @JavascriptInterface
@@ -76,38 +74,28 @@ public class MKScraper {
                 }
             }
 
-            checkCompleted(tempList);
 
-            ttsController = fb.getTTSController();
-
-            if (loading) {
-                    fb.ttsUnclickable();
-                    System.out.println("scraping");
-                    if (firstLoad) {
-                        Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
-                        firstLoad = false;
-                    }
-                    else {
-                        Toast.makeText(ctx, "Please sign in to get full content", Toast.LENGTH_SHORT).show();
-                    }
-                    saver.clearText();
-            }
-
-            if (!loading) {
-                System.out.println("done scraping");
+            if (checkLoading(tempList)){
+                Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
+                saver.clearText();
+            }else{
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
                 saver.saveText(tempList);
-                ttsController.setText(tempList);
-                ttsController.checkPlay();
-                fb.ttsclickable();
+                ttsFunctionButton.enable();
+                ttsController = ttsFunctionButton.getTtsController();
+                ttsController.initializeTTS();
             }
+        }
+
+        public boolean checkLoading(ArrayList<String> tempList){
+            String lastString = (tempList.get(tempList.size()-1));
+            loading = (lastString.contains("..."));
+            return loading;
         }
     }
 
-    public void checkCompleted(ArrayList<String> tempList){
-      String lastString = (tempList.get(tempList.size()-1));
-      System.out.println("scraping" + lastString);
-      loading = (lastString.contains("..."));
+    public void setFirstLoad(){
+        firstLoad = true;
     }
 }
 

@@ -300,9 +300,10 @@ public class TinyDB {
     /**
      * Get boolean value from SharedPreferences at 'key'. If key not found, return false
      * @param key SharedPreferences key
+     * @param b
      * @return boolean value at 'key' or false if key not found
      */
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(String key, boolean b) {
         return preferences.getBoolean(key, false);
     }
 

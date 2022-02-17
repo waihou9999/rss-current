@@ -32,7 +32,6 @@ public class loader {
     }
 
     public ArrayList<ArticleData> getArticleDatas() {
-        System.out.println("whatdataload" + articleDatas);
         return articleDatas;
     }
 

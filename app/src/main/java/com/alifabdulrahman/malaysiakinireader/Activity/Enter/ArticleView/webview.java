@@ -11,26 +11,20 @@ import com.alifabdulrahman.malaysiakinireader.R;
 public class webview {
     private WebView mWebView;
     private int timex = 1000;
-    private Activity activity;
-    private Context context;
     private SwipeRefreshLayout pullToRefresh;
     private String url;
     private loader loader;
     private MKScraper mkScraper;
 
-    public webview(Activity activity, Context context, FunctionButton fb) throws InterruptedException {
+    public webview(Activity activity, Context context, loader loader, ttsFunctionButton ttsFunctionButton) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
-        this.activity = activity;
-        this.context = context;
-        fb.ttsUnclickable();
-        this.loader = new loader(activity, context);
+        this.loader = loader;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
 
-        mkScraper = new MKScraper(activity, context, mWebView, fb);
+        mkScraper = new MKScraper(activity, context, mWebView, ttsFunctionButton);
 
         loadWebView(url);
-        fb.ttsUnclickable();
 
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -77,5 +71,9 @@ public class webview {
             Thread.currentThread().interrupt();
         }
         mkScraper.scrap();
+    }
+
+    public void setFirstLoad() {
+        mkScraper.setFirstLoad();
     }
 }
