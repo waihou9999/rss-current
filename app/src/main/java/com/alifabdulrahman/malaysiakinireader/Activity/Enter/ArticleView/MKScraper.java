@@ -101,7 +101,9 @@ public class MKScraper {
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
                 ttsFunctionButton.enable();
                 saver.saveText(tempList);
-                ttsController.init();
+                if (loader.getTSS()) {
+                    ttsController.init();
+                }
             }
         }
 

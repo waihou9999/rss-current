@@ -30,7 +30,6 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
         prevSentBtn.setOnClickListener(this);
         nextSentBtn.setOnClickListener(this);
 
-
         this.ttsController = ttsController;
 
         this.loader = loader;
@@ -42,7 +41,6 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
             stopBtn.setImageResource(pauseImg);
         } else {
             stopBtn.setImageResource(playImg);
-            ttsController.stopPlay();
         }
 
 
@@ -68,7 +66,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                 if (!startTSS) {
                     stopBtn.setImageResource(pauseImg);
                     saver.setTSS(true);
-                    ttsController.playing();
+                    ttsController.init();
 
                     break;
                 }

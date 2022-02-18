@@ -38,9 +38,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     public void onInit(int status) {
         if(status == TextToSpeech.SUCCESS) {
             identityLanguage();
-
-            onAudioFocusChange(-1);
-
+            
             speakTitle();
             speakSentences(text);
 
