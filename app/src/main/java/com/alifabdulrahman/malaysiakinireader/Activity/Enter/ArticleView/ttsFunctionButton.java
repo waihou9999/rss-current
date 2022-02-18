@@ -18,9 +18,10 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
     int pauseImg = android.R.drawable.ic_media_pause;
     private ttsController ttsController;
     private loader loader;
+    private saver saver;
     private boolean startTSS;
 
-    public ttsFunctionButton(Activity activity, Context context, ttsController ttsController, loader loader){
+    public ttsFunctionButton(Activity activity, Context context, ttsController ttsController, loader loader, saver saver){
         super(activity, context);
         stopBtn = activity.findViewById(R.id.stopbtn);
         nextSentBtn = activity.findViewById(R.id.forwbtn);
@@ -33,6 +34,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
         this.ttsController = ttsController;
 
         this.loader = loader;
+        this.saver = saver;
 
         startTSS = loader.getTSS();
 
@@ -40,6 +42,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
             stopBtn.setImageResource(pauseImg);
         } else {
             stopBtn.setImageResource(playImg);
+            ttsController.stopPlay();
         }
 
 
@@ -55,6 +58,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                 //stop speaking
                 if (startTSS){
                     stopBtn.setImageResource(playImg);
+                    saver.setTSS(false);
                     ttsController.pausing();
                     break;
                 }
@@ -63,7 +67,9 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                 //start speaking
                 if (!startTSS) {
                     stopBtn.setImageResource(pauseImg);
+                    saver.setTSS(true);
                     ttsController.playing();
+
                     break;
                 }
                 break;

@@ -18,7 +18,7 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
     private webviewController webviewController;
     private ttsController ttsController;
 
-    public webviewFunctionButton(Activity activity, webviewController webviewController) throws InterruptedException {
+    public webviewFunctionButton(Activity activity, webviewController webviewController, ttsController ttsController) throws InterruptedException {
         super(activity);
         nextArc = activity.findViewById(R.id.nxtarcbtn);
         prevArc = activity.findViewById(R.id.prevarcbtn);
@@ -34,6 +34,7 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
         sharebutton.setEnabled(true);
 
         this.webviewController = webviewController;
+        this.ttsController = ttsController;
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -48,11 +49,13 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
                 break;
 
             case R.id.prevarcbtn:
+                ttsController.stopPlay();
                 webviewController.prevArc();
 
                 break;
 
             case R.id.nxtarcbtn:
+                ttsController.stopPlay();
                 webviewController.nextArc();
                 break;
         }

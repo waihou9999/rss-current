@@ -102,15 +102,6 @@ public class MKScraper {
                 ttsFunctionButton.enable();
                 saver.saveText(tempList);
                 ttsController.init();
-
-                boolean startTSS = loader.getTSS();
-                System.out.println("sohaiget" + startTSS);
-                if(startTSS){
-                    ttsController.playing();
-                }
-
-                //ttsController.speak(tempList);
-
             }
         }
 

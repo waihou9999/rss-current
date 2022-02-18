@@ -29,7 +29,7 @@ public class ArticleViewActivity extends AppCompatActivity {
         loader = new loader(ArticleViewActivity.this, this);
 
         ttsController = new ttsController(this, loader, saver);
-        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, ttsController, loader);
+        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, ttsController, loader, saver);
         ttsFunctionButton.disabled();
 
         try {
@@ -37,9 +37,9 @@ public class ArticleViewActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        webviewController = new webviewController(ArticleViewActivity.this, this, wb, ttsController);
+        webviewController = new webviewController(ArticleViewActivity.this, this, wb);
         try {
-            webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this, webviewController);
+            webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this, webviewController, ttsController);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

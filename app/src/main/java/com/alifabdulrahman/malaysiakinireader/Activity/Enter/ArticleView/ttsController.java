@@ -10,11 +10,17 @@ public class ttsController {
     private loader loader;
     private saver saver;
     private ArrayList<String>text;
+    private webviewController webviewController;
 
     public ttsController(Context context, loader loader, saver saver){
         this.context = context;
         this.loader = loader;
         this.saver = saver;
+        this.webviewController = null;
+    }
+
+    public void setWebviewController(webviewController webviewController) {
+        this.webviewController = webviewController;
     }
 
     public ttsController() {
@@ -22,7 +28,8 @@ public class ttsController {
     }
 
     public void stopPlay() {
-        tts.stopPlay();
+        if (tts != null)
+         tts.stopPlay();
     }
 
     public void stop() {
@@ -61,14 +68,13 @@ public class ttsController {
     }
 
     public void playing() {
-        saver.setTSS(true);
         if (tts != null) {
             tts.onAudioFocusChange(1);
         }
     }
 
+
     public void pausing(){
-        saver.setTSS(false);
         if (tts != null)
             tts.onAudioFocusChange(-1);
     }
@@ -89,5 +95,17 @@ public class ttsController {
         if (!tts.isSpeaking()){
             tts.speakSentences(tempList);
         }
+    }
+
+    public void checkPlay() {
+        tts.checkPlay();
+    }
+
+    public void playSilent() {
+        tts.playSilent();
+    }
+
+    public void shutdown() {
+        tts.shutdown();
     }
 }

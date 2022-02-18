@@ -15,12 +15,14 @@ public class webview {
     private String url;
     private loader loader;
     private MKScraper mkScraper;
+    private ttsController ttsController;
 
     public webview(Activity activity, Context context, loader loader, ttsFunctionButton ttsFunctionButton, ttsController ttsController) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
         this.loader = loader;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
+        this.ttsController = ttsController;
 
         mkScraper = new MKScraper(activity, context, mWebView, ttsFunctionButton, ttsController);
 

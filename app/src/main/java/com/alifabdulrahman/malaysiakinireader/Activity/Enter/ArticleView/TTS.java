@@ -38,16 +38,11 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     public void onInit(int status) {
         if(status == TextToSpeech.SUCCESS) {
             identityLanguage();
+
+            onAudioFocusChange(-1);
+
             speakTitle();
             speakSentences(text);
-
-            if (loader.getTSS())
-                onAudioFocusChange(1);
-
-            if (!loader.getTSS()){
-                onAudioFocusChange(-1);
-            }
-
 
 
             tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -172,6 +167,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         }
     }
 
+
     public void stopPlay() {
         if (tts != null && tts.isSpeaking()) {
             tts.stop();
@@ -226,8 +222,18 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         return tts;
     }
 
+    public void checkPlay() {
+            if (tts != null) {
+                tts.stop();
+            }
+        removeAudioFocus();
+    }
 
-    public void pullText() {
-        text = loader.getText();
+    public void playSilent(){
+        tts.playSilentUtterance(750, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public void shutdown(){
+        tts.shutdown();
     }
 }

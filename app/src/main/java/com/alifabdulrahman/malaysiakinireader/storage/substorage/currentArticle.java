@@ -40,7 +40,7 @@ public class currentArticle extends storage {
     }
 
     public boolean loadReading(){
-        return tinyDB.getBoolean("wasReading", false);
+        return tinyDB.getBoolean("wasReading");
     }
 
     public void saveData(String link) {

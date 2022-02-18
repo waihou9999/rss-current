@@ -50,7 +50,7 @@ public class MKSectionStorage extends storage {
     }
 
     public boolean loadReading(){
-        return tinyDB.getBoolean("wasReading", false);
+        return tinyDB.getBoolean("wasReading");
     }
 
     public String getSectionURL(){

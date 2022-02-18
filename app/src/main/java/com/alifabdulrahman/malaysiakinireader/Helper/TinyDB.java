@@ -197,10 +197,6 @@ public class TinyDB {
         return preferences.getInt(key, 0);
     }
 
-    public boolean getBoolean(String key) {
-        return preferences.getBoolean(key, false);
-    }
-
     /**
      * Get parsed ArrayList of Integers from SharedPreferences at 'key'
      * @param key SharedPreferences key
@@ -304,10 +300,9 @@ public class TinyDB {
     /**
      * Get boolean value from SharedPreferences at 'key'. If key not found, return false
      * @param key SharedPreferences key
-     * @param b
      * @return boolean value at 'key' or false if key not found
      */
-    public boolean getBoolean(String key, boolean b) {
+    public boolean getBoolean(String key) {
         return preferences.getBoolean(key, false);
     }
 
@@ -333,11 +328,11 @@ public class TinyDB {
 
 
 //    public ArrayList<Object> getListObject(String key, Class<?> mClass){
-//    	Gson gson = new Gson(); 
-//    	
+//    	Gson gson = new Gson();
+//
 //    	ArrayList<String> objStrings = getListString(key);
 //    	ArrayList<Object> objects =  new ArrayList<Object>();
-//    	
+//
 //    	for(String jObjString : objStrings){
 //    		Object value  = gson.fromJson(jObjString,  mClass);
 //    		objects.add(value);
@@ -486,17 +481,17 @@ public class TinyDB {
     /**
      * Put ObJect any type into SharedPrefrences with 'key' and save
      * @param key SharedPreferences key
-     * @param obj is the Object you want to put 
+     * @param obj is the Object you want to put
      */
 //    public void putObject(String key, Object obj){
 //    	checkForNullKey(key);
-//    	Gson gson = new Gson(); 
+//    	Gson gson = new Gson();
 //    	putString(key, gson.toJson(obj));
 //    }
-//    
+//
 //    public void putListObject(String key, ArrayList<Object> objArray){
-//    	checkForNullKey(key); 
-//    	Gson gson = new Gson(); 
+//    	checkForNullKey(key);
+//    	Gson gson = new Gson();
 //    	ArrayList<String> objStrings = new ArrayList<String>();
 //    	for(Object obj : objArray){
 //    		objStrings.add(gson.toJson(obj));
@@ -610,6 +605,4 @@ public class TinyDB {
             throw new NullPointerException();
         }
     }
-
-
 }
