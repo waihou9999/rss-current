@@ -64,4 +64,8 @@ public class saver {
     public void setTSS(boolean tts) {
         currentArticle.setTTS(tts);
     }
+
+    public void saveReadIndex(int readIndex) {
+        currentArticle.setReadIndex(readIndex);
+    }
 }

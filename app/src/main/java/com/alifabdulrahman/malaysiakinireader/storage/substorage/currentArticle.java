@@ -88,9 +88,18 @@ public class currentArticle extends storage {
         return tinyDB.getString("lastURL");
     }
 
+    public void setReadIndex(int readIndex){
+        tinyDB.putInt("readIndex", readIndex);
+    }
 
+    public int getReadIndex(){
+        return tinyDB.getInt("readIndex");
+    }
 
-    public boolean startTSS(){return tinyDB.getBoolean("startTSS", false);}
+    public boolean startTSS(){return tinyDB.getBoolean("startTSS");}
 
-    public void setTTS(boolean tss){tinyDB.putBoolean("startTSS", tss);}
+    public void setTTS(boolean tss){
+        System.out.println("sohai" + tss);
+        tinyDB.putBoolean("startTSS", tss);
+    }
 }

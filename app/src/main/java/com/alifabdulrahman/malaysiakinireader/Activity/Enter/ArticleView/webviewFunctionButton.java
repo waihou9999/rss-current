@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class webviewFunctionButton extends FunctionButton implements View.OnClickListener{
     private ImageButton sharebutton, rescrapebutton, nextArc, prevArc;
     private webviewController webviewController;
+    private ttsController ttsController;
 
     public webviewFunctionButton(Activity activity, webviewController webviewController) throws InterruptedException {
         super(activity);
@@ -48,6 +49,7 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
 
             case R.id.prevarcbtn:
                 webviewController.prevArc();
+
                 break;
 
             case R.id.nxtarcbtn:

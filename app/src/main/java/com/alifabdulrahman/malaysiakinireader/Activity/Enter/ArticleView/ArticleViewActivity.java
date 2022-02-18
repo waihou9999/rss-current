@@ -17,9 +17,9 @@ public class ArticleViewActivity extends AppCompatActivity {
     private webview wb;
     private webviewController webviewController;
     private webviewFunctionButton webviewFunctionButton;
-    private TTS tts;
     private ttsController ttsController;
     private ttsFunctionButton ttsFunctionButton;
+    private FunctionButton fb;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,21 +28,23 @@ public class ArticleViewActivity extends AppCompatActivity {
         saver = new saver(ArticleViewActivity.this, this);
         loader = new loader(ArticleViewActivity.this, this);
 
-        tts = new TTS(this, loader);
-        ttsController = new ttsController(saver, tts);
-        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, ttsController, loader);
+        ttsController = new ttsController(this, loader, saver);
+        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, ttsController, loader);
+        ttsFunctionButton.disabled();
 
         try {
-            wb = new webview(ArticleViewActivity.this, this, loader, ttsFunctionButton);
+            wb = new webview(ArticleViewActivity.this, this, loader, ttsFunctionButton, ttsController);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        webviewController = new webviewController(ArticleViewActivity.this, this, wb);
+        webviewController = new webviewController(ArticleViewActivity.this, this, wb, ttsController);
         try {
             webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this, webviewController);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        fb = new FunctionButton(ArticleViewActivity.this, this, ttsFunctionButton, webviewFunctionButton);
 
     }
 

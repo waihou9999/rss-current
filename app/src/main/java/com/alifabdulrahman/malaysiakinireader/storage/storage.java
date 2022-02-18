@@ -22,7 +22,6 @@ public abstract class storage {
 
 
     public void saveData() {
-
     }
 
 }

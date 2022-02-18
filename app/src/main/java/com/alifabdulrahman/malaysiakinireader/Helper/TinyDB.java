@@ -197,6 +197,10 @@ public class TinyDB {
         return preferences.getInt(key, 0);
     }
 
+    public boolean getBoolean(String key) {
+        return preferences.getBoolean(key, false);
+    }
+
     /**
      * Get parsed ArrayList of Integers from SharedPreferences at 'key'
      * @param key SharedPreferences key
@@ -606,4 +610,6 @@ public class TinyDB {
             throw new NullPointerException();
         }
     }
+
+
 }

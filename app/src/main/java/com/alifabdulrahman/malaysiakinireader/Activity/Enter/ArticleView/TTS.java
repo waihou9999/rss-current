@@ -1,6 +1,5 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
@@ -8,14 +7,13 @@ import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.MainActivity;
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TTS implements AudioManager.OnAudioFocusChangeListener {
+public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFocusChangeListener {
     private TextToSpeech tts;
     private AudioManager audioManager;
     private Context context;
@@ -23,29 +21,70 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     private ArrayList<String>text;
     private ArticleData articleData;
     private String newsType;
+    private saver saver;
+    private loader loader;
 
-
-    public TTS(Context context, loader loader) {
+    public TTS(Context context, loader loader, saver saver) {
         this.context = context;
         this.articleData = loader.getLastArc();
-        this.text = loader.getText();
         this.newsType = loader.getNewsType();
+        this.saver = saver;
+        this.loader = loader;
+        tts = new TextToSpeech(context, this);
+        text = loader.getText();
     }
 
-    public void initializeTTS(){
-        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status == TextToSpeech.SUCCESS){
+    @Override
+    public void onInit(int status) {
+        if(status == TextToSpeech.SUCCESS) {
+            identityLanguage();
+            speakTitle();
+            speakSentences(text);
 
-                    identityLanguage();
-                    speakSentences(text);
-                }
-                else
-                    Log.e("error", "TTS initialization failed!");
+            if (loader.getTSS())
+                onAudioFocusChange(1);
+
+            if (!loader.getTSS()){
+                onAudioFocusChange(-1);
             }
-        });
+
+
+
+            tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {
+                    Toast.makeText(context, "TTS initialization successful", Toast.LENGTH_SHORT).show();
+                }
+
+                //What to do after tts has done speaking the current text
+                @Override
+                public void onDone(String utteranceId) {
+                    readIndex++;
+
+                    //if there are still more sentences in article, continue reading
+                    if(readIndex < text.size() && !tts.isSpeaking()){
+                        speakSentences(text);
+                        //System.out.println("whatever");
+                        //System.out.println(articleDatas.get(index).getContent());
+                    }
+                    //Else, update UI with next article and read it
+                    //
+                }
+
+                @Override
+                public void onError(String utteranceId) {
+                    Log.e("UtteranceError", " " + utteranceId);
+                }
+            });
+
+
+        }
     }
+
+    public void fuckyou(String fkyou){
+        tts.speak(fkyou, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
 
     public boolean removeAudioFocus() {
         try{
@@ -93,17 +132,14 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
 
     public boolean isSpeaking() {
-        if (tts != null) {
             return tts.isSpeaking();
-        }
-        else return false;
     }
 
     //Speak the array of sentences.
     public void speakSentences(ArrayList<String> textToRead){
         if(requestAudioFocus()){
-            tts.speak(textToRead.get(readIndex), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
-            //stopBtn.setImageResource(android.R.drawable.ic_media_pause);
+            saver.saveReadIndex(readIndex);
+            tts.speak(textToRead.get(readIndex), TextToSpeech.QUEUE_ADD, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
     }
 
@@ -112,7 +148,7 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         if (readIndex != text.size()) {
             readIndex++;
         }
-        if (tts.isSpeaking()) {
+        if ((tts.isSpeaking()) && tts != null){
             tts.stop();
             speakSentences(text);
         }
@@ -123,14 +159,14 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         if (readIndex != 0) {
             readIndex--;
         }
-        if (tts.isSpeaking()) {
+        if ((tts.isSpeaking()) && tts != null){
             tts.stop();
             speakSentences(text);
         }
     }
 
     private void speakTitle() {
-
+        articleData = loader.getLastArc();
         if (requestAudioFocus()) {
             tts.speak(articleData.getTitle() + "by" + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
@@ -140,20 +176,19 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
         if (tts != null && tts.isSpeaking()) {
             tts.stop();
         }
-        if (tts != null) tts.shutdown();
         removeAudioFocus();
     }
 
     public void stop(){
         tts.stop();
-        tts.shutdown();
+        removeAudioFocus();
+        //tts.shutdown();
     }
 
     public void identityLanguage(){
         if (newsType.contains("English")){
             tts.setLanguage(Locale.ENGLISH);
         }
-        System.out.println("sohai" + newsType);
 
         if (newsType.contains("Bahasa Malaysia")){
             Locale localBM = new Locale("id", "ID");
@@ -185,5 +220,14 @@ public class TTS implements AudioManager.OnAudioFocusChangeListener {
     }
     public ArrayList<String> getText() {
         return text;
+    }
+
+    public TextToSpeech getNull() {
+        return tts;
+    }
+
+
+    public void pullText() {
+        text = loader.getText();
     }
 }

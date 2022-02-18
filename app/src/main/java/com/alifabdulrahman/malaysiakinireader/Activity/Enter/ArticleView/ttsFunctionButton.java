@@ -10,25 +10,27 @@ import com.alifabdulrahman.malaysiakinireader.R;
 
 import java.sql.SQLOutput;
 
-public class ttsFunctionButton extends FunctionButton {
-    private ImageButton nextSentBtn, prevSentBtn, stopBtn;
+public class ttsFunctionButton extends FunctionButton implements View.OnClickListener {
+    private final ImageButton nextSentBtn;
+    private final ImageButton prevSentBtn;
+    private final ImageButton stopBtn;
     int playImg = android.R.drawable.ic_media_play;
     int pauseImg = android.R.drawable.ic_media_pause;
     private ttsController ttsController;
     private loader loader;
     private boolean startTSS;
 
-    public ttsFunctionButton(Activity activity, ttsController ttsController, loader loader){
-        super();
+    public ttsFunctionButton(Activity activity, Context context, ttsController ttsController, loader loader){
+        super(activity, context);
         stopBtn = activity.findViewById(R.id.stopbtn);
         nextSentBtn = activity.findViewById(R.id.forwbtn);
         prevSentBtn = activity.findViewById(R.id.prevbtn);
-        stopBtn.setOnClickListener(this::onClick);
-        prevSentBtn.setOnClickListener(this::onClick);
-        nextSentBtn.setOnClickListener(this::onClick);
-        stopBtn.setEnabled(false);
-        nextSentBtn.setEnabled(false);
-        prevSentBtn.setEnabled(false);
+        stopBtn.setOnClickListener(this);
+        prevSentBtn.setOnClickListener(this);
+        nextSentBtn.setOnClickListener(this);
+
+
+        this.ttsController = ttsController;
 
         this.loader = loader;
 
@@ -40,27 +42,28 @@ public class ttsFunctionButton extends FunctionButton {
             stopBtn.setImageResource(playImg);
         }
 
-        this.ttsController = ttsController;
+
     }
 
     @SuppressLint("NonConstantResourceId")
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.stopbtn:
+
                 startTSS = loader.getTSS();
                 //stop speaking
-                if (startTSS || ttsController.isSpeaking()){
-                    stopBtn.setImageResource(pauseImg);
+                if (startTSS){
+                    stopBtn.setImageResource(playImg);
                     ttsController.pausing();
-                    System.out.println("stop speaking" + ttsController.isSpeaking());
                     break;
                 }
 
+                startTSS = loader.getTSS();
                 //start speaking
                 if (!startTSS) {
-                    stopBtn.setImageResource(playImg);
-                    ttsController.initializeTTS();
-                    System.out.println("start speaking" + ttsController.isSpeaking());
+                    stopBtn.setImageResource(pauseImg);
+                    ttsController.playing();
                     break;
                 }
                 break;
@@ -76,14 +79,28 @@ public class ttsFunctionButton extends FunctionButton {
     }
 
     public void enable() {
-        stopBtn.setEnabled(true);
-        nextSentBtn.setClickable(true);
+        stopBtn.setClickable(true);
         prevSentBtn.setClickable(true);
-        nextSentBtn.setEnabled(true);
-        prevSentBtn.setEnabled(true);
+        nextSentBtn.setClickable(true);
+        /*
+        if (tts == null) {
+            tts = new TTS(context, loader, saver);
+            System.out.println("sohaitts" +tts);
+            ttsController.setTts(tts);
+        }
+
+         */
+    }
+
+    public void disabled() {
+        stopBtn.setClickable(false);
+        prevSentBtn.setClickable(false);
+        nextSentBtn.setClickable(false);
     }
 
     public ttsController getTtsController(){
         return ttsController;
     }
+
+
 }

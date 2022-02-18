@@ -1,21 +1,20 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
-import android.app.Activity;
 import android.content.Context;
 
 import java.util.ArrayList;
 
 public class ttsController {
     private TTS tts;
+    private Context context;
+    private loader loader;
     private saver saver;
+    private ArrayList<String>text;
 
-    public ttsController(saver saver, TTS tts){
-        this.tts = tts;
+    public ttsController(Context context, loader loader, saver saver){
+        this.context = context;
+        this.loader = loader;
         this.saver = saver;
-    }
-
-    public void initializeTTS(){
-        tts.initializeTTS();
     }
 
     public ttsController() {
@@ -38,28 +37,23 @@ public class ttsController {
         tts.nextSentence();
     }
 
-    public boolean isSpeaking(){
-        return tts.isSpeaking();
+    public boolean isSpeaking() {
+        if (tts != null)
+            return tts.isSpeaking();
+        return false;
     }
 
     public void destroy(){
+        if (tts != null)
         tts.destroy();
     }
 
     public void setText(ArrayList<String> tempList) {
-        tts.setText(tempList);
+        this.text = tempList;
     }
 
     public void onStop() {
         tts.onStop();
-    }
-
-    public void setTTS(TTS tts){
-        this.tts = tts;
-    }
-
-    public void play() {
-       // tts.speakSentences(text);
     }
 
     public ArrayList<String> getText() {
@@ -68,13 +62,32 @@ public class ttsController {
 
     public void playing() {
         saver.setTSS(true);
-        tts.initializeTTS();
-        tts.stop();
+        if (tts != null) {
+            tts.onAudioFocusChange(1);
+        }
     }
 
     public void pausing(){
         saver.setTSS(false);
-        tts.stopPlay();
+        if (tts != null)
+            tts.onAudioFocusChange(-1);
     }
 
+    public void setTts(TTS tts){
+        this.tts = tts;
+    }
+
+    public TTS getTTS() {
+        return tts;
+    }
+
+    public void init() {
+        tts = new TTS(context, loader, saver);
+    }
+
+    public void speak(ArrayList<String> tempList) {
+        if (!tts.isSpeaking()){
+            tts.speakSentences(tempList);
+        }
+    }
 }

@@ -15,17 +15,20 @@ public class webviewController extends Controller{
     private int index;
     private String url;
     private webview wb;
+    private ttsController ttsController;
 
-    public webviewController(Activity activity, Context context, webview wb){
+    public webviewController(Activity activity, Context context, webview wb, ttsController ttsController){
         super(activity, context);
         this.activity = activity;
         this.articleDatas = loader.getArticleDatas();
         this.index = loader.getIndex();
         this.url = loader.getUrl();
         this.wb = wb;
+        this.ttsController = ttsController;
     }
 
     public void prevArc() {
+        ttsController.pausing();
         index = loader.getIndex();
         if (index < 1){
             Toast.makeText(context, "This is the first article", Toast.LENGTH_SHORT).show();
@@ -41,6 +44,7 @@ public class webviewController extends Controller{
     }
 
     public void nextArc() {
+        ttsController.pausing();
         index = loader.getIndex();
 
         if((index + 1) > articleDatas.size()-1){

@@ -19,15 +19,22 @@ public class FunctionButton{
     private ttsFunctionButton ttsFunctionButton;
     private webviewFunctionButton webviewFunctionButton;
 
-    public FunctionButton(Activity activity, Context context) {
+    public FunctionButton(Activity activity, Context context, ttsFunctionButton ttsFunctionButton, webviewFunctionButton webviewFunctionButton) {
         this.activity = activity;
         this.context = context;
+        this.ttsFunctionButton = ttsFunctionButton;
+        this.webviewFunctionButton = webviewFunctionButton;
         this.loader = new loader(activity, context);
         this.saver = new saver(activity, context);
     }
 
     public FunctionButton(Activity activity) {
         this.activity = activity;
+    }
+
+    public FunctionButton(Activity activity, Context context) {
+        this.activity = activity;
+        this.context = context;
     }
 
     public void setTtsFunctionButton(ttsFunctionButton ttsFunctionButton){
@@ -37,12 +44,6 @@ public class FunctionButton{
     public void setWebviewFunctionButton(webviewFunctionButton webviewFunctionButton) {
         this.webviewFunctionButton = webviewFunctionButton;
     }
-
-    public FunctionButton() {
-
-    }
-
-
 }
 
 

@@ -16,13 +16,13 @@ public class webview {
     private loader loader;
     private MKScraper mkScraper;
 
-    public webview(Activity activity, Context context, loader loader, ttsFunctionButton ttsFunctionButton) throws InterruptedException {
+    public webview(Activity activity, Context context, loader loader, ttsFunctionButton ttsFunctionButton, ttsController ttsController) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
         this.loader = loader;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
 
-        mkScraper = new MKScraper(activity, context, mWebView, ttsFunctionButton);
+        mkScraper = new MKScraper(activity, context, mWebView, ttsFunctionButton, ttsController);
 
         loadWebView(url);
 
