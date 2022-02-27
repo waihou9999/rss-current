@@ -35,6 +35,8 @@ public class FunctionButton{
     public FunctionButton(Activity activity, Context context) {
         this.activity = activity;
         this.context = context;
+        this.ttsFunctionButton = null;
+        this.webviewFunctionButton = null;
     }
 
     public void setTtsFunctionButton(ttsFunctionButton ttsFunctionButton){
@@ -43,6 +45,19 @@ public class FunctionButton{
 
     public void setWebviewFunctionButton(webviewFunctionButton webviewFunctionButton) {
         this.webviewFunctionButton = webviewFunctionButton;
+    }
+
+    public void setFunctionButton(ttsFunctionButton ttsFunctionButton, webviewFunctionButton webviewFunctionButton) {
+        this.ttsFunctionButton = ttsFunctionButton;
+        this.webviewFunctionButton = webviewFunctionButton;
+    }
+
+    public ttsFunctionButton getTtsFunctionButton(){
+        return ttsFunctionButton;
+    }
+
+    public webviewFunctionButton getWebviewFunctionButton(){
+        return webviewFunctionButton;
     }
 }
 

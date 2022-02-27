@@ -463,7 +463,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
             if (newContentAvailable) {
                 new GetContents(MKListingActivity.this).execute();
             } else {
-                Toast.makeText(MKListingActivity.this, "No new contents available", Toast.LENGTH_LONG).show();
+                Toast.makeText(MKListingActivity.this, "No new contents available", Toast.LENGTH_SHORT).show();
             }
 
             //checkReadStuff();

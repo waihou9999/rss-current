@@ -3,6 +3,8 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -13,20 +15,18 @@ public class webview {
     private int timex = 1000;
     private SwipeRefreshLayout pullToRefresh;
     private String url;
-    private loader loader;
     private MKScraper mkScraper;
-    private ttsController ttsController;
 
-    public webview(Activity activity, Context context, loader loader, ttsFunctionButton ttsFunctionButton, ttsController ttsController) throws InterruptedException {
+    public webview(Activity activity, Context context, loader loader, FunctionButton functionButton, Controller Controller) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
-        this.loader = loader;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
-        this.ttsController = ttsController;
 
-        mkScraper = new MKScraper(activity, context, mWebView, ttsFunctionButton, ttsController);
+        mkScraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
 
         loadWebView(url);
+
+
 
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -20,6 +20,7 @@ public class ArticleViewActivity extends AppCompatActivity {
     private ttsController ttsController;
     private ttsFunctionButton ttsFunctionButton;
     private FunctionButton fb;
+    private Controller controller;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,24 +28,28 @@ public class ArticleViewActivity extends AppCompatActivity {
 
         saver = new saver(ArticleViewActivity.this, this);
         loader = new loader(ArticleViewActivity.this, this);
+        fb = new FunctionButton(ArticleViewActivity.this, this);
+        controller = new Controller(ArticleViewActivity.this, this);
 
-        ttsController = new ttsController(this, loader, saver);
-        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, ttsController, loader, saver);
+        ttsController = new ttsController(this, loader, saver, controller);
+        controller.setTtsController(ttsController);
+        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, controller, loader, saver);
         ttsFunctionButton.disabled();
+        fb.setTtsFunctionButton(ttsFunctionButton);
+
+        webviewController = new webviewController(ArticleViewActivity.this, this, fb, controller);
+        controller.setWebviewController(webviewController);
 
         try {
-            wb = new webview(ArticleViewActivity.this, this, loader, ttsFunctionButton, ttsController);
+            webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this, controller);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        webviewController = new webviewController(ArticleViewActivity.this, this, wb);
-        try {
-            webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this, webviewController, ttsController);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        fb.setWebviewFunctionButton(webviewFunctionButton);
 
-        fb = new FunctionButton(ArticleViewActivity.this, this, ttsFunctionButton, webviewFunctionButton);
+
+
+
 
     }
 

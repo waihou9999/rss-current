@@ -7,9 +7,9 @@
     tools:context=".Activity.Enter.ArticleView.ArticleViewActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/pullToRefresh2">
+        android:layout_height="match_parent">
 
         <WebView
             android:id="@+id/webview"
@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp">
-<!--
+        android:layout_marginBottom="10dp">
+        <!--
         <-ImageButton
             android:id="@+id/pausebtn"
             android:layout_width="wrap_content"

@@ -20,16 +20,19 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     private int readIndex = 0;
     private ArrayList<String>text;
     private ArticleData articleData;
+    private webviewController webviewController;
     private String newsType;
     private saver saver;
     private loader loader;
 
-    public TTS(Context context, loader loader, saver saver) {
+
+    public TTS(Context context, loader loader, saver saver, Controller controller) {
         this.context = context;
         this.articleData = loader.getLastArc();
         this.newsType = loader.getNewsType();
         this.saver = saver;
         this.loader = loader;
+        this.webviewController = controller.getWebviewController();
         tts = new TextToSpeech(context, this);
         text = loader.getText();
     }
@@ -53,15 +56,15 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
                 @Override
                 public void onDone(String utteranceId) {
                     readIndex++;
+                    if (readIndex == text.size()) {
+                        System.out.println("hello mtfk");
+                        webviewController.nextArc();
+                    }
 
                     //if there are still more sentences in article, continue reading
                     if(readIndex < text.size() && !tts.isSpeaking()){
                         speakSentences(text);
-                        //System.out.println("whatever");
-                        //System.out.println(articleDatas.get(index).getContent());
                     }
-                    //Else, update UI with next article and read it
-                    //
                 }
 
                 @Override
@@ -234,4 +237,14 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     public void shutdown(){
         tts.shutdown();
     }
+
+    public int getTextSize(){
+        return text.size();
+    }
+
+    public int getReadIndex(){
+        return readIndex;
+    }
+
+
 }

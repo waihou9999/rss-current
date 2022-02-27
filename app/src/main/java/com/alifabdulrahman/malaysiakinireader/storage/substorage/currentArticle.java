@@ -99,7 +99,6 @@ public class currentArticle extends storage {
     public boolean startTSS(){return tinyDB.getBoolean("startTSS");}
 
     public void setTTS(boolean tss){
-        System.out.println("sohai" + tss);
         tinyDB.putBoolean("startTSS", tss);
     }
 }

@@ -9,23 +9,15 @@ public class ttsController {
     private Context context;
     private loader loader;
     private saver saver;
-    private ArrayList<String>text;
-    private webviewController webviewController;
+    private Controller controller;
 
-    public ttsController(Context context, loader loader, saver saver){
+    public ttsController(Context context, loader loader, saver saver, Controller controller){
         this.context = context;
         this.loader = loader;
         this.saver = saver;
-        this.webviewController = null;
+        this.controller = controller;
     }
 
-    public void setWebviewController(webviewController webviewController) {
-        this.webviewController = webviewController;
-    }
-
-    public ttsController() {
-        tts = null;
-    }
 
     public void stopPlay() {
         if (tts != null)
@@ -55,12 +47,10 @@ public class ttsController {
         tts.destroy();
     }
 
-    public void setText(ArrayList<String> tempList) {
-        this.text = tempList;
-    }
 
     public void onStop() {
-        tts.onStop();
+        if (tts != null)
+            tts.onStop();
     }
 
     public ArrayList<String> getText() {
@@ -88,7 +78,7 @@ public class ttsController {
     }
 
     public void init() {
-        tts = new TTS(context, loader, saver);
+        tts = new TTS(context, loader, saver, controller);
     }
 
     public void speak(ArrayList<String> tempList) {
@@ -107,5 +97,26 @@ public class ttsController {
 
     public void shutdown() {
         tts.shutdown();
+    }
+
+    public boolean canPrev() {
+        int readIndex = tts.getReadIndex();
+
+        if (readIndex == 0){
+            return false;
+        }
+        else
+            return true;
+    }
+
+    public boolean canNext() {
+        int readIndex = tts.getReadIndex() + 1;
+        int textSize = tts.getTextSize();
+
+        if (readIndex == textSize){
+            return false;
+        }
+        else
+            return true;
     }
 }

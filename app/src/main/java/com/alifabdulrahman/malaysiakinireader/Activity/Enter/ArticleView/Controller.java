@@ -8,6 +8,8 @@ public class Controller {
     protected Context context;
     protected loader loader;
     protected saver saver;
+    private ttsController ttsController;
+    private webviewController webviewController;
 
     public Controller(Activity activity, Context context) {
         this.activity = activity;
@@ -16,7 +18,25 @@ public class Controller {
         saver = new saver(activity, context);
     }
 
-    public Controller(){
-
+    public void setController(ttsController ttsController, webviewController webviewController) {
+        this.ttsController = ttsController;
+        this.webviewController = webviewController;
     }
+
+    public void setTtsController(ttsController ttsController) {
+        this.ttsController = ttsController;
+    }
+
+    public void setWebviewController(webviewController webviewController) {
+        this.webviewController = webviewController;
+    }
+
+    public ttsController getTtsController(){
+        return ttsController;
+    }
+
+    public webviewController getWebviewController(){
+        return webviewController;
+    }
+
 }

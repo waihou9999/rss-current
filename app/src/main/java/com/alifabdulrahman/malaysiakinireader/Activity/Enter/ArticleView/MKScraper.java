@@ -2,6 +2,8 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -16,40 +18,42 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 public class MKScraper {
-    private Activity activity;
-    private Context ctx;
     private WebView webView;
     private boolean loading;
     boolean firstLoad = true;
 
-    public MKScraper(Activity activity, Context ctx, WebView webView, ttsFunctionButton ttsFunctionButton, ttsController ttsController) {
-        this.activity = activity;
-        this.ctx = ctx;
+    public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton FunctionButton, Controller Controller) {
         this.webView = webView;
 
-        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, ttsFunctionButton, ttsController), "Scrap");
+        this.webView.addJavascriptInterface(new GetHTML(activity, ctx, FunctionButton, Controller, webView), "Scrap");
     }
+
 
     public void scrap() {
         webView.loadUrl("javascript:window.Scrap.getHTML" +
                 "(document.getElementsByTagName('html')[0].outerHTML);");
     }
 
-    public class GetHTML{
+
+    public class GetHTML {
         private Context ctx;
         private Activity activity;
         private saver saver;
         private loader loader;
+        private FunctionButton fb;
         private ttsFunctionButton ttsFunctionButton;
+        private Controller controller;
         private ttsController ttsController;
+        private WebView WebView;
 
-        public GetHTML(Activity activity, Context ctx, ttsFunctionButton ttsFunctionButton, ttsController ttsController) {
+        public GetHTML(Activity activity, Context ctx, FunctionButton FunctionButton, Controller Controller, WebView WebView) {
             this.activity = activity;
             this.ctx = ctx;
             saver = new saver(this.activity, this.ctx);
             loader = new loader(this.activity, this.ctx);
-            this.ttsFunctionButton = ttsFunctionButton;
-            this.ttsController = ttsController;
+            this.fb = FunctionButton;
+            this.controller = Controller;
+            this.WebView = WebView;
         }
 
         @JavascriptInterface
@@ -89,8 +93,11 @@ public class MKScraper {
 
 
                      */
-
             }
+            ttsController = controller.getTtsController();
+            ttsFunctionButton = fb.getTtsFunctionButton();
+            System.out.println("fker" + ttsController + " " + ttsFunctionButton);
+
             if (checkLoading(tempList)) {
                 Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
                 ttsController.stop();
@@ -101,6 +108,7 @@ public class MKScraper {
                 Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
                 ttsFunctionButton.enable();
                 saver.saveText(tempList);
+
                 if (loader.getTSS()) {
                     ttsController.init();
                 }

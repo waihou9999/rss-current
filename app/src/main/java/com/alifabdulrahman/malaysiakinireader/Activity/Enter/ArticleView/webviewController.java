@@ -15,14 +15,21 @@ public class webviewController extends Controller{
     private int index;
     private String url;
     private webview wb;
-    public webviewController(Activity activity, Context context, webview wb){
+
+    public webviewController(Activity activity, Context context, FunctionButton fb, Controller controller){
         super(activity, context);
         this.activity = activity;
         this.articleDatas = loader.getArticleDatas();
         this.index = loader.getIndex();
         this.url = loader.getUrl();
-        this.wb = wb;
+        try {
+            wb = new webview(activity, context, loader, fb, controller);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     public void prevArc() {
         index = loader.getIndex();

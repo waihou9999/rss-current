@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.alifabdulrahman.malaysiakinireader.R;
 
@@ -16,12 +17,13 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
     private final ImageButton stopBtn;
     int playImg = android.R.drawable.ic_media_play;
     int pauseImg = android.R.drawable.ic_media_pause;
+    private Controller controller;
     private ttsController ttsController;
     private loader loader;
     private saver saver;
     private boolean startTSS;
 
-    public ttsFunctionButton(Activity activity, Context context, ttsController ttsController, loader loader, saver saver){
+    public ttsFunctionButton(Activity activity, Context context, Controller controller, loader loader, saver saver){
         super(activity, context);
         stopBtn = activity.findViewById(R.id.stopbtn);
         nextSentBtn = activity.findViewById(R.id.forwbtn);
@@ -30,7 +32,8 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
         prevSentBtn.setOnClickListener(this);
         nextSentBtn.setOnClickListener(this);
 
-        this.ttsController = ttsController;
+        this.controller = controller;
+        this.ttsController = controller.getTtsController();
 
         this.loader = loader;
         this.saver = saver;
@@ -73,11 +76,19 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                 break;
 
             case R.id.forwbtn:
-                ttsController.nextSentence();
+                if (ttsController.canNext()) {
+                    ttsController.nextSentence();
+                }
+                else
+                    Toast.makeText(context, "This is the last sentence", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.prevbtn:
+                if (ttsController.canPrev()){
                 ttsController.previousSentence();
+                }
+                else
+                    Toast.makeText(context, "This is the first sentence", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -101,10 +112,4 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
         prevSentBtn.setClickable(false);
         nextSentBtn.setClickable(false);
     }
-
-    public ttsController getTtsController(){
-        return ttsController;
-    }
-
-
 }
