@@ -37,6 +37,7 @@ public class FunctionButton{
         this.context = context;
         this.ttsFunctionButton = null;
         this.webviewFunctionButton = null;
+        activity.setContentView(R.layout.activity_news_view);
     }
 
     public void setTtsFunctionButton(ttsFunctionButton ttsFunctionButton){

@@ -20,6 +20,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     private int readIndex = 0;
     private ArrayList<String>text;
     private ArticleData articleData;
+    private Controller controller;
     private webviewController webviewController;
     private String newsType;
     private saver saver;
@@ -32,7 +33,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         this.newsType = loader.getNewsType();
         this.saver = saver;
         this.loader = loader;
-        this.webviewController = controller.getWebviewController();
+        this.controller = controller;
         tts = new TextToSpeech(context, this);
         text = loader.getText();
     }
@@ -41,7 +42,9 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     public void onInit(int status) {
         if(status == TextToSpeech.SUCCESS) {
             identityLanguage();
-            
+
+            webviewController = controller.getWebviewController();
+
             speakTitle();
             speakSentences(text);
 
@@ -56,15 +59,19 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
                 @Override
                 public void onDone(String utteranceId) {
                     readIndex++;
-                    if (readIndex == text.size()) {
-                        System.out.println("hello mtfk");
+
+
+                    if (readIndex == text.size()){
+                        stopPlay();
                         webviewController.nextArc();
                     }
 
-                    //if there are still more sentences in article, continue reading
-                    if(readIndex < text.size() && !tts.isSpeaking()){
+                    else if(readIndex < text.size() && !tts.isSpeaking()){
                         speakSentences(text);
                     }
+
+
+
                 }
 
                 @Override
@@ -136,6 +143,10 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         if(requestAudioFocus()){
             saver.saveReadIndex(readIndex);
             tts.speak(textToRead.get(readIndex), TextToSpeech.QUEUE_ADD, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+
+            if (readIndex > text.size()) {
+                webviewController.nextArc();
+            }
         }
     }
 

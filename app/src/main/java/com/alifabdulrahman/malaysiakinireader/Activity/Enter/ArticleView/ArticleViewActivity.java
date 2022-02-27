@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class ArticleViewActivity extends AppCompatActivity {
     private loader loader;
     private saver saver;
-    private webview wb;
     private webviewController webviewController;
     private webviewFunctionButton webviewFunctionButton;
     private ttsController ttsController;
@@ -46,11 +45,6 @@ public class ArticleViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         fb.setWebviewFunctionButton(webviewFunctionButton);
-
-
-
-
-
     }
 
     @Override

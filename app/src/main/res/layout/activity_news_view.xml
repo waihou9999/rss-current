@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,8 +8,13 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <WebView
             android:id="@+id/webview"
@@ -22,13 +27,17 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pullToRefresh2">
         <!--
         <-ImageButton
             android:id="@+id/pausebtn"
@@ -46,13 +55,16 @@
             android:id="@+id/sharebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/layout"
-            android:layout_margin="3dp"
+            android:layout_marginEnd="6dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_2"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_menu_share" />
+            android:src="@android:drawable/ic_menu_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/prevarcbtn"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!--
         <ImageButton
@@ -71,73 +83,86 @@
             android:id="@+id/prevarcbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/layout"
-            android:layout_margin="3dp"
+            android:layout_marginEnd="6dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_1"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_media_previous" />
+            android:src="@android:drawable/ic_media_previous"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/prevbtn"
+            app:layout_constraintStart_toEndOf="@+id/sharebutton" />
 
         <ImageButton
             android:id="@+id/prevbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/layout"
-            android:layout_margin="3dp"
+            android:layout_marginEnd="6dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_1"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_media_rew" />
+            android:src="@android:drawable/ic_media_rew"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stopbtn"
+            app:layout_constraintStart_toEndOf="@+id/prevarcbtn" />
 
         <ImageButton
             android:id="@+id/stopbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_1"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_media_play" />
+            android:src="@android:drawable/ic_media_play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/forwbtn"
+            app:layout_constraintStart_toEndOf="@+id/prevbtn" />
 
         <ImageButton
             android:id="@+id/forwbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
+            android:layout_marginStart="6dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_1"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_media_ff" />
+            android:src="@android:drawable/ic_media_ff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/nxtarcbtn"
+            app:layout_constraintStart_toEndOf="@+id/stopbtn" />
 
         <ImageButton
             android:id="@+id/nxtarcbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/layout"
-            android:layout_alignBottom="@+id/layout"
-            android:layout_margin="3dp"
+            android:layout_marginStart="6dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_1"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_media_next" />
+            android:src="@android:drawable/ic_media_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rescrapebutton"
+            app:layout_constraintStart_toEndOf="@+id/forwbtn"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/rescrapebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/layout"
-            android:layout_margin="3dp"
+            android:layout_marginStart="6dp"
             android:adjustViewBounds="false"
             android:background="@drawable/round_corner_2"
             android:cropToPadding="false"
             android:padding="5dp"
-            android:src="@android:drawable/ic_menu_rotate" />
+            android:src="@android:drawable/ic_menu_rotate"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/nxtarcbtn" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

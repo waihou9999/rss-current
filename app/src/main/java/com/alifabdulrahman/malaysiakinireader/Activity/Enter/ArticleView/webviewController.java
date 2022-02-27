@@ -15,6 +15,8 @@ public class webviewController extends Controller{
     private int index;
     private String url;
     private webview wb;
+    private FunctionButton fb;
+    private Controller controller;
 
     public webviewController(Activity activity, Context context, FunctionButton fb, Controller controller){
         super(activity, context);
@@ -22,13 +24,18 @@ public class webviewController extends Controller{
         this.articleDatas = loader.getArticleDatas();
         this.index = loader.getIndex();
         this.url = loader.getUrl();
+        this.fb = fb;
+        this.controller = controller;
+        webviewInit();
+    }
+
+    public void webviewInit(){
         try {
             wb = new webview(activity, context, loader, fb, controller);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
 
 
     public void prevArc() {
@@ -49,14 +56,15 @@ public class webviewController extends Controller{
     public void nextArc() {
         index = loader.getIndex();
 
-        if((index + 1) > articleDatas.size()-1){
+        if((index + 1) > articleDatas.size()){
             Toast.makeText(context, "This is the last article", Toast.LENGTH_SHORT).show();
         }
         else {
-            String url = loader.getArticleDatas().get(index + 1).getLink();
-            saver.saveArc(loader.getArticleDatas().get(index + 1));
-            saver.saveIndex(loader.getIndex() + 1);
 
+            ArticleData a  = loader.getArticleDatas().get(index+1);
+            String url = a.getLink();
+            saver.saveArc(a);
+            saver.saveIndex(loader.getIndex() + 1);
             wb.loadWebView(url);
             saver.setURL(url);
             wb.setFirstLoad();

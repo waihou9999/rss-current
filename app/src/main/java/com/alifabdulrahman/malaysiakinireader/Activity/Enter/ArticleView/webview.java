@@ -26,8 +26,6 @@ public class webview {
 
         loadWebView(url);
 
-
-
         pullToRefresh = activity.findViewById(R.id.pullToRefresh2);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
