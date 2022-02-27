@@ -1,5 +1,6 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
@@ -16,6 +17,7 @@ import java.util.Locale;
 public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFocusChangeListener {
     private TextToSpeech tts;
     private AudioManager audioManager;
+    private Activity activity;
     private Context context;
     private int readIndex = 0;
     private ArrayList<String>text;
@@ -28,6 +30,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
 
 
     public TTS(Context context, loader loader, saver saver, Controller controller) {
+        activity = controller.activity;
         this.context = context;
         this.articleData = loader.getLastArc();
         this.newsType = loader.getNewsType();
@@ -60,18 +63,18 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
                 public void onDone(String utteranceId) {
                     readIndex++;
 
-
-                    if (readIndex == text.size()){
-                        stopPlay();
-                        webviewController.nextArc();
-                    }
-
-                    else if(readIndex < text.size() && !tts.isSpeaking()){
+                    if(readIndex < text.size() && !tts.isSpeaking()){
                         speakSentences(text);
                     }
 
-
-
+                    if (readIndex == text.size()){
+                        ((Activity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                webviewController.nextArc();
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -256,6 +259,4 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     public int getReadIndex(){
         return readIndex;
     }
-
-
 }

@@ -46,7 +46,7 @@ public class loader {
     }
 
     public String getUrl(){
-        return currentArticle.loadLastArticle();
+        return currentArticle.loadData();
     }
 
     public ArrayList<String>getText(){

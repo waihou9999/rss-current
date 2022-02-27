@@ -15,8 +15,6 @@ public class webviewController extends Controller{
     private int index;
     private String url;
     private webview wb;
-    private FunctionButton fb;
-    private Controller controller;
 
     public webviewController(Activity activity, Context context, FunctionButton fb, Controller controller){
         super(activity, context);
@@ -24,19 +22,13 @@ public class webviewController extends Controller{
         this.articleDatas = loader.getArticleDatas();
         this.index = loader.getIndex();
         this.url = loader.getUrl();
-        this.fb = fb;
-        this.controller = controller;
-        webviewInit();
-    }
-
-    public void webviewInit(){
         try {
             wb = new webview(activity, context, loader, fb, controller);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 
     public void prevArc() {
         index = loader.getIndex();
@@ -47,24 +39,27 @@ public class webviewController extends Controller{
             String url = loader.getArticleDatas().get(index - 1).getLink();
             saver.saveArc(loader.getArticleDatas().get(index - 1));
             saver.saveIndex(loader.getIndex() - 1);
+            saver.setURL(url);
             wb.loadWebView(url);
             wb.setFirstLoad();
-            saver.setURL(url);
+
         }
     }
 
     public void nextArc() {
-        index = loader.getIndex();
+        System.out.println("sohai1: " + index);
+        index = loader.getIndex() + 1;
+        System.out.println("sohai2: " + index);
 
-        if((index + 1) > articleDatas.size()){
+        if((index) > articleDatas.size()){
             Toast.makeText(context, "This is the last article", Toast.LENGTH_SHORT).show();
         }
         else {
-
-            ArticleData a  = loader.getArticleDatas().get(index+1);
+            ArticleData a  = loader.getArticleDatas().get(index);
             String url = a.getLink();
+            System.out.println("sohai" + a);
             saver.saveArc(a);
-            saver.saveIndex(loader.getIndex() + 1);
+            saver.saveIndex(index);
             wb.loadWebView(url);
             saver.setURL(url);
             wb.setFirstLoad();

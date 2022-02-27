@@ -28,11 +28,11 @@ public class ttsController {
         tts.stop();
     }
 
-    public void previousSentence() {
+    public void previousSentence() throws InterruptedException {
         tts.previousSentence();
     }
 
-    public void nextSentence() {
+    public void nextSentence() throws InterruptedException {
         tts.nextSentence();
     }
 
@@ -81,7 +81,7 @@ public class ttsController {
         tts = new TTS(context, loader, saver, controller);
     }
 
-    public void speak(ArrayList<String> tempList) {
+    public void speak(ArrayList<String> tempList) throws InterruptedException {
         if (!tts.isSpeaking()){
             tts.speakSentences(tempList);
         }

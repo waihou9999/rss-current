@@ -42,7 +42,6 @@ public class webview {
 
     @SuppressLint("JavascriptInterface")
     public void loadWebView(String url){
-        mkScraper.scrap();
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){

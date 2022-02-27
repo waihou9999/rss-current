@@ -77,7 +77,11 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
 
             case R.id.forwbtn:
                 if (ttsController.canNext()) {
-                    ttsController.nextSentence();
+                    try {
+                        ttsController.nextSentence();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else
                     Toast.makeText(context, "This is the last sentence", Toast.LENGTH_SHORT).show();
@@ -85,7 +89,11 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
 
             case R.id.prevbtn:
                 if (ttsController.canPrev()){
-                ttsController.previousSentence();
+                    try {
+                        ttsController.previousSentence();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else
                     Toast.makeText(context, "This is the first sentence", Toast.LENGTH_SHORT).show();
