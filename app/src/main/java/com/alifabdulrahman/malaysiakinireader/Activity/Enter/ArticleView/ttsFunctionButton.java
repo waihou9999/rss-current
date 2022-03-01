@@ -69,7 +69,13 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                 if (!startTSS) {
                     stopBtn.setImageResource(pauseImg);
                     saver.setTSS(true);
-                    ttsController.init();
+
+                    if (ttsController.getTTS() != null) {
+                        ttsController.playing();
+                    }
+                    else {
+                        ttsController.init();
+                    }
 
                     break;
                 }
