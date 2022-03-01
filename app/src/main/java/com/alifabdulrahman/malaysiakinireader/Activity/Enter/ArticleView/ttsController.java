@@ -119,4 +119,12 @@ public class ttsController {
         else
             return true;
     }
+
+    public void onDestroy() {
+        if(tts != null){
+            tts.stop();
+            tts.shutdown();
+            tts.removeAudioFocus();
+        }
+    }
 }

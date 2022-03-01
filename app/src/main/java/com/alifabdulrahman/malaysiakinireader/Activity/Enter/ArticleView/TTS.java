@@ -3,12 +3,14 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.MainActivity;
+import androidx.annotation.RequiresApi;
+
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
         text = loader.getText();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     @Override
     public void onInit(int status) {
         if(status == TextToSpeech.SUCCESS) {
@@ -92,16 +95,14 @@ public class TTS implements TextToSpeech.OnInitListener, AudioManager.OnAudioFoc
     }
 
 
-    public boolean removeAudioFocus() {
+    public void removeAudioFocus() {
         try{
             if(audioManager != null){
-                return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
-                        audioManager.abandonAudioFocus(this);
+                audioManager.abandonAudioFocus(this);
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return true;
     }
 
 

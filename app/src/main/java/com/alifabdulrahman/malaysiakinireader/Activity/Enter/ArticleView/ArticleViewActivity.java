@@ -49,13 +49,18 @@ public class ArticleViewActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        ttsController.onDestroy();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
-        ttsController.onStop();
         super.onStop();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
     }
 
     @Override
