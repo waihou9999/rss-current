@@ -39,21 +39,8 @@ public class webviewController extends Controller{
             Toast.makeText(context, "This is the first article", Toast.LENGTH_SHORT).show();
         }
         else {
-            ArticleData a  = loader.getArticleDatas().get(index);
-            String url = a.getLink();
-            saver.saveArc(a);
-            saver.saveIndex(index);
-            wb.loadWebView(url);
-            saver.setURL(url);
-            wb.setFirstLoad();
-
-            String newsType = loader.getNewsType();
-            NewsStorage newsStorage = new NewsStorage(context, newsType);
-
-            newsStorage.loadData();
-            articleDatas = newsStorage.loadArt1();
-            articleDatas.get(index).setReadNews(true);
-            newsStorage.saveData(articleDatas);
+            loadArticle(index);
+            saveReadNews(index);
         }
     }
 
@@ -64,21 +51,8 @@ public class webviewController extends Controller{
             Toast.makeText(context, "This is the last article", Toast.LENGTH_SHORT).show();
         }
         else {
-            ArticleData a  = loader.getArticleDatas().get(index);
-            String url = a.getLink();
-            saver.saveArc(a);
-            saver.saveIndex(index);
-            wb.loadWebView(url);
-            saver.setURL(url);
-            wb.setFirstLoad();
-
-            String newsType = loader.getNewsType();
-            NewsStorage newsStorage = new NewsStorage(context, newsType);
-
-            newsStorage.loadData();
-            articleDatas = newsStorage.loadArt1();
-            articleDatas.get(index).setReadNews(true);
-            newsStorage.saveData(articleDatas);
+            loadArticle(index);
+            saveReadNews(index);
         }
     }
 
@@ -93,5 +67,25 @@ public class webviewController extends Controller{
 
     public void setFirstLoad() {
         wb.setFirstLoad();
+    }
+
+    public void loadArticle(int index){
+        ArticleData a  = loader.getArticleDatas().get(index);
+        String url = a.getLink();
+        saver.saveArc(a);
+        saver.saveIndex(index);
+        wb.loadWebView(url);
+        saver.setURL(url);
+        wb.setFirstLoad();
+    }
+
+    public void saveReadNews(int index) {
+        String newsType = loader.getNewsType();
+        NewsStorage newsStorage = new NewsStorage(context, newsType);
+
+        newsStorage.loadData();
+        articleDatas = newsStorage.loadArt1();
+        articleDatas.get(index).setReadNews(true);
+        newsStorage.saveData(articleDatas);
     }
 }
