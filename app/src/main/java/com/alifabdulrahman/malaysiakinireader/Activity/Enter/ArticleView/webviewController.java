@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini.MKListingActivity;
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
 
 import java.util.ArrayList;
 
@@ -31,25 +34,31 @@ public class webviewController extends Controller{
     }
 
     public void prevArc() {
-        index = loader.getIndex();
-        if (index < 1){
+        index = loader.getIndex() - 1;
+        if (index < 0){
             Toast.makeText(context, "This is the first article", Toast.LENGTH_SHORT).show();
         }
         else {
-            String url = loader.getArticleDatas().get(index - 1).getLink();
-            saver.saveArc(loader.getArticleDatas().get(index - 1));
-            saver.saveIndex(loader.getIndex() - 1);
-            saver.setURL(url);
+            ArticleData a  = loader.getArticleDatas().get(index);
+            String url = a.getLink();
+            saver.saveArc(a);
+            saver.saveIndex(index);
             wb.loadWebView(url);
+            saver.setURL(url);
             wb.setFirstLoad();
 
+            String newsType = loader.getNewsType();
+            NewsStorage newsStorage = new NewsStorage(context, newsType);
+
+            newsStorage.loadData();
+            articleDatas = newsStorage.loadArt1();
+            articleDatas.get(index).setReadNews(true);
+            newsStorage.saveData(articleDatas);
         }
     }
 
     public void nextArc() {
-        System.out.println("sohai1: " + index);
         index = loader.getIndex() + 1;
-        System.out.println("sohai2: " + index);
 
         if((index) > articleDatas.size()){
             Toast.makeText(context, "This is the last article", Toast.LENGTH_SHORT).show();
@@ -57,12 +66,19 @@ public class webviewController extends Controller{
         else {
             ArticleData a  = loader.getArticleDatas().get(index);
             String url = a.getLink();
-            System.out.println("sohai" + a);
             saver.saveArc(a);
             saver.saveIndex(index);
             wb.loadWebView(url);
             saver.setURL(url);
             wb.setFirstLoad();
+
+            String newsType = loader.getNewsType();
+            NewsStorage newsStorage = new NewsStorage(context, newsType);
+
+            newsStorage.loadData();
+            articleDatas = newsStorage.loadArt1();
+            articleDatas.get(index).setReadNews(true);
+            newsStorage.saveData(articleDatas);
         }
     }
 

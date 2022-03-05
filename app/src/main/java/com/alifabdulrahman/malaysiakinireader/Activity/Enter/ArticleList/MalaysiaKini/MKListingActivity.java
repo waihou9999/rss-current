@@ -134,6 +134,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
                 saver.saveArc(articleData);
 
                 articleDatas.get(i).setReadNews(true);
+                newsStorage.saveData(articleDatas);
 
                 Intent toView = new Intent(MKListingActivity.this, ArticleViewActivity.class);
                 startActivity(toView);
@@ -319,6 +320,7 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
                 if(!(pDate.equals(mDate))){
                     tempURL.add(newArticles.get(i).getLink());
                 }
+
             }
 
 

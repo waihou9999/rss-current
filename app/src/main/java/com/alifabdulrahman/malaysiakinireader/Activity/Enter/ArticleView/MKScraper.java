@@ -96,7 +96,6 @@ public class MKScraper {
             }
             ttsController = controller.getTtsController();
             ttsFunctionButton = fb.getTtsFunctionButton();
-            System.out.println("fker" + ttsController + " " + ttsFunctionButton);
 
             if (checkLoading(tempList)) {
                 Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();

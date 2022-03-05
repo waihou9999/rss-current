@@ -87,7 +87,6 @@ public class NewsStorage extends storage {
         toSaveInOrder = sorting.sortByLatest(toSaveInOrder);
         json = gson.toJson(toSaveInOrder);
         tinyDB.putString(newsType, json);
-        System.out.println("whatdata" + articleDatas);
     }
 
     public ArrayList<ArticleData>loadArt1(){
