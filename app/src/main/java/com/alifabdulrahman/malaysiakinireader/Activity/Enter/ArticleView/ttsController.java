@@ -25,7 +25,7 @@ public class ttsController {
     }
 
     public void stop() {
-        tts.stop();
+        tts.onStop();
     }
 
     public void previousSentence() throws InterruptedException {
@@ -36,11 +36,6 @@ public class ttsController {
         tts.nextSentence();
     }
 
-    public boolean isSpeaking() {
-        if (tts != null)
-            return tts.isSpeaking();
-        return false;
-    }
 
     public void destroy(){
         if (tts != null)
@@ -59,14 +54,15 @@ public class ttsController {
 
     public void playing() {
         if (tts != null) {
-            tts.onAudioFocusChange(1);
+            tts.play();
         }
     }
 
 
     public void pausing(){
-        if (tts != null)
-            tts.onAudioFocusChange(-1);
+        if (tts != null){
+            tts.stopPlay();
+        }
     }
 
     public void setTts(TTS tts){
@@ -122,9 +118,7 @@ public class ttsController {
 
     public void onDestroy() {
         if(tts != null){
-            tts.stop();
-            tts.shutdown();
-            tts.removeAudioFocus();
+            tts.destroy();
         }
     }
 }

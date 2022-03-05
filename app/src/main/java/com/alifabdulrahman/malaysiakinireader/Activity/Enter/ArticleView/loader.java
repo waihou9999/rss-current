@@ -56,4 +56,8 @@ public class loader {
     public ArticleData getLastArc() {
         return currentArticle.loadLastArc();
     }
+
+    public int getReadIndex() {
+        return currentArticle.getReadIndex();
+    }
 }

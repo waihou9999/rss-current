@@ -9,6 +9,7 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
+import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -97,22 +98,23 @@ public class MKScraper {
             ttsController = controller.getTtsController();
             ttsFunctionButton = fb.getTtsFunctionButton();
 
-            if (checkLoading(tempList)) {
-                Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
-                ttsController.stop();
-                saver.clearText();
 
-            }
-            else {
-                Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
-                ttsFunctionButton.enable();
-                saver.saveText(tempList);
+                    if (checkLoading(tempList)) {
+                        Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
+                        ttsController.stop();
+                        saver.clearText();
 
-                if (loader.getTSS()) {
-                    ttsController.init();
+                    } else {
+                        Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
+                        ttsFunctionButton.enable();
+                        saver.saveText(tempList);
+
+                        if (loader.getTSS()) {
+                            ttsController.init();
+                        }
+                    }
                 }
-            }
-        }
+
 
         public boolean checkLoading(ArrayList<String> tempList){
             String lastString = (tempList.get(tempList.size()-1));
