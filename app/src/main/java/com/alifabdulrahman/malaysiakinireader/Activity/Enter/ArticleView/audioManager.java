@@ -29,6 +29,22 @@ public class audioManager implements AudioManager.OnAudioFocusChangeListener {
         }
     }
 
+    public boolean requestAudioFocus() {
+        int result = am.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+    }
+
+    public void removeAudioFocus() {
+        try{
+            if(am != null){
+                am.abandonAudioFocus(this);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public void onAudioFocusChange(int focusChange) {
         switch (focusChange) {
@@ -49,4 +65,6 @@ public class audioManager implements AudioManager.OnAudioFocusChangeListener {
         };
 
     }
+
+
 }

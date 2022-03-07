@@ -54,7 +54,8 @@ public class TTS implements TextToSpeech.OnInitListener {
             webviewController = controller.getWebviewController();
 
             readIndex = 0;
-            speakTitle();
+            //speakTitle();
+            textMerging();
             speakSentences(text);
 
             tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -69,7 +70,6 @@ public class TTS implements TextToSpeech.OnInitListener {
                     readIndex++;
 
                     if(readIndex < text.size() && !tts.isSpeaking()){
-                        saver.saveReadIndex(readIndex);
                         speakSentences(text);
                     }
 
@@ -101,14 +101,14 @@ public class TTS implements TextToSpeech.OnInitListener {
 
     //Speak the array of sentences.
     public void speakSentences(ArrayList<String> textToRead){
+        if (audioManager.requestAudioFocus()) {
+            System.out.println("fker" + readIndex + textToRead.get(readIndex));
             tts.speak(textToRead.get(readIndex), TextToSpeech.QUEUE_ADD, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
-
-            if (readIndex > text.size()) {
-                webviewController.nextArc();
         }
     }
 
     public void nextSentence() {
+        audioManager.removeAudioFocus();
         if (readIndex != text.size()) {
             readIndex++;
         }
@@ -119,6 +119,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
     public void previousSentence() {
+        audioManager.removeAudioFocus();
         if (readIndex != 0) {
             readIndex--;
         }
@@ -128,9 +129,17 @@ public class TTS implements TextToSpeech.OnInitListener {
         }
     }
 
-    private void speakTitle() {
+    public void speakTitle() {
         articleData = loader.getLastArc();
-        tts.speak(articleData.getTitle() + "by" + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+        if (audioManager.requestAudioFocus()) {
+            tts.speak(articleData.getTitle() + "by" + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+        }
+    }
+
+    public void textMerging(){
+        articleData = loader.getLastArc();
+        String a = articleData.getTitle() + "by" + articleData.getAuthor();
+        text.add(0, a);
     }
 
 
