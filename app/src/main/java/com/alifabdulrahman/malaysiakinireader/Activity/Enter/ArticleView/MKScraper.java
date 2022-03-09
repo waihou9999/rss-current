@@ -98,7 +98,33 @@ public class MKScraper {
             ttsController = controller.getTtsController();
             ttsFunctionButton = fb.getTtsFunctionButton();
 
+            Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
+            ttsFunctionButton.enable();
+            saver.saveText(tempList);
 
+            if (loader.getTSS()) {
+                ttsController.init();
+            }
+
+/*
+            if (WebView.getProgress() != 100){
+                Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
+                ttsController.stop();
+                saver.clearText();
+            }
+            else{
+                Toast.makeText(ctx, "Finished getting content", Toast.LENGTH_SHORT).show();
+                ttsFunctionButton.enable();
+                saver.saveText(tempList);
+
+                if (loader.getTSS()) {
+                    ttsController.init();
+                }
+            }
+
+
+ */
+            /*
                     if (checkLoading(tempList)) {
                         Toast.makeText(ctx, "Getting contents. Please wait...", Toast.LENGTH_SHORT).show();
                         ttsController.stop();
@@ -113,6 +139,8 @@ public class MKScraper {
                             ttsController.init();
                         }
                     }
+
+             */
                 }
 
 

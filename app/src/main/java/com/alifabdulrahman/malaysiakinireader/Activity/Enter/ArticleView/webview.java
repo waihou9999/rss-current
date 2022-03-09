@@ -55,7 +55,9 @@ public class webview {
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
-                mkScraper.scrap();
+                if (mWebView.getProgress() == 100) {
+                    mkScraper.scrap();
+                }
             }
         });
         mWebView.loadUrl(url);
