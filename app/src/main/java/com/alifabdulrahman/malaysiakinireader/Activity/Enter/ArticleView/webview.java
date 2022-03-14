@@ -16,11 +16,13 @@ public class webview {
     private SwipeRefreshLayout pullToRefresh;
     private String url;
     private MKScraper mkScraper;
+    private FunctionButton functionButton;
 
     public webview(Activity activity, Context context, loader loader, FunctionButton functionButton, Controller Controller) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
+        this.functionButton = functionButton;
 
         mkScraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
 
@@ -42,6 +44,9 @@ public class webview {
 
     @SuppressLint("JavascriptInterface")
     public void loadWebView(String url){
+        ttsFunctionButton ttsFunctionButton = functionButton.getTtsFunctionButton();
+        ttsFunctionButton.disabled();
+
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){
