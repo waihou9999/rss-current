@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class TTS implements TextToSpeech.OnInitListener {
     private TextToSpeech tts;
@@ -131,15 +133,21 @@ public class TTS implements TextToSpeech.OnInitListener {
 
     public void speakTitle() {
         articleData = loader.getLastArc();
-        if (audioManager.requestAudioFocus()) {
+        if (audioManager.requestAudioFocus() && articleData.getAuthor() != null || !Objects.equals(articleData.getAuthor(), "")) {
             tts.speak(articleData.getTitle() + "by " + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
     }
 
     public void textMerging(){
         articleData = loader.getLastArc();
-        String a = articleData.getTitle() + "by" + articleData.getAuthor();
-        text.add(0, a);
+        String a = articleData.getTitle() + "by " + articleData.getAuthor();
+        String b = articleData.getTitle();
+        if (articleData.getAuthor() != null || TextUtils.isEmpty(articleData.getAuthor())) {
+            text.add(0, a);
+        }
+        else {
+            text.add(0, b);
+        }
     }
 
 
