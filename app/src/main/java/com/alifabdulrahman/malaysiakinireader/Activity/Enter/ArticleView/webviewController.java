@@ -39,6 +39,7 @@ public class webviewController extends Controller{
             Toast.makeText(context, "This is the first article", Toast.LENGTH_SHORT).show();
         }
         else {
+            saver.saveIndex(index);
             loadArticle(index);
             saveReadNews(index);
         }
@@ -51,6 +52,7 @@ public class webviewController extends Controller{
             Toast.makeText(context, "This is the last article", Toast.LENGTH_SHORT).show();
         }
         else {
+            saver.saveIndex(index);
             loadArticle(index);
             saveReadNews(index);
         }

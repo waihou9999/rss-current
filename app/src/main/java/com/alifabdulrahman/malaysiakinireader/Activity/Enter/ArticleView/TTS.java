@@ -132,7 +132,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     public void speakTitle() {
         articleData = loader.getLastArc();
         if (audioManager.requestAudioFocus()) {
-            tts.speak(articleData.getTitle() + "by" + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+            tts.speak(articleData.getTitle() + "by " + articleData.getAuthor(), TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
     }
 
