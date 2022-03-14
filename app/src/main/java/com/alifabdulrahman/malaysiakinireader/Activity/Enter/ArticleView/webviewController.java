@@ -57,9 +57,10 @@ public class webviewController extends Controller{
     }
 
     public void share(){
+        index = loader.getIndex();
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
-        String shareBody = articleDatas.get(index).getTitle() + ": " + url;
+        String shareBody = articleDatas.get(index).getTitle() + ": " + articleDatas.get(index).getLink();
         myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
         myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         activity.startActivity(Intent.createChooser(myIntent, "Share using"));
