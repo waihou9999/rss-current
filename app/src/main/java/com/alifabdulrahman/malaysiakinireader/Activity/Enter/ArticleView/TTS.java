@@ -140,7 +140,7 @@ public class TTS implements TextToSpeech.OnInitListener {
 
     public void textMerging(){
         articleData = loader.getLastArc();
-        String a = articleData.getTitle() + "by " + articleData.getAuthor();
+        String a = articleData.getTitle() + " by " + articleData.getAuthor();
         String b = articleData.getTitle();
         if (articleData.getAuthor() != null || TextUtils.isEmpty(articleData.getAuthor())) {
             text.add(0, a);
