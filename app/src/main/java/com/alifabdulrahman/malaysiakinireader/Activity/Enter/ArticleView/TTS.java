@@ -71,7 +71,7 @@ public class TTS implements TextToSpeech.OnInitListener {
                 public void onDone(String utteranceId) {
                     readIndex++;
 
-                    if(readIndex < text.size() && !tts.isSpeaking()){
+                    if(readIndex < text.size()){
                         speakSentences(text);
                     }
 
@@ -104,7 +104,6 @@ public class TTS implements TextToSpeech.OnInitListener {
     //Speak the array of sentences.
     public void speakSentences(ArrayList<String> textToRead){
         if (audioManager.requestAudioFocus()) {
-            System.out.println("fker" + readIndex + textToRead.get(readIndex));
             tts.speak(textToRead.get(readIndex), TextToSpeech.QUEUE_ADD, null, TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
         }
     }
