@@ -34,8 +34,11 @@ public class webview {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                url = loader.getUrl();
-                loadWebView(url);
+                try {
+                    reloadWebView();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -68,7 +71,7 @@ public class webview {
     }
 
     public void reloadWebView() throws InterruptedException {
-        //url = loader.getUrl();
+        url = loader.getUrl();
         mWebView.loadUrl(url);
 
         try {
