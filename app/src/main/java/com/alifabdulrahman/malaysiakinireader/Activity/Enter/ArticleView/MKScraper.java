@@ -2,11 +2,14 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import com.alifabdulrahman.malaysiakinireader.storage.substorage.NewsStorage;
@@ -56,6 +59,7 @@ public class MKScraper {
             this.WebView = WebView;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @JavascriptInterface
         public void getHTML(String html) {
 
@@ -102,6 +106,7 @@ public class MKScraper {
             saver.saveText(tempList);
 
             if (loader.getTSS()) {
+                System.out.println("fker2");
                 ttsController.init();
             }
 

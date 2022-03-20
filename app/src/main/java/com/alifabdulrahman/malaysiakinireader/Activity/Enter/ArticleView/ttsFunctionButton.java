@@ -3,9 +3,12 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.alifabdulrahman.malaysiakinireader.R;
 
@@ -49,6 +52,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -74,6 +78,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                         ttsController.playing();
                     }
                     else {
+                        System.out.println("fker");
                         ttsController.init();
                     }
 

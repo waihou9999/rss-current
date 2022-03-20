@@ -60,7 +60,6 @@ public class TTS implements TextToSpeech.OnInitListener {
             textMerging();
             speakSentences(text);
 
-            tts.setSpeechRate(10);
 
             tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                 @Override

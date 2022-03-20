@@ -1,6 +1,9 @@
 package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -73,6 +76,7 @@ public class ttsController {
         return tts;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void init() {
         tts = new TTS(context, loader, saver, controller);
     }
