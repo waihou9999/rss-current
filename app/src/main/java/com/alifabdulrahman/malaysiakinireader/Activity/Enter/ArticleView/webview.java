@@ -17,9 +17,11 @@ public class webview {
     private String url;
     private MKScraper mkScraper;
     private FunctionButton functionButton;
+    private loader loader;
 
     public webview(Activity activity, Context context, loader loader, FunctionButton functionButton, Controller Controller) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
+        this.loader = loader;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
         this.functionButton = functionButton;
@@ -69,6 +71,7 @@ public class webview {
     }
 
     public void reloadWebView() throws InterruptedException {
+        url = loader.getUrl();
         mWebView.loadUrl(url);
 
         try {
@@ -76,6 +79,7 @@ public class webview {
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }
+
         mkScraper.scrap();
     }
 

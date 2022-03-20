@@ -25,7 +25,6 @@ public class MKScraper {
 
     public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton FunctionButton, Controller Controller) {
         this.webView = webView;
-
         this.webView.addJavascriptInterface(new GetHTML(activity, ctx, FunctionButton, Controller, webView), "Scrap");
     }
 
