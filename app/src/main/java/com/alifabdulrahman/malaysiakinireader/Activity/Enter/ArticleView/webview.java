@@ -38,9 +38,13 @@ public class webview {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                int readIndex;
                 url = loader.getUrl();
-                int readIndex = ttsController.getTTS().getReadIndex();
-
+                if (ttsController.getTTS() == null){
+                    readIndex = 0;
+                }else {
+                    readIndex = ttsController.getTTS().getReadIndex();
+                }
                 saver.saveReadIndex(readIndex);
                 ttsController.pausing();
                 loadWebView(url);
