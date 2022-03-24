@@ -145,12 +145,12 @@
             android:padding="5dp"
             android:src="@android:drawable/ic_media_next"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/rescrapebutton"
+            app:layout_constraintEnd_toStartOf="@+id/rereadbutton"
             app:layout_constraintStart_toEndOf="@+id/forwbtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/rescrapebutton"
+            android:id="@+id/rereadbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"

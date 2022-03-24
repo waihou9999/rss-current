@@ -14,7 +14,7 @@ import com.alifabdulrahman.malaysiakinireader.model.ArticleData;
 import java.util.ArrayList;
 
 public class webviewFunctionButton extends FunctionButton implements View.OnClickListener{
-    private ImageButton sharebutton, rescrapebutton, nextArc, prevArc;
+    private ImageButton sharebutton, nextArc, prevArc;
     private Controller Controller;
     private webviewController webviewController;
     private ttsController ttsController;
@@ -24,7 +24,6 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
         nextArc = activity.findViewById(R.id.nxtarcbtn);
         prevArc = activity.findViewById(R.id.prevarcbtn);
         sharebutton = activity.findViewById(R.id.sharebutton);
-        rescrapebutton = activity.findViewById(R.id.rescrapebutton);
 
         prevArc.setOnClickListener((View.OnClickListener) this);
         nextArc.setOnClickListener((View.OnClickListener) this);
@@ -47,7 +46,8 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
                 webviewController.share();
                 break;
 
-            case R.id.rescrapebutton:
+            case R.id.rereadbutton:
+                ttsController.resetReadIndex();
                 break;
 
             case R.id.prevarcbtn:

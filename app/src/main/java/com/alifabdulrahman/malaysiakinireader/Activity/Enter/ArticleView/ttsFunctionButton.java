@@ -18,6 +18,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
     private final ImageButton nextSentBtn;
     private final ImageButton prevSentBtn;
     private final ImageButton stopBtn;
+    private final ImageButton rereadBtn;
     int playImg = android.R.drawable.ic_media_play;
     int pauseImg = android.R.drawable.ic_media_pause;
     private Controller controller;
@@ -31,9 +32,11 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
         stopBtn = activity.findViewById(R.id.stopbtn);
         nextSentBtn = activity.findViewById(R.id.forwbtn);
         prevSentBtn = activity.findViewById(R.id.prevbtn);
+        rereadBtn = activity.findViewById(R.id.rereadbutton);
         stopBtn.setOnClickListener(this);
         prevSentBtn.setOnClickListener(this);
         nextSentBtn.setOnClickListener(this);
+        rereadBtn.setOnClickListener(this);
 
         this.controller = controller;
         this.ttsController = controller.getTtsController();
@@ -78,7 +81,6 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                         ttsController.playing();
                     }
                     else {
-                        System.out.println("fker");
                         ttsController.init();
                     }
 
@@ -109,10 +111,17 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
                 else
                     Toast.makeText(context, "This is the first sentence", Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.rereadbutton:
+                ttsController.resetReadIndex();
+                break;
         }
     }
 
     public void enable() {
+        stopBtn.setAlpha(1f);
+        prevSentBtn.setAlpha(1f);
+        nextSentBtn.setAlpha(1f);
         stopBtn.setClickable(true);
         prevSentBtn.setClickable(true);
         nextSentBtn.setClickable(true);
@@ -127,6 +136,9 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
     }
 
     public void disabled() {
+        stopBtn.setAlpha(0.5f);
+        prevSentBtn.setAlpha(0.5f);
+        nextSentBtn.setAlpha(0.5f);
         stopBtn.setClickable(false);
         prevSentBtn.setClickable(false);
         nextSentBtn.setClickable(false);

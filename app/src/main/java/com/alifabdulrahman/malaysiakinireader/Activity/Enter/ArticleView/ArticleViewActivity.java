@@ -59,6 +59,13 @@ public class ArticleViewActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        int readIndex = loader.getReadIndex();
+        ttsController.setReadIndex(readIndex);
+        super.onResume();
+    }
+
+    @Override
     protected void onPause(){
         super.onPause();
     }

@@ -17,14 +17,18 @@ public class webview {
     private String url;
     private MKScraper mkScraper;
     private FunctionButton functionButton;
+    private ttsController ttsController;
+    private saver saver;
     private loader loader;
 
     public webview(Activity activity, Context context, loader loader, FunctionButton functionButton, Controller Controller) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
         this.loader = loader;
+        this.saver = Controller.saver;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
         this.functionButton = functionButton;
+        this.ttsController = Controller.getTtsController();
 
         mkScraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
 
@@ -35,7 +39,12 @@ public class webview {
             @Override
             public void onRefresh() {
                 url = loader.getUrl();
+
+                int readIndex = ttsController.getTTS().getReadIndex();
+                saver.saveReadIndex(readIndex);
                 loadWebView(url);
+                ttsController.pausing();
+                ttsController.setReadIndex(readIndex);
                 pullToRefresh.setRefreshing(false);
             }
         });

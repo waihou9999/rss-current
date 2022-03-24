@@ -23,7 +23,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     private audioManager audioManager;
     private Activity activity;
     private Context context;
-    private int readIndex;
+    private int readIndex = 0;
     private ArrayList<String>text;
     private ArticleData articleData;
     private Controller controller;
@@ -56,6 +56,7 @@ public class TTS implements TextToSpeech.OnInitListener {
             webviewController = controller.getWebviewController();
 
             readIndex = 0;
+
             //speakTitle();
             textMerging();
             speakSentences(text);
@@ -77,11 +78,11 @@ public class TTS implements TextToSpeech.OnInitListener {
                     }
 
                     if (readIndex == text.size()){
-                        saver.saveReadIndex(0);
                         ((Activity)context).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 webviewController.nextArc();
+                                readIndex = 0;
                             }
                         });
                     }
@@ -110,6 +111,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
     public void nextSentence() {
+        System.out.println("fker" + readIndex);
         audioManager.removeAudioFocus();
         if (readIndex != text.size()) {
             readIndex++;
@@ -187,8 +189,10 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
     public void destroy() {
-        tts.stop();
-        tts.shutdown();
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
     }
 
     public void setText(ArrayList<String>text){
@@ -230,5 +234,15 @@ public class TTS implements TextToSpeech.OnInitListener {
     public void resumePlay() {
         readIndex = loader.getReadIndex();
         play();
+    }
+
+    public void setReadIndex(int lastReadIndex) {
+        audioManager.removeAudioFocus();
+        readIndex = lastReadIndex;
+
+        if ((tts.isSpeaking()) && tts != null) {
+            tts.stop();
+            speakSentences(text);
+        }
     }
 }

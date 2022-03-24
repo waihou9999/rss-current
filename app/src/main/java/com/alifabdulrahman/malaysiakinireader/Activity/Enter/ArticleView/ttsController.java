@@ -125,4 +125,18 @@ public class ttsController {
             tts.destroy();
         }
     }
+
+    public void setReadIndex(int readIndex) {
+        if (tts != null) {
+            tts.setReadIndex(readIndex);
+        }
+    }
+
+    public void resetReadIndex() {
+        if (tts != null) {
+            tts.setReadIndex(0);
+        }
+    }
+
+
 }
