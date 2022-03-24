@@ -64,7 +64,6 @@ public class ttsController {
 
     public void pausing(){
         if (tts != null){
-            System.out.println("fkerpausing");
             tts.stopPlay();
         }
     }
@@ -133,7 +132,6 @@ public class ttsController {
 
     public void setReadIndex(int readIndex) {
         if (tts != null) {
-            System.out.println("fkersetting" + readIndex);
             tts.setReadIndex(readIndex);
         }
     }

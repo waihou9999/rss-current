@@ -112,7 +112,6 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
     public void nextSentence() {
-        System.out.println("fker" + readIndex);
         audioManager.removeAudioFocus();
         if (readIndex != text.size()) {
             readIndex++;
@@ -200,8 +199,6 @@ public class TTS implements TextToSpeech.OnInitListener {
         this.text = text;
     }
 
-
-
     public ArrayList<String> getText() {
         return text;
     }
@@ -229,7 +226,6 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
     public int getReadIndex(){
-        System.out.println("fker" + readIndex);
         return readIndex;
     }
 
