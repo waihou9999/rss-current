@@ -64,6 +64,7 @@ public class ttsController {
 
     public void pausing(){
         if (tts != null){
+            System.out.println("fkerpausing");
             tts.stopPlay();
         }
     }
@@ -78,7 +79,11 @@ public class ttsController {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void init() {
-        tts = new TTS(context, loader, saver, controller);
+        if (tts == null) {
+            tts = new TTS(context, loader, saver, controller);
+        }
+        else
+            playing();
     }
 
     public void speak(ArrayList<String> tempList) throws InterruptedException {
@@ -128,6 +133,7 @@ public class ttsController {
 
     public void setReadIndex(int readIndex) {
         if (tts != null) {
+            System.out.println("fkersetting" + readIndex);
             tts.setReadIndex(readIndex);
         }
     }

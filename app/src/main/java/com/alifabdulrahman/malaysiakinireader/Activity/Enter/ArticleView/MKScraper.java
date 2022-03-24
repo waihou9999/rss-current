@@ -105,10 +105,8 @@ public class MKScraper {
             ttsFunctionButton.enable();
             saver.saveText(tempList);
 
-            if (loader.getTSS() && !ttsController.getTTS().isSpeaking()) {
+            if (loader.getTSS()) {
                 ttsController.init();
-
-
             }
 
 /*

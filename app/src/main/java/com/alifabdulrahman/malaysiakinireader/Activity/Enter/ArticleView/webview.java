@@ -39,11 +39,12 @@ public class webview {
             @Override
             public void onRefresh() {
                 url = loader.getUrl();
-
                 int readIndex = ttsController.getTTS().getReadIndex();
+
                 saver.saveReadIndex(readIndex);
-                loadWebView(url);
                 ttsController.pausing();
+                loadWebView(url);
+                readIndex = loader.getReadIndex();
                 ttsController.setReadIndex(readIndex);
                 pullToRefresh.setRefreshing(false);
             }

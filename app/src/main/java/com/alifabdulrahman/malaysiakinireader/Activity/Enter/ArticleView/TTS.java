@@ -82,6 +82,7 @@ public class TTS implements TextToSpeech.OnInitListener {
                             @Override
                             public void run() {
                                 webviewController.nextArc();
+                                saver.saveReadIndex(0);
                                 readIndex = 0;
                             }
                         });
@@ -191,7 +192,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     public void destroy() {
         if (tts != null) {
             tts.stop();
-            tts.shutdown();
+            //tts.shutdown();
         }
     }
 
@@ -228,6 +229,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
     public int getReadIndex(){
+        System.out.println("fker" + readIndex);
         return readIndex;
     }
 
