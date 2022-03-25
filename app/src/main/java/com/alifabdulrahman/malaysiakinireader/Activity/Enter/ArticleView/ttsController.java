@@ -82,6 +82,7 @@ public class ttsController {
             tts = new TTS(context, loader, saver, controller);
         }
         else
+            tts.updateText();
             playing();
     }
 

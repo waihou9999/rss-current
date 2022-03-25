@@ -144,7 +144,8 @@ public class TTS implements TextToSpeech.OnInitListener {
         articleData = loader.getLastArc();
         String a = articleData.getTitle() + " by " + articleData.getAuthor();
         String b = articleData.getTitle();
-        if (articleData.getAuthor() != null || TextUtils.isEmpty(articleData.getAuthor())) {
+        System.out.println("fker " + articleData.getAuthor() + articleData.getAuthor().equals("-"));
+        if (!articleData.getAuthor().equals("-")) {
             text.add(0, a);
         }
         else {
@@ -242,5 +243,13 @@ public class TTS implements TextToSpeech.OnInitListener {
             tts.stop();
             speakSentences(text);
         }
+    }
+
+    public void updateText() {
+        readIndex = 0;
+        saver.saveReadIndex(0);
+        audioManager.removeAudioFocus();
+        text = loader.getText();
+        textMerging();
     }
 }
