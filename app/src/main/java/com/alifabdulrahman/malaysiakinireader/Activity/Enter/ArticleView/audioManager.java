@@ -9,12 +9,14 @@ public class audioManager implements AudioManager.OnAudioFocusChangeListener {
     Activity activity;
     Context context;
     TTS tts;
+    loader loader;
 
 
-    public audioManager(Activity activity, Context context, TTS tts) {
+    public audioManager(Activity activity, Context context, TTS tts, loader loader) {
         this.activity = activity;
         this.context = context;
         this.tts = tts;
+        this.loader = loader;
 
         am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -60,7 +62,9 @@ public class audioManager implements AudioManager.OnAudioFocusChangeListener {
                 tts.stopPlay();
                 break;
             case (AudioManager.AUDIOFOCUS_GAIN):
-                tts.resumePlay();
+                if (loader.getTSS()) {
+                    tts.resumePlay();
+                }
                 break;
         };
 

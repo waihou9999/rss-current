@@ -37,7 +37,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     public TTS(Context context, loader loader, saver saver, Controller controller) {
         activity = controller.activity;
         this.context = context;
-        audioManager = new audioManager(activity, context, this);
+        audioManager = new audioManager(activity, context, this, loader);
         this.saver = saver;
         this.loader = loader;
         this.articleData = loader.getLastArc();
