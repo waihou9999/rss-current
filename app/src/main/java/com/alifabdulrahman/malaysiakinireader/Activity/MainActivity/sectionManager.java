@@ -6,11 +6,11 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.About.NewsSectionActivity2;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.MalaysiaKini.MKListingActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleList.NewYorkTimes.NYTListingActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView.ArticleViewActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.NYTSection;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleList.MalaysiaKini.MKListingActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleList.NewYorkTimes.NYTListingActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.ArticleViewActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.MKSection;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.NYTSection;
 import com.alifabdulrahman.malaysiakinireader.Activity.Help.NewsSectionActivity1;
 
 public class sectionManager extends AppCompatActivity {

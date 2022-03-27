@@ -32,7 +32,7 @@ public class NewsSectionActivity2 extends AppCompatActivity {
         String x = System.getProperty("line.separator") +
                 "RSS News Reader ver. 2021.03" +
                 System.getProperty("line.separator") + System.getProperty("line.separator") +
-                "Created by Alif Abdul Rahman and William Kang" +
+                "Created by Alif Abdul Rahman, William Kang and Chong Wai Hou" +
                 System.getProperty("line.separator") + System.getProperty("line.separator") +
                 "Supervised by Dr Ian Chai" +
                 System.getProperty("line.separator") + System.getProperty("line.separator") +
@@ -65,7 +65,4 @@ public class NewsSectionActivity2 extends AppCompatActivity {
         startActivity(toMain);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
-
-
-
 }

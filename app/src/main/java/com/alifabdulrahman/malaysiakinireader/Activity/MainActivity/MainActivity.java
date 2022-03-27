@@ -24,12 +24,11 @@ import java.util.ArrayList;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView.saver;
-import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.MKSection;
 import com.alifabdulrahman.malaysiakinireader.R;
-import com.alifabdulrahman.malaysiakinireader.model.NewsSource;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.currentArticle;
-import com.alifabdulrahman.malaysiakinireader.storage.substorage.settings;
+import com.alifabdulrahman.malaysiakinireader.Model.NewsSource;
+import com.alifabdulrahman.malaysiakinireader.Storage.Substorage.currentArticle;
+import com.alifabdulrahman.malaysiakinireader.Storage.Substorage.settings;
 
 
 public class MainActivity extends AppCompatActivity implements Serializable {
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private Intent intent = null;
     //private currentArticle currentArticle = new currentArticle(this);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +50,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         lv = findViewById(R.id.news_list);
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
-
         Runnable myRunnable = new Runnable() {
-
             @Override
             public void run() {
                 newsSources.add(new NewsSource("Malaysia Kini", ""));
@@ -144,5 +140,4 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             startActivity(intent);
         }
     }
-
 }

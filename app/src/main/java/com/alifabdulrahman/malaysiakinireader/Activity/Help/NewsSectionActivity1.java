@@ -164,7 +164,7 @@ public class NewsSectionActivity1 extends AppCompatActivity {
 
         TextView myText11 = new TextView(this);
         String p =
-                "Skip to previous paragraph" +
+                "Back to previous paragraph" +
                 System.getProperty("line.separator")
                 ;
         myText11.setText(p);
@@ -249,7 +249,7 @@ public class NewsSectionActivity1 extends AppCompatActivity {
 
         TextView myText9 = new TextView(this);
         String n =
-                "Retrieve article data for text-to-speech again" +
+                "Start reading the article from the beginning" +
                 System.getProperty("line.separator")
                 ;
         myText9.setText(n);
