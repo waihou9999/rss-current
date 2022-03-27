@@ -3,6 +3,8 @@ package com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -13,18 +15,16 @@ public class webview {
     private int timex = 1000;
     private SwipeRefreshLayout pullToRefresh;
     private String url;
-    private loader loader;
     private MKScraper mkScraper;
-    private ttsController ttsController;
+    private FunctionButton functionButton;
 
-    public webview(Activity activity, Context context, loader loader, ttsFunctionButton ttsFunctionButton, ttsController ttsController) throws InterruptedException {
+    public webview(Activity activity, Context context, loader loader, FunctionButton functionButton, Controller Controller) throws InterruptedException {
         mWebView = activity.findViewById(R.id.webview);
-        this.loader = loader;
         this.url = loader.getUrl();
         mWebView.getSettings().setJavaScriptEnabled(true);
-        this.ttsController = ttsController;
+        this.functionButton = functionButton;
 
-        mkScraper = new MKScraper(activity, context, mWebView, ttsFunctionButton, ttsController);
+        mkScraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
 
         loadWebView(url);
 
@@ -44,7 +44,9 @@ public class webview {
 
     @SuppressLint("JavascriptInterface")
     public void loadWebView(String url){
-        mkScraper.scrap();
+        ttsFunctionButton ttsFunctionButton = functionButton.getTtsFunctionButton();
+        ttsFunctionButton.disabled();
+
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading (WebView view, String url){
@@ -58,7 +60,9 @@ public class webview {
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
-                mkScraper.scrap();
+                if (mWebView.getProgress() == 100) {
+                    mkScraper.scrap();
+                }
             }
         });
         mWebView.loadUrl(url);
