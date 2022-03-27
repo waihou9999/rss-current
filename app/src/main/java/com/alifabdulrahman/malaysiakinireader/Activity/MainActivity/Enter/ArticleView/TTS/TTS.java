@@ -53,12 +53,10 @@ public class TTS implements TextToSpeech.OnInitListener {
             identityLanguage();
 
             webviewController = controller.getWebviewController();
-
             readIndex = loader.getReadIndex();
 
             textMerging();
             speakSentences(text);
-
 
             tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                 @Override
@@ -178,8 +176,6 @@ public class TTS implements TextToSpeech.OnInitListener {
             Locale localBM = new Locale("id", "ID");
             tts.setLanguage(localBM);
         }
-
-
         if (newsType.contains("Chinese")) {
             tts.setLanguage(Locale.CHINESE);
         }
