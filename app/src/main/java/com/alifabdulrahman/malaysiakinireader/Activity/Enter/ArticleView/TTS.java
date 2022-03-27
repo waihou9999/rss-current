@@ -144,7 +144,6 @@ public class TTS implements TextToSpeech.OnInitListener {
         articleData = loader.getLastArc();
         String a = articleData.getTitle() + " by " + articleData.getAuthor();
         String b = articleData.getTitle();
-        System.out.println("fker " + articleData.getAuthor() + articleData.getAuthor().equals("-"));
         if (!articleData.getAuthor().equals("-")) {
             text.add(0, a);
         }
@@ -157,6 +156,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     public void stopPlay() {
         if (tts != null && tts.isSpeaking()) {
             tts.stop();
+            saver.saveReadIndex(readIndex);
         }
     }
 

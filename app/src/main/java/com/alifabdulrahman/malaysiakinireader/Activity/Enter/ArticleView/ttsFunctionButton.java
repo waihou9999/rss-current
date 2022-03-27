@@ -128,7 +128,6 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
         /*
         if (tts == null) {
             tts = new TTS(context, loader, saver);
-            System.out.println("sohaitts" +tts);
             ttsController.setTts(tts);
         }
 
