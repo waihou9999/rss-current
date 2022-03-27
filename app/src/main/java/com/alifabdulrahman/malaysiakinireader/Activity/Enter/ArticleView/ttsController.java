@@ -79,6 +79,7 @@ public class ttsController {
     public void init() {
         if (tts == null) {
             tts = new TTS(context, loader, saver, controller);
+            saver.saveReadIndex(0);
         }
         else
             tts.updateText();
@@ -104,24 +105,20 @@ public class ttsController {
     }
 
     public boolean canPrev() {
-        int readIndex = tts.getReadIndex();
-
-        if (readIndex == 0){
-            return false;
+        if (tts != null) {
+            int readIndex = loader.getReadIndex() + 1;
+            return readIndex != 0;
         }
-        else
-            return true;
+        else return false;
     }
 
     public boolean canNext() {
-        int readIndex = tts.getReadIndex() + 1;
-        int textSize = tts.getTextSize();
-
-        if (readIndex == textSize){
-            return false;
+        if (tts != null) {
+            int readIndex = loader.getReadIndex() + 1;
+            int textSize = tts.getTextSize();
+            return readIndex != textSize;
         }
-        else
-            return true;
+        else return false;
     }
 
     public void onDestroy() {

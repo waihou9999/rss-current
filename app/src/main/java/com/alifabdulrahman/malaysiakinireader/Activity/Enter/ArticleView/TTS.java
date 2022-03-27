@@ -55,7 +55,7 @@ public class TTS implements TextToSpeech.OnInitListener {
 
             webviewController = controller.getWebviewController();
 
-            readIndex = 0;
+            readIndex = loader.getReadIndex();
 
             //speakTitle();
             textMerging();
@@ -72,9 +72,9 @@ public class TTS implements TextToSpeech.OnInitListener {
                 @Override
                 public void onDone(String utteranceId) {
                     readIndex++;
-                    saver.saveReadIndex(readIndex);
 
                     if(readIndex < text.size()){
+                        saver.saveReadIndex(readIndex);
                         speakSentences(text);
                     }
 
