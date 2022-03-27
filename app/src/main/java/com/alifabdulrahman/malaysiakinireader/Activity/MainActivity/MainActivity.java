@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         } else {
             Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
             backButtonCount++;
