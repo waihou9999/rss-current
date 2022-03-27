@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
+import com.alifabdulrahman.malaysiakinireader.Activity.Enter.ArticleView.saver;
 import com.alifabdulrahman.malaysiakinireader.Activity.Enter.NewsSectionActivity.MKSection;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.model.NewsSource;
@@ -102,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                         intent = sectionManger.section(position);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

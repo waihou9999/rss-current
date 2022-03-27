@@ -72,6 +72,7 @@ public class TTS implements TextToSpeech.OnInitListener {
                 @Override
                 public void onDone(String utteranceId) {
                     readIndex++;
+                    saver.saveReadIndex(readIndex);
 
                     if(readIndex < text.size()){
                         speakSentences(text);
@@ -232,7 +233,9 @@ public class TTS implements TextToSpeech.OnInitListener {
 
     public void resumePlay() {
         readIndex = loader.getReadIndex();
-        play();
+        if (loader.getTSS()) {
+            play();
+        }
     }
 
     public void setReadIndex(int lastReadIndex) {

@@ -60,6 +60,7 @@ public class ArticleViewActivity extends AppCompatActivity {
 
     @Override
     protected void onResume(){
+        ttsController.onResume();
         super.onResume();
     }
 

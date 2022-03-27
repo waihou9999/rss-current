@@ -21,7 +21,6 @@ public class ttsController {
         this.controller = controller;
     }
 
-
     public void stopPlay() {
         if (tts != null)
          tts.stopPlay();
@@ -143,5 +142,10 @@ public class ttsController {
         }
     }
 
-
+    public void onResume() {
+        if (tts != null){
+            tts.setReadIndex(loader.getReadIndex());
+            System.out.println("fker" + loader.getReadIndex());
+        }
+    }
 }
