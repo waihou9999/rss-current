@@ -41,7 +41,7 @@ public class MKSection extends AppCompatActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_section);
+        setContentView(R.layout.activity_mk_section);
         //newsSectionAdapter = new NewsSectionAdapter(this, newsSection2);
         MK = new NewsSource("MalaysiaKini", "https://malaysiakini.com");
         initializeDefaults();
@@ -122,107 +122,6 @@ public class MKSection extends AppCompatActivity implements Serializable {
         newsSection.add(new NewsSectionData(MK,"News (Chinese)", "https://www.malaysiakini.com/rss/zh/news.rss"));
         newsSection.add(new NewsSectionData(MK,"Opinions (Chinese)", "https://www.malaysiakini.com/rss/zh/columns.rss"));
         newsSection.add(new NewsSectionData(MK,"Letters (Chinese)", "https://www.malaysiakini.com/rss/zh/letters.rss"));
-    }
-
-    public void toAdd(View view){
-        //System.out.println(newsSection.size());
-        AlertDialog.Builder addNewsSourceAlert = new AlertDialog.Builder(this);
-        final EditText editLabel = new EditText(MKSection.this);
-        final EditText editURL = new EditText(MKSection.this);
-        editLabel.setHint("Label");
-        editLabel.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
-        editLabel.setSingleLine();
-        editLabel.setPadding(60, 30, 60, 30);
-        editURL.setPadding(60, 30, 60, 30);
-        editURL.setHint("RSS Feed URL");
-
-        addNewsSourceAlert.setTitle("Add RSS Feed");
-        addNewsSourceAlert.setView(editLabel);
-        addNewsSourceAlert.setView(editURL);
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(editLabel);
-        layout.addView(editURL);
-        addNewsSourceAlert.setView(layout);
-
-        addNewsSourceAlert.setPositiveButton("Add", new
-                DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        txt1 = editLabel;
-                        txt2 = editURL;
-                        collectInput(newsSection2);
-                    }
-                });
-
-        addNewsSourceAlert.setNegativeButton("Cancel", new
-                DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        addNewsSourceAlert.show();
-    }
-
-    public void toRemove(View view){
-        // setup the alert builder
-        if (!newsSection2.isEmpty()) {
-            AlertDialog.Builder removeNewsSourceAlert = new AlertDialog.Builder(this);
-            removeNewsSourceAlert.setTitle("Remove RSS Feed");// add a checkbox list
-            final String[] newsSection2List = new String[newsSection2.size()];
-            final ArrayList<Integer> selectedItems = new ArrayList<>();
-            for (int i = 0; i < newsSection2.size(); i++) {
-                newsSection2List[i] = newsSection2.get(i).getSectionName();
-            }
-            boolean[] checkedItems = null;
-            removeNewsSourceAlert.setMultiChoiceItems(newsSection2List, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    if (isChecked) {
-                        selectedItems.add(which);
-                    } else if (selectedItems.contains(which)) {
-                        selectedItems.remove(which);
-                    }
-                }
-            });
-            removeNewsSourceAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    removeInput(newsSection2, selectedItems);
-                }
-            });
-            removeNewsSourceAlert.setNegativeButton("Cancel", null);
-            AlertDialog dialog = removeNewsSourceAlert.create();
-            dialog.show();
-        }
-    }
-
-    public void collectInput(ArrayList<NewsSectionData> newsSection2) {
-        String getInput1 = txt1.getText().toString();
-        String getInput2 = txt2.getText().toString();
-        if (!(getInput1 == null || getInput1.trim().equals("") || getInput2 == null || getInput2.trim().equals(""))) {
-            newsSection2.add(new NewsSectionData(MK, getInput1, getInput2));
-            newsSection.add(new NewsSectionData(MK, getInput1, getInput2));
-        }
-        //newsSection.add(new NewsSectionData("MalaysiaKini News (English)", "https://www.malaysiakini.com/rss/en/news.rss"));
-        //System.out.println(newsSection2 == null);
-        newsSectionStorage.saveData();
-        setupListView();
-        //System.out.println(newsSection2.size());
-    }
-
-    public void removeInput(ArrayList<NewsSectionData> newsSection2, ArrayList<Integer> selectedItems) {
-        for (int i = selectedItems.size()-1; i >= 0; i--) {
-            int x = selectedItems.get(i);
-            int y = selectedItems.get(i) + 9;
-            newsSection2.remove(x);
-            newsSection.remove(y);
-        }
-        newsSectionStorage.saveData();
-        setupListView();
-        //System.out.println(newsSection2.size());
     }
 
     public void loadLastArticle(){
