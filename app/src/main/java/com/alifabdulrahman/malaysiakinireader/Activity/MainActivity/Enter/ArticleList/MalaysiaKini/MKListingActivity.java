@@ -148,8 +148,8 @@ public class MKListingActivity extends AppCompatActivity implements Serializable
         finish();
         super.onBackPressed();
 
-        Intent toSection = new Intent(MKListingActivity.this, MKSection.class);
-        startActivity(toSection);
+        //Intent toSection = new Intent(MKListingActivity.this, MKSection.class);
+        //startActivity(toSection);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 

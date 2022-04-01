@@ -62,4 +62,8 @@ public class saver {
     public void saveReadIndex(int readIndex) {
         currentArticle.setReadIndex(readIndex);
     }
+
+    public void saveSource(int position) {
+        currentArticle.setSource(position);
+    }
 }

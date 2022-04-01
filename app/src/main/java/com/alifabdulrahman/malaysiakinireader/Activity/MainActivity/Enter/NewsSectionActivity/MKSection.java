@@ -139,8 +139,8 @@ public class MKSection extends AppCompatActivity implements Serializable {
         super.onBackPressed();
         newsSectionStorage.setReading(false);
         //Intent toMain = sectionManager.section(4);
-        Intent toMain = new Intent(this, MainActivity.class);
-        startActivity(toMain);
+        //Intent toMain = new Intent(this, MainActivity.class);
+        //startActivity(toMain);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

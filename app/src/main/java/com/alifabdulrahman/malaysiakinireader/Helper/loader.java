@@ -60,4 +60,8 @@ public class loader {
     public int getReadIndex() {
         return currentArticle.getReadIndex();
     }
+
+    public int getSource() {
+        return currentArticle.getSource();
+    }
 }

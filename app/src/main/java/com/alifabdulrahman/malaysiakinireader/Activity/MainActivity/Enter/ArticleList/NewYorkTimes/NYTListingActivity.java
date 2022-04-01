@@ -21,7 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.ArticleViewActivity;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.NYTViewActivity;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.MKSection;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.NYTSection;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.MainActivity;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.Adapter.ArticleListAdapter;
 import com.alifabdulrahman.malaysiakinireader.Model.ArticleData;
@@ -126,7 +129,7 @@ public class NYTListingActivity extends AppCompatActivity implements Serializabl
                 currentArticle.saveReading(true);
                 currentArticle.saveData(link);
 
-                Intent toView = new Intent(NYTListingActivity.this, ArticleViewActivity.class);
+                Intent toView = new Intent(NYTListingActivity.this, NYTViewActivity.class);
 
                 articleDatas.get(i).setReadNews(true);
 
@@ -142,10 +145,10 @@ public class NYTListingActivity extends AppCompatActivity implements Serializabl
     @Override
     public void onBackPressed() {
         finish();
-        super.onBackPressed();
-        Intent toSection = new Intent(NYTListingActivity.this, MKSection.class);
-        startActivity(toSection);
+        //Intent toSection = new Intent(NYTListingActivity.this, MainActivity.class);
+        //startActivity(toSection);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        super.onBackPressed();
     }
 
     //Get news contents and fill it inside newsdata array

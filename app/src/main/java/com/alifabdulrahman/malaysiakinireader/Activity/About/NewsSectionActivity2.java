@@ -61,8 +61,8 @@ public class NewsSectionActivity2 extends AppCompatActivity {
     public void onBackPressed(){
         finish();
         super.onBackPressed();
-        Intent toMain = new Intent(NewsSectionActivity2.this, MainActivity.class);
-        startActivity(toMain);
+        //Intent toMain = new Intent(NewsSectionActivity2.this, MainActivity.class);
+        //startActivity(toMain);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

@@ -101,4 +101,8 @@ public class currentArticle extends storage {
     public void setTTS(boolean tss){
         tinyDB.putBoolean("startTSS", tss);
     }
+
+    public int getSource(){ return tinyDB.getInt("source"); }
+
+    public void setSource(int source){ tinyDB.putInt("source", source); }
 }

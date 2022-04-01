@@ -25,6 +25,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.MKSection;
+import com.alifabdulrahman.malaysiakinireader.Helper.saver;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.Model.NewsSource;
 import com.alifabdulrahman.malaysiakinireader.Storage.Substorage.currentArticle;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private AlertDialog.Builder startUp;
     private final sectionManager sectionManger = new sectionManager(this);
     private Intent intent = null;
+    private saver saver;
     //private currentArticle currentArticle = new currentArticle(this);
 
     @Override
@@ -48,13 +50,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lv = findViewById(R.id.news_list);
+        saver = new saver(MainActivity.this, this);
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
                 newsSources.add(new NewsSource("MalaysiaKini", ""));
-                newsSources.add(new NewsSource("Others", ""));
+                newsSources.add(new NewsSource("New York Times", ""));
                 newsSources.add(new NewsSource("Help", ""));
                 newsSources.add(new NewsSource("About", ""));
 
@@ -99,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        saver.saveSource(position);
                         intent = sectionManger.section(position);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

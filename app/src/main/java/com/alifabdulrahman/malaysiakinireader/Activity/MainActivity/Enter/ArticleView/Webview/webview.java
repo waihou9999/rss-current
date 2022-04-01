@@ -12,6 +12,7 @@ import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.Articl
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.FunctionButton;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.MKScraper;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.TTS.ttsFunctionButton;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.NYTScraper;
 import com.alifabdulrahman.malaysiakinireader.Helper.loader;
 import com.alifabdulrahman.malaysiakinireader.Helper.saver;
 import com.alifabdulrahman.malaysiakinireader.R;
@@ -22,8 +23,10 @@ public class webview {
     private SwipeRefreshLayout pullToRefresh;
     private String url;
     private MKScraper mkScraper;
+    private NYTScraper nytScraper;
     private FunctionButton functionButton;
     private ttsController ttsController;
+    private loader loader;
 
     @SuppressLint("SetJavaScriptEnabled")
     public webview(Activity activity, Context context, loader loader, saver saver, FunctionButton functionButton, Controller Controller) throws InterruptedException {
@@ -32,8 +35,10 @@ public class webview {
         mWebView.getSettings().setJavaScriptEnabled(true);
         this.functionButton = functionButton;
         this.ttsController = Controller.getTtsController();
+        this.loader = loader;
 
         mkScraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
+        nytScraper = new NYTScraper(activity, context, mWebView, functionButton, Controller);
 
         loadWebView(url);
 
@@ -76,8 +81,14 @@ public class webview {
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
+
                 if (mWebView.getProgress() == 100) {
-                    mkScraper.scrap();
+                    if (loader.getSource() == 0) {
+                        mkScraper.scrap();
+                    }
+                    else if (loader.getSource() == 1){
+                        nytScraper.scrap();
+                    }
                 }
             }
         });
@@ -85,6 +96,6 @@ public class webview {
     }
 
     public void setFirstLoad() {
-        mkScraper.setFirstLoad();
+        //mkScraper.setFirstLoad();
     }
 }
