@@ -36,7 +36,7 @@ public class NewsSectionActivity2 extends AppCompatActivity {
                 System.getProperty("line.separator") + System.getProperty("line.separator") +
                 "Supervised by Dr Ian Chai" +
                 System.getProperty("line.separator") + System.getProperty("line.separator") +
-                "\u00A9 2021 Multimedia University Malaysia"
+                "\u00A9 2022 Multimedia University Malaysia"
                 ;
         myText.setText(x);
         myText.setTextSize(18);

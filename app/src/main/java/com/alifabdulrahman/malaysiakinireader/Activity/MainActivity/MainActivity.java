@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-                newsSources.add(new NewsSource("Malaysia Kini", ""));
-                newsSources.add(new NewsSource("New York Times", ""));
+                newsSources.add(new NewsSource("MalaysiaKini", ""));
+                newsSources.add(new NewsSource("Others", ""));
                 newsSources.add(new NewsSource("Help", ""));
                 newsSources.add(new NewsSource("About", ""));
 
