@@ -64,9 +64,17 @@ public class NYTScraper {
 
             ArrayList<String> tempList = new ArrayList<>();
 
-            Elements classContents = doc.select("main[id $= site-content]");
+            Elements contents = doc.select("section[name $= articleBody]"); // NYT
+            if (contents == null || contents.isEmpty())
+                contents = doc.select("div[data-component $= text-block]"); // BBC
+            if (contents == null || contents.isEmpty())
+                contents = doc.select("div[class $= text]"); // Sun (Malaysia)
+            if (contents == null || contents.isEmpty())
+                contents = doc.select("p, li"); // Default - take everything
+            else
+                contents = contents.select("p, li");
 
-            Elements contents = classContents.select("p, li");
+            contents = contents.select("p, li");
 
             for (Element content : contents) {
 
