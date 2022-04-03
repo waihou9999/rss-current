@@ -3,7 +3,6 @@ package com.alifabdulrahman.malaysiakinireader.Storage;
 import android.content.Context;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.sectionManager;
-import  com.alifabdulrahman.malaysiakinireader.Helper.TinyDB;
 
 public abstract class storage {
     protected TinyDB tinyDB;

@@ -50,7 +50,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     @Override
     public void onInit(int status) {
         if(status == TextToSpeech.SUCCESS) {
-            identityLanguage();
+            identifyLanguage();
 
             webviewController = controller.getWebviewController();
             readIndex = loader.getReadIndex();
@@ -168,7 +168,7 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
 
-    public void identityLanguage(){
+    public void identifyLanguage(){
         if (newsType.contains("English")){
             tts.setLanguage(Locale.ENGLISH);
         }

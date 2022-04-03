@@ -19,7 +19,7 @@
  *  and unicode 2017 that are used for separating the items in a list.
  */
 
-package com.alifabdulrahman.malaysiakinireader.Helper;
+package com.alifabdulrahman.malaysiakinireader.Storage;
 
 import java.io.File;
 import java.io.FileOutputStream;

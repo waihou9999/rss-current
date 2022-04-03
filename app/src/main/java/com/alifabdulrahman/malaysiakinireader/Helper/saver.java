@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class saver {
     private Activity activity;
     private Context context;
-    private com.alifabdulrahman.malaysiakinireader.Storage.Substorage.currentArticle currentArticle;
-    private com.alifabdulrahman.malaysiakinireader.Storage.Substorage.newsStorage newsStorage;
+    private currentArticle currentArticle;
+    private newsStorage newsStorage;
     private MKSectionStorage newsSectionStorage;
-    private TinyDB tinyDB;
+
 
     public saver(Activity activity, Context context) {
         this.activity = activity;
@@ -46,7 +46,6 @@ public class saver {
     public void saveText(ArrayList<String>text){
         currentArticle.saveText(text);
     }
-
     public void saveIndex(int index) {
         currentArticle.saveIndex(index);
     }
@@ -55,7 +54,7 @@ public class saver {
         currentArticle.saveLastArc(articleData);
     }
 
-    public void setTSS(boolean tts) {
+    public void setTTS(boolean tts) {
         currentArticle.setTTS(tts);
     }
 

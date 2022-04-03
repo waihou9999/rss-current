@@ -14,7 +14,7 @@ public class loader {
     private Activity activity;
     private Context context;
     private currentArticle currentArticle;
-    private com.alifabdulrahman.malaysiakinireader.Storage.Substorage.newsStorage newsStorage;
+    private newsStorage newsStorage;
     private MKSectionStorage MKSectionStorage;
     private ArrayList<ArticleData> articleDatas;
 
