@@ -14,7 +14,6 @@ import com.alifabdulrahman.malaysiakinireader.Storage.Substorage.newsStorage;
 import java.util.ArrayList;
 
 public class webviewController extends Controller {
-    private Activity activity;
     private ArrayList<ArticleData> articleDatas;
     private int index;
     private webview wb;

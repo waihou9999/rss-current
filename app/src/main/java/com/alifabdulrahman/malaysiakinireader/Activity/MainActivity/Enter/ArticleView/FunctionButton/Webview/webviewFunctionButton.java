@@ -6,14 +6,15 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.Controller;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.ttsController.ttsController;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.webviewController.webviewController;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.FunctionButton;
 import com.alifabdulrahman.malaysiakinireader.R;
 
 public class webviewFunctionButton extends FunctionButton implements View.OnClickListener{
     private ImageButton sharebutton, nextArc, prevArc;
-    private com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.Controller Controller;
-    private com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.webviewController.webviewController webviewController;
-    private com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.ttsController.ttsController ttsController;
+    private webviewController webviewController;
+    private ttsController ttsController;
 
     public webviewFunctionButton(Activity activity, Controller Controller) throws InterruptedException {
         super(activity);
@@ -29,7 +30,6 @@ public class webviewFunctionButton extends FunctionButton implements View.OnClic
         nextArc.setEnabled(true);
         sharebutton.setEnabled(true);
 
-        this.Controller = Controller;
         this.webviewController = Controller.getWebviewController();
         this.ttsController = Controller.getTtsController();
     }

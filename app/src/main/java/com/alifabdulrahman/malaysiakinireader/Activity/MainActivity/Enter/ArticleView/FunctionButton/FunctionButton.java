@@ -5,13 +5,15 @@ import android.content.Context;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.TTS.ttsFunctionButton;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.Webview.webviewFunctionButton;
+import com.alifabdulrahman.malaysiakinireader.Helper.loader;
+import com.alifabdulrahman.malaysiakinireader.Helper.saver;
 import com.alifabdulrahman.malaysiakinireader.R;
 
 public class FunctionButton{
     protected Activity activity;
     protected Context context;
-    protected com.alifabdulrahman.malaysiakinireader.Helper.loader loader;
-    protected com.alifabdulrahman.malaysiakinireader.Helper.saver saver;
+    protected loader loader;
+    protected saver saver;
     private ttsFunctionButton ttsFunctionButton;
     private webviewFunctionButton webviewFunctionButton;
 

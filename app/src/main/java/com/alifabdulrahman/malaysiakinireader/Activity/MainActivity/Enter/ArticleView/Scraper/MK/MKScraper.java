@@ -1,4 +1,4 @@
-package com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper;
+package com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.MK;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,10 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.Controller;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.ttsController.ttsController;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.FunctionButton;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.TTS.ttsFunctionButton;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.Scraper;
 import com.alifabdulrahman.malaysiakinireader.Helper.loader;
 import com.alifabdulrahman.malaysiakinireader.Helper.saver;
 
@@ -21,29 +24,22 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class NYTScraper {
-    private WebView webView;
-    boolean firstLoad = true;
+public class MKScraper extends Scraper {
 
-    public NYTScraper(Activity activity, Context ctx, WebView webView, FunctionButton FunctionButton, Controller Controller) {
-        this.webView = webView;
-        this.webView.addJavascriptInterface(new NYTScraper.GetHTML(activity, ctx, FunctionButton, Controller, webView), "Scrap");
-    }
-
-    public void scrap() {
-        webView.loadUrl("javascript:window.Scrap.getHTML" +
-                "(document.getElementsByTagName('html')[0].outerHTML);");
+    public MKScraper(Activity activity, Context ctx, WebView webView, FunctionButton FunctionButton, Controller Controller) {
+        super(activity, ctx, webView, FunctionButton, Controller);
+        this.webView.addJavascriptInterface(new MKScraper.GetHTML(activity, ctx, FunctionButton, Controller, webView), "Scrap");
     }
 
     public class GetHTML {
         private Context ctx;
         private Activity activity;
-        private com.alifabdulrahman.malaysiakinireader.Helper.saver saver;
-        private com.alifabdulrahman.malaysiakinireader.Helper.loader loader;
+        private saver saver;
+        private loader loader;
         private FunctionButton fb;
-        private com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.TTS.ttsFunctionButton ttsFunctionButton;
+        private ttsFunctionButton ttsFunctionButton;
         private Controller controller;
-        private com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.ttsController.ttsController ttsController;
+        private ttsController ttsController;
         private WebView WebView;
 
         public GetHTML(Activity activity, Context ctx, FunctionButton FunctionButton, Controller Controller, WebView WebView) {
@@ -64,17 +60,14 @@ public class NYTScraper {
 
             ArrayList<String> tempList = new ArrayList<>();
 
-            Elements contents = doc.select("section[name $= articleBody]"); // NYT
-            if (contents == null || contents.isEmpty())
-                contents = doc.select("div[data-component $= text-block]"); // BBC
-            if (contents == null || contents.isEmpty())
-                contents = doc.select("div[class $= text]"); // Sun (Malaysia)
-            if (contents == null || contents.isEmpty())
-                contents = doc.select("p, li"); // Default - take everything
-            else
-                contents = contents.select("p, li");
+            Elements classContents = doc.select("div[id $= full-content-container]");
 
-            contents = contents.select("p, li");
+            Elements contents = classContents.select("p, li");
+
+            if (classContents == null || classContents.isEmpty()) {
+                classContents = doc.select("div[id $= __next]");
+                contents = classContents.select("p, li");
+            }
 
             for (Element content : contents) {
 
@@ -103,3 +96,4 @@ public class NYTScraper {
         firstLoad = true;
     }
 }
+

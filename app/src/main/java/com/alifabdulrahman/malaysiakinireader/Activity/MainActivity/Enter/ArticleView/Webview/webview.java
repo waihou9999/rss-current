@@ -10,9 +10,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.Controller;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.ttsController.ttsController;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.FunctionButton;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.MKScraper;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.MK.MKScraper;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.TTS.ttsFunctionButton;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.NYTScraper;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.NYT.NYTScraper;
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Scraper.Scraper;
 import com.alifabdulrahman.malaysiakinireader.Helper.loader;
 import com.alifabdulrahman.malaysiakinireader.Helper.saver;
 import com.alifabdulrahman.malaysiakinireader.R;
@@ -22,8 +23,7 @@ public class webview {
     private int timex = 1000;
     private SwipeRefreshLayout pullToRefresh;
     private String url;
-    private MKScraper mkScraper;
-    private NYTScraper nytScraper;
+    private Scraper scraper;
     private FunctionButton functionButton;
     private ttsController ttsController;
     private loader loader;
@@ -37,8 +37,13 @@ public class webview {
         this.ttsController = Controller.getTtsController();
         this.loader = loader;
 
-        mkScraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
-        nytScraper = new NYTScraper(activity, context, mWebView, functionButton, Controller);
+
+        if (loader.getSource() == 0) {
+            scraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
+        }
+        else if (loader.getSource() == 1) {
+            scraper = new NYTScraper(activity, context, mWebView, functionButton, Controller);
+        }
 
         loadWebView(url);
 
@@ -83,14 +88,9 @@ public class webview {
                 }
 
                 if (mWebView.getProgress() == 100) {
-                    if (loader.getSource() == 0) {
-                        mkScraper.scrap();
-                    }
-                    else if (loader.getSource() == 1){
-                        nytScraper.scrap();
+                    scraper.scrap();
                     }
                 }
-            }
         });
         mWebView.loadUrl(url);
     }

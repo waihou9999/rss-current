@@ -113,6 +113,7 @@ public class TTS implements TextToSpeech.OnInitListener {
         if ((tts.isSpeaking()) && tts != null) {
             tts.stop();
             speakSentences(text);
+            saver.saveReadIndex(readIndex);
         }
     }
 

@@ -82,6 +82,7 @@ public class ttsController extends Controller {
         if (tts != null) {
             int readIndex = loader.getReadIndex() + 1;
             int textSize = tts.getTextSize();
+            System.out.println("fk" + loader.getReadIndex() + 1 + " : " + textSize);
             return readIndex != textSize;
         }
         else return false;
