@@ -21,10 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.ArticleViewActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.NYTViewActivity;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.MKSection;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.NewsSectionActivity.NYTSection;
-import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.MainActivity;
 import com.alifabdulrahman.malaysiakinireader.R;
 import com.alifabdulrahman.malaysiakinireader.Adapter.ArticleListAdapter;
 import com.alifabdulrahman.malaysiakinireader.Model.ArticleData;
@@ -129,7 +125,7 @@ public class NYTListingActivity extends AppCompatActivity implements Serializabl
                 currentArticle.saveReading(true);
                 currentArticle.saveData(link);
 
-                Intent toView = new Intent(NYTListingActivity.this, NYTViewActivity.class);
+                Intent toView = new Intent(NYTListingActivity.this, ArticleViewActivity.class);
 
                 articleDatas.get(i).setReadNews(true);
 

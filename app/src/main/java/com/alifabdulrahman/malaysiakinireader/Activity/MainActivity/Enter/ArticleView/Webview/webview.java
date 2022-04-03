@@ -26,7 +26,6 @@ public class webview {
     private Scraper scraper;
     private FunctionButton functionButton;
     private ttsController ttsController;
-    private loader loader;
 
     @SuppressLint("SetJavaScriptEnabled")
     public webview(Activity activity, Context context, loader loader, saver saver, FunctionButton functionButton, Controller Controller) throws InterruptedException {
@@ -35,8 +34,6 @@ public class webview {
         mWebView.getSettings().setJavaScriptEnabled(true);
         this.functionButton = functionButton;
         this.ttsController = Controller.getTtsController();
-        this.loader = loader;
-
 
         if (loader.getSource() == 0) {
             scraper = new MKScraper(activity, context, mWebView, functionButton, Controller);
