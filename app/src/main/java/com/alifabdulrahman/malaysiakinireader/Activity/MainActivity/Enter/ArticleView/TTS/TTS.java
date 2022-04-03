@@ -8,6 +8,8 @@ import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.Controller;
@@ -15,6 +17,10 @@ import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.Articl
 import com.alifabdulrahman.malaysiakinireader.Helper.loader;
 import com.alifabdulrahman.malaysiakinireader.Helper.saver;
 import com.alifabdulrahman.malaysiakinireader.Model.ArticleData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
+import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentification;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -173,14 +179,35 @@ public class TTS implements TextToSpeech.OnInitListener {
             tts.setLanguage(Locale.ENGLISH);
         }
 
-        if (newsType.contains("Bahasa Malaysia")){
+        else if (newsType.contains("Bahasa Malaysia")){
             Locale localBM = new Locale("id", "ID");
             tts.setLanguage(localBM);
         }
-        if (newsType.contains("Chinese")) {
+        else if (newsType.contains("Chinese")) {
             tts.setLanguage(Locale.CHINESE);
         }
-    }
+
+        else {
+            String langIDText = text.get(0);
+
+            //Set the language of TTS
+            FirebaseLanguageIdentification languageIdentifier = FirebaseNaturalLanguage.getInstance().getLanguageIdentification();
+            languageIdentifier.identifyLanguage(langIDText).addOnSuccessListener(
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(@Nullable String languageCode) {
+                            if (languageCode.equals("en")) {
+                                tts.setLanguage(Locale.ENGLISH);
+                            } else if (languageCode.equals("ms") || languageCode.equals("id")) {
+                                tts.setLanguage(new Locale("id", "ID"));
+                            } else if (languageCode.equals("zh")) {
+                                tts.setLanguage(Locale.CHINESE);
+                            } else {
+                                tts.setLanguage(Locale.ENGLISH);
+                            }
+                        }
+                    });
+        }
 
     public void destroy() {
         if (tts != null) {
