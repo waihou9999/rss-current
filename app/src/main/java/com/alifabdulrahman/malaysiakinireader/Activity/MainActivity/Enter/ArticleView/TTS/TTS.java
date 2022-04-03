@@ -174,20 +174,15 @@ public class TTS implements TextToSpeech.OnInitListener {
     }
 
 
-    public void identifyLanguage(){
-        if (newsType.contains("English")){
+    public void identifyLanguage() {
+        if (newsType.contains("English")) {
             tts.setLanguage(Locale.ENGLISH);
-        }
-
-        else if (newsType.contains("Bahasa Malaysia")){
+        } else if (newsType.contains("Bahasa Malaysia")) {
             Locale localBM = new Locale("id", "ID");
             tts.setLanguage(localBM);
-        }
-        else if (newsType.contains("Chinese")) {
+        } else if (newsType.contains("Chinese")) {
             tts.setLanguage(Locale.CHINESE);
-        }
-
-        else {
+        } else {
             String langIDText = text.get(0);
 
             //Set the language of TTS
@@ -196,18 +191,25 @@ public class TTS implements TextToSpeech.OnInitListener {
                     new OnSuccessListener<String>() {
                         @Override
                         public void onSuccess(@Nullable String languageCode) {
-                            if (languageCode.equals("en")) {
-                                tts.setLanguage(Locale.ENGLISH);
-                            } else if (languageCode.equals("ms") || languageCode.equals("id")) {
-                                tts.setLanguage(new Locale("id", "ID"));
-                            } else if (languageCode.equals("zh")) {
-                                tts.setLanguage(Locale.CHINESE);
-                            } else {
-                                tts.setLanguage(Locale.ENGLISH);
+                            //System.out.println("languageCode: " + languageCode);
+                            switch (languageCode) {
+                                case "en": tts.setLanguage(Locale.ENGLISH);break;
+                                case "ms":
+                                case "id":
+                                    tts.setLanguage(new Locale("id", "ID")); break;
+                                case "zh": tts.setLanguage(Locale.CHINESE); break;
+
+                                default: tts.setLanguage(Locale.ENGLISH);break;
                             }
                         }
-                    });
+                    })
+                    .addOnFailureListener(
+                            e -> {
+                                // Model couldn’t be loaded or other internal error.
+                                // ...
+                            });
         }
+    }
 
     public void destroy() {
         if (tts != null) {
