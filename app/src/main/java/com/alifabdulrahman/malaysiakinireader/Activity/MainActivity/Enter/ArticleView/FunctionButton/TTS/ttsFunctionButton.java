@@ -29,7 +29,7 @@ public class ttsFunctionButton extends FunctionButton implements View.OnClickLis
     private saver saver;
     private boolean startTSS;
 
-    public ttsFunctionButton(Activity activity, Context context, Controller controller, loader loader, saver saver){
+    public ttsFunctionButton(Activity activity, Context context, loader loader, saver saver){
         super(activity, context);
         stopBtn = activity.findViewById(R.id.stopbtn);
         nextSentBtn = activity.findViewById(R.id.forwbtn);

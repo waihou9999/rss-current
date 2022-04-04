@@ -3,6 +3,7 @@ package com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.Artic
 import android.app.Activity;
 import android.content.Context;
 
+import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.Controller.Controller;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.TTS.ttsFunctionButton;
 import com.alifabdulrahman.malaysiakinireader.Activity.MainActivity.Enter.ArticleView.FunctionButton.Webview.webviewFunctionButton;
 import com.alifabdulrahman.malaysiakinireader.Helper.loader;
@@ -16,6 +17,7 @@ public class FunctionButton{
     protected saver saver;
     private ttsFunctionButton ttsFunctionButton;
     private webviewFunctionButton webviewFunctionButton;
+    protected Controller controller;
 
     public FunctionButton(Activity activity) {
         this.activity = activity;
@@ -26,6 +28,7 @@ public class FunctionButton{
         this.context = context;
         this.ttsFunctionButton = null;
         this.webviewFunctionButton = null;
+        this.controller = null;
         activity.setContentView(R.layout.activity_news_view);
     }
 
@@ -43,6 +46,14 @@ public class FunctionButton{
 
     public webviewFunctionButton getWebviewFunctionButton(){
         return webviewFunctionButton;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public Controller getController(){
+        return controller;
     }
 }
 

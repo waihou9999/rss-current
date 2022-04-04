@@ -35,7 +35,7 @@ public class ArticleViewActivity extends AppCompatActivity {
 
         ttsController = new ttsController(ArticleViewActivity.this, this, controller);
         controller.setTtsController(ttsController);
-        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, controller, loader, saver);
+        ttsFunctionButton = new ttsFunctionButton(ArticleViewActivity.this, this, loader, saver);
         ttsFunctionButton.disabled();
         fb.setTtsFunctionButton(ttsFunctionButton);
 
@@ -43,11 +43,12 @@ public class ArticleViewActivity extends AppCompatActivity {
         controller.setWebviewController(webviewController);
 
         try {
-            webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this, controller);
+            webviewFunctionButton = new webviewFunctionButton(ArticleViewActivity.this);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         fb.setWebviewFunctionButton(webviewFunctionButton);
+        fb.setController(controller);
     }
 
     @Override
