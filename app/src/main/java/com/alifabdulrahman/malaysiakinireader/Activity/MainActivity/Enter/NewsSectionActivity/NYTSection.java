@@ -45,7 +45,7 @@ public class NYTSection extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_section);
         //newsSectionAdapter = new NewsSectionAdapter(this, newsSection2);
-        NYT = new NewsSource("News York Times", "https://www.nytimes.com/");
+        NYT = new NewsSource("Other", "https://www.nytimes.com/");
         initializeDefaults();
 
         NYTSectionStorage = new NYTSectionStorage(this);
@@ -116,9 +116,9 @@ public class NYTSection extends AppCompatActivity implements Serializable {
     EditText txt2;
 
     public void initializeDefaults() {
-        newsSection.add(new NewsSectionData(NYT,"World", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"));
-        newsSection.add(new NewsSectionData(NYT,"Sports", "https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml"));
-        newsSection.add(new NewsSectionData(NYT, "Business", "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"));
+        newsSection.add(new NewsSectionData(NYT,"NYT - World", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"));
+        newsSection.add(new NewsSectionData(NYT,"NYT - Sports", "https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml"));
+        newsSection.add(new NewsSectionData(NYT, "NYT - Business", "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"));
     }
 
     public void toAdd(View view){

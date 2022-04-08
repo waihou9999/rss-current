@@ -48,9 +48,7 @@ public class MKSection extends AppCompatActivity implements Serializable {
 
         newsSectionStorage = new MKSectionStorage(this);
 
-        newsSection2 = newsSectionStorage.loadData();
         newsSectionStorage.loadReading();
-
 
         if (newsSection2 != null) {
             newsSection.addAll(newsSection2);
@@ -63,7 +61,6 @@ public class MKSection extends AppCompatActivity implements Serializable {
     @Override
     protected void onStop(){
         super.onStop();
-        newsSectionStorage.saveData();
     }
 
     @Override
