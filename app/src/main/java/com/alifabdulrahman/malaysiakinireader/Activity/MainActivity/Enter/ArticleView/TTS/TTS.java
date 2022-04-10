@@ -193,7 +193,7 @@ public class TTS implements TextToSpeech.OnInitListener {
                         public void onSuccess(@Nullable String languageCode) {
                             //System.out.println("languageCode: " + languageCode);
                             switch (languageCode) {
-                                case "en": tts.setLanguage(Locale.ENGLISH); break;
+                                case "en": tts.setLanguage(Locale.ENGLISH);break;
                                 case "ms":
                                 case "id":
                                     tts.setLanguage(new Locale("id", "ID")); break;
