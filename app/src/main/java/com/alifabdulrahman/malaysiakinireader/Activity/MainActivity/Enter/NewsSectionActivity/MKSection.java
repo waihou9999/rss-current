@@ -98,7 +98,7 @@ public class MKSection extends AppCompatActivity implements Serializable {
                 Intent toNewsListing = new Intent(MKSection.this, MKListingActivity.class);
                 startActivity(toNewsListing);
                 newsSectionStorage.saveReading(url, newsType, true);
-                newsSectionStorage.saveData();
+                //newsSectionStorage.saveData();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });

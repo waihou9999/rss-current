@@ -58,6 +58,8 @@ public class NYTSection extends AppCompatActivity implements Serializable {
             newsSection.addAll(newsSection2);
         }
 
+
+
         loadLastArticle();
 
         setupListView();
