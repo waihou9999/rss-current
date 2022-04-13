@@ -21,7 +21,7 @@ public class NYTSectionStorage extends storage{
 
     public ArrayList<NewsSectionData> loadData() {
         Gson hson = new Gson();
-        String kson = tinyDB.getString(newsSectionType);
+        String kson = tinyDB.getString(storageName + newsSectionType);
         Type dataType = new TypeToken<ArrayList<NewsSectionData>>() {}.getType();
         newsSection2 = hson.fromJson(kson, dataType);
 
@@ -35,7 +35,7 @@ public class NYTSectionStorage extends storage{
     public void saveData() {
         Gson hson = new Gson();
         String kson = hson.toJson(newsSection2);
-        tinyDB.putString(newsSectionType, kson);
+        tinyDB.putString(storageName + newsSectionType, kson);
     }
 
     public void saveReading(String url, String newsType, boolean wasReading){

@@ -21,7 +21,7 @@ public class MKSectionStorage extends storage {
 
     public ArrayList<NewsSectionData> loadData() {
         Gson hson = new Gson();
-        String kson = tinyDB.getString(newsSectionType);
+        String kson = tinyDB.getString(storageName + newsSectionType);
         Type dataType = new TypeToken<ArrayList<NewsSectionData>>() {}.getType();
         newsSection2 = hson.fromJson(kson, dataType);
 

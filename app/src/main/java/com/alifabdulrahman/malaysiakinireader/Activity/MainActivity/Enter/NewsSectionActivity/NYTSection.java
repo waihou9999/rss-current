@@ -216,7 +216,7 @@ public class NYTSection extends AppCompatActivity implements Serializable {
     public void removeInput(ArrayList<NewsSectionData> newsSection2, ArrayList<Integer> selectedItems) {
         for (int i = selectedItems.size()-1; i >= 0; i--) {
             int x = selectedItems.get(i);
-            int y = selectedItems.get(i) + 9;
+            int y = selectedItems.get(i) + 3;
             newsSection2.remove(x);
             newsSection.remove(y);
         }
