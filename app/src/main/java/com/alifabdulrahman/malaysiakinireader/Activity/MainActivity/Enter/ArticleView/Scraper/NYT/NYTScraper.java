@@ -66,6 +66,8 @@ public class NYTScraper extends Scraper {
             if (contents == null || contents.isEmpty())
                 contents = doc.select("div[class $= text]"); // Sun (Malaysia)
             if (contents == null || contents.isEmpty())
+                contents = doc.select("div[class $= wysiwyg wysiwyg--all-content css-1ck9wyi]"); // AlJazeera
+            if (contents == null || contents.isEmpty())
                 contents = doc.select("p, li"); // Default - take everything
             else
                 contents = contents.select("p, li");

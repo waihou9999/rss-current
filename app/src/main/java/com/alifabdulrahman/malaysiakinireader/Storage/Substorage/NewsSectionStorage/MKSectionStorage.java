@@ -35,7 +35,7 @@ public class MKSectionStorage extends storage {
     public void saveData() {
         Gson hson = new Gson();
         String kson = hson.toJson(newsSection2);
-        tinyDB.putString(newsSectionType, kson);
+        tinyDB.putString(storageName + newsSectionType, kson);
     }
 
     public void saveReading(String url, String newsType, boolean wasReading){
