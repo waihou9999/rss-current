@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/drawable/round_corner_2.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/layout/activity_mk_section.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/layout/activity_news_section.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/layout/activity_news_view.xml" value="0.152" />
+        <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/menu/reloadpopup.xml" value="0.1296875" />
+        <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/wild-/Documents/GitHub/rss-current/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/wild-/Documents/GitHub/rss/app/src/main/res/layout/activity_news_listing.xml" value="0.25416666666666665" />
